@@ -1,0 +1,11 @@
+.feathers-utils:
+  only:
+    changes:
+      - packages/feathers-utils/**/*
+
+test:feathers-utils:
+  variables:
+    DIR: packages/feathers-utils
+  extends:
+    - .feathers-utils
+    - .test

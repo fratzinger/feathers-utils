@@ -1,0 +1,44 @@
+{
+  "name": "@artesa/feathers-utils",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/",
+  "module": "dist/",
+  "types": "dist/",
+  "directories": {
+    "dist": "dist"
+  },
+  "private": true,
+  "scripts": {
+    "compile": "shx rm -rf lib/ && tsc",
+    "release:pre": "npm version prerelease && npm publish --tag pre",
+    "release:patch": "npm version patch && npm publish",
+    "release:minor": "npm version minor && npm publish",
+    "release:major": "npm version major && npm publish",
+    "test": "cross-env NODE_ENV=test TS_NODE_PROJECT='tsconfig.test.json' mocha --require ts-node/register 'test/**/*.test.ts'",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@feathersjs/adapter-commons": "^4.5.11",
+    "@feathersjs/errors": "^4.5.11",
+    "@feathersjs/feathers": "^4.5.11",
+    "feathers-hooks-common": "^5.0.4",
+    "lodash": "^4.17.20"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.166",
+    "@types/mocha": "^8.2.0",
+    "@types/node": "^14.14.16",
+    "@typescript-eslint/eslint-plugin": "^4.11.0",
+    "@typescript-eslint/parser": "^4.11.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.16.0",
+    "eslint-plugin-security": "^1.4.0",
+    "mocha": "^8.2.1",
+    "shx": "^0.3.3",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
+  }
+}
