@@ -2,6 +2,12 @@
   "name": "feathers-utils",
   "version": "1.1.0",
   "description": "",
+  "author": "fratzinger",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/fratzinger/feathers-utils"
+  },
+  "license": "MIT",
   "main": "dist/",
   "module": "dist/",
   "types": "dist/",
@@ -10,15 +16,13 @@
   },
   "scripts": {
     "compile": "shx rm -rf lib/ && tsc",
-    "release:pre": "npm version prerelease && npm publish --tag pre",
-    "release:patch": "npm version patch && npm publish",
-    "release:minor": "npm version minor && npm publish",
-    "release:major": "npm version major && npm publish",
+    "release:pre": "npm run compile && npm version prerelease && npm publish --tag pre",
+    "release:patch": "npm run compile && npm version patch && npm publish",
+    "release:minor": "npm run compile && npm version minor && npm publish",
+    "release:major": "npm run compile && npm version major && npm publish",
     "test": "cross-env NODE_ENV=test TS_NODE_PROJECT='tsconfig.test.json' mocha --require ts-node/register 'test/**/*.test.ts'",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@feathersjs/adapter-commons": "^4.5.11",
     "@feathersjs/errors": "^4.5.11",
