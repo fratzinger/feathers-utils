@@ -9,18 +9,19 @@
   },
   "homepage": "https://github.com/fratzinger/feathers-utils",
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "lib/index.d.ts",
+  "main": "dist/",
+  "types": "dist/",
   "directories": {
     "dist": "dist"
   },
   "scripts": {
+    "prepublish": "npm run lint && npm run test && npm run compile",
+    "publish": "git push origin --tags && git push origin",
     "compile": "shx rm -rf lib/ && tsc",
     "release:pre": "npm run prepare-for-release && npm version prerelease && npm publish --tag pre",
     "release:patch": "npm run prepare-for-release && npm version patch && npm publish",
     "release:minor": "npm run prepare-for-release && npm version minor && npm publish",
     "release:major": "npm run prepare-for-release && npm version major && npm publish",
-    "prepare-for-release": "npm run lint && npm run test && npm run compile",
     "test": "cross-env NODE_ENV=test TS_NODE_PROJECT='tsconfig.test.json' mocha --require ts-node/register 'test/**/*.test.ts'",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
