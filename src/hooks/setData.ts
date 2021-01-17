@@ -14,7 +14,6 @@ import {
 export default (from: Path, to: Path, options?: HookSetDataOptions): ((context: HookContext) => HookContext) => {
   options = options || {};
   return (context: HookContext): HookContext => {
-    const { allowUndefined } = options;
 
     let items = getItems(context);
     items = (Array.isArray(items)) ? items : [items];
@@ -22,7 +21,7 @@ export default (from: Path, to: Path, options?: HookSetDataOptions): ((context: 
     const val = _get(context, from);
 
     if (val === undefined) {
-      if (!context.params?.provider || allowUndefined) {
+      if (!context.params?.provider || options?.allowUndefined === true) {
         return context;
       }
 

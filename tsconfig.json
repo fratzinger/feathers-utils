@@ -5,6 +5,8 @@
     "outDir": "dist",
     "moduleResolution": "node",
     "target": "es5",
+    "module": "commonjs",
+    "strict": true,
     "downlevelIteration": true,
     "sourceMap": false,
     "declaration": true

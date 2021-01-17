@@ -1,16 +1,16 @@
 {
   "name": "feathers-utils",
   "version": "1.2.0",
-  "description": "",
+  "description": "Some utils for projects using '@feathersjs/feathers'",
   "author": "fratzinger",
   "repository": {
     "type": "git",
     "url": "https://github.com/fratzinger/feathers-utils"
   },
+  "homepage": "https://github.com/fratzinger/feathers-utils",
   "license": "MIT",
-  "main": "dist/",
-  "module": "dist/",
-  "types": "dist/",
+  "main": "dist/index.js",
+  "types": "lib/index.d.ts",
   "directories": {
     "dist": "dist"
   },

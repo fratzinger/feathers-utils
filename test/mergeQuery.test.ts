@@ -87,7 +87,7 @@ describe("util - mergeQuery", function() {
         options: { defaultHandle: "intersect" },
         expected: { id: { $in: [] } }
       },
-      "interect number and $nin": {
+      "intersect number and $nin": {
         target: { id: 1 },
         source: { id: { $nin: [1, 3] } },
         options: { defaultHandle: "intersect" },

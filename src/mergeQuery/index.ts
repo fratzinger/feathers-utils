@@ -30,7 +30,7 @@ const handleArray = (target: Record<string, unknown>, source: Record<string, unk
   _set(target, key, arr);
 };
 
-const handleCircular = (target: Record<string, unknown>, source: Record<string, unknown>, prependKey: Path, options): void => {
+const handleCircular = (target: Record<string, unknown>, source: Record<string, unknown>, prependKey: Path, options: MergeQueryOptions): void => {
   if (!_has(source, prependKey)) { return; }
 
   if (!_has(target, prependKey)) {
@@ -75,7 +75,9 @@ const handleCircular = (target: Record<string, unknown>, source: Record<string, 
 
   if (["boolean"].includes(typeOfTargetVal)) {
     if (defaultHandle === "intersect") {
-      actionOnIntersect(target, source, prependKey);
+      if (actionOnIntersect) {
+        actionOnIntersect(target, source, prependKey);
+      }
     }
     _set(target, prependKey, sourceVal);
     return;
@@ -92,7 +94,9 @@ const handleCircular = (target: Record<string, unknown>, source: Record<string, 
         _set(target, prependKey, { $in: [...new Set([targetVal, sourceVal])] });
         return;
       } else if (defaultHandle === "intersect") {
-        actionOnIntersect(target, source, prependKey);
+        if (actionOnIntersect) {
+          actionOnIntersect(target, source, prependKey);
+        }
       } else {
         throw new Error("should not reach here");
       }
@@ -105,16 +109,18 @@ const handleCircular = (target: Record<string, unknown>, source: Record<string, 
         _set(target, prependKey, otherVal);
         return;
       } else if (defaultHandle === "combine") {
-        if (!$in.some(x => _isEqual(x, otherVal))) {
+        if (!$in.some((x: unknown) => _isEqual(x, otherVal))) {
           $in.push(otherVal);
         }
         _set(target, `${prependKey}.$in`, $in);
         return;
       } else if (defaultHandle === "intersect") {
-        if ($in.some(x => _isEqual(x, otherVal))) {
+        if ($in.some((x: unknown) => _isEqual(x, otherVal))) {
           _set(target, prependKey, otherVal);
         } else {
-          actionOnIntersect(target, source, prependKey);
+          if (actionOnIntersect) {
+            actionOnIntersect(target, source, prependKey);
+          }
         }
         return;
       }
@@ -144,9 +150,11 @@ const handleCircular = (target: Record<string, unknown>, source: Record<string, 
       _set(target, `${prependKey}.$in`, $in);
       return;
     } else if (defaultHandle === "intersect") {
-      const $in = targetIn.filter(x => sourceIn.some(y => _isEqual(x, y)));
+      const $in = targetIn.filter((x: unknown) => sourceIn.some((y: unknown) => _isEqual(x, y)));
       if ($in.length === 0) {
-        actionOnIntersect(target, source, `${prependKey}.$in`);
+        if (actionOnIntersect) {
+          actionOnIntersect(target, source, `${prependKey}.$in`);
+        }
       } else if ($in.length === 1) {
         _set(target, prependKey, $in[0]);
         return;

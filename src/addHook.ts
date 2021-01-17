@@ -1,5 +1,5 @@
 import { Application } from "@feathersjs/feathers";
-import { AddHookOptions } from "./types";
+import { AddHookOptions, HookType } from "./types";
 
 const defaultOptions = (): Partial<AddHookOptions> => {
   return {
@@ -25,8 +25,8 @@ const addHook = (app: Application, hook: unknown, options: AddHookOptions): void
     throw new Error("'feathers-utils/addHook': some types in 'orderByType' are undefined");
   }
   if (
-    Object.keys(orderByType).some(
-      type => !(["first", "last"].includes(orderByType[type])))
+    (Object.keys(orderByType) as HookType[]).some(
+      type => !((["first", "last"]).includes(orderByType[type])))
   ) {
     throw new Error("'feathers-utils/addHook': only allowed values for 'orderByType' are 'first' or 'last'");
   }
@@ -36,8 +36,8 @@ const addHook = (app: Application, hook: unknown, options: AddHookOptions): void
   for (const servicePath in allServices) {
     if(!Object.prototype.hasOwnProperty.call(allServices, servicePath)) { continue; }
     const service = app.service(servicePath);
-    if (blacklist.includes(servicePath)) { continue; }
-    if (!whitelist.includes("*") && !whitelist.includes(servicePath)) { continue; }
+    if (blacklist && blacklist.includes(servicePath)) { continue; }
+    if (whitelist && !whitelist.includes("*") && !whitelist.includes(servicePath)) { continue; }
     types.forEach(type => {
       const order = orderByType[type];
       const unshiftOrPush = (order === "first") ? "unshift" : "push";
