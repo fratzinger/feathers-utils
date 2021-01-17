@@ -1,7 +1,7 @@
 import assert from "assert";
 import pushSet from "../src/pushSet";
 
-describe("pushSet", function() {
+describe("util - pushSet", function() {
   it("pushes to existing array", function() {
     const obj = {
       arr: [1]

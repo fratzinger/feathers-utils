@@ -2,7 +2,7 @@ import {
   Handle
 } from "../types";
 
-export default (targetArr: unknown[], sourceArr: unknown[], handle: Handle, actionOnIntersect?: () => void): unknown[]|undefined => {
+const mergeArray = (targetArr: unknown[], sourceArr: unknown[], handle: Handle, actionOnIntersect?: () => void): unknown[]|undefined => {
   if (!sourceArr && !targetArr) { return; }
   if (handle === "target") {
     return targetArr;
@@ -31,3 +31,5 @@ export default (targetArr: unknown[], sourceArr: unknown[], handle: Handle, acti
   }
   return undefined;
 };
+
+export default mergeArray;

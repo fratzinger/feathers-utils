@@ -178,7 +178,7 @@ const makeDefaultOptions = (options?: MergeQueryOptions) => {
   return options;
 };
 
-export default (target: Query, source: Query, options?: MergeQueryOptions): Query => {
+const mergeQuery = (target: Query, source: Query, options?: MergeQueryOptions): Query => {
   options = makeDefaultOptions(options);
   const { filters: targetFilters, query: targetQuery } = filterQuery(target);
   const { filters: sourceFilters, query: sourceQuery } = filterQuery(source);
@@ -194,3 +194,5 @@ export default (target: Query, source: Query, options?: MergeQueryOptions): Quer
   const result = Object.assign({}, targetFilters, targetQuery) as Query;
   return result;
 };
+
+export default mergeQuery;

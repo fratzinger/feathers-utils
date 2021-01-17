@@ -7,7 +7,7 @@ import {
   Path
 } from "./types";
 
-export default (obj: Record<string, unknown>, path: Path, val: unknown, options?: PushSetOptions): unknown[] => {
+const pushSet = (obj: Record<string, unknown>, path: Path, val: unknown, options?: PushSetOptions): unknown[] => {
   options = options || {};
   let arr = _get(obj, path);
   if (!arr || !Array.isArray(arr)) {
@@ -20,3 +20,5 @@ export default (obj: Record<string, unknown>, path: Path, val: unknown, options?
     return arr;
   }
 };
+
+export default pushSet;

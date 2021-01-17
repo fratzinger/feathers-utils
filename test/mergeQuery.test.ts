@@ -1,7 +1,7 @@
 import assert from"assert";
 import mergeQuery from "../src/mergeQuery";
 
-describe("mergeQuery", function() {
+describe("util - mergeQuery", function() {
   describe("simple objects passing", function() {
     const passingPairs = {
       "empty": {

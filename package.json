@@ -4,8 +4,8 @@
   "description": "",
   "author": "fratzinger",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/fratzinger/feathers-utils"
+    "type": "git",
+    "url": "https://github.com/fratzinger/feathers-utils"
   },
   "license": "MIT",
   "main": "dist/",
@@ -16,10 +16,11 @@
   },
   "scripts": {
     "compile": "shx rm -rf lib/ && tsc",
-    "release:pre": "npm run compile && npm version prerelease && npm publish --tag pre",
-    "release:patch": "npm run compile && npm version patch && npm publish",
-    "release:minor": "npm run compile && npm version minor && npm publish",
-    "release:major": "npm run compile && npm version major && npm publish",
+    "release:pre": "npm run prepare-for-release && npm version prerelease && npm publish --tag pre",
+    "release:patch": "npm run prepare-for-release && npm version patch && npm publish",
+    "release:minor": "npm run prepare-for-release && npm version minor && npm publish",
+    "release:major": "npm run prepare-for-release && npm version major && npm publish",
+    "prepare-for-release": "npm run lint && npm run test && npm run compile",
     "test": "cross-env NODE_ENV=test TS_NODE_PROJECT='tsconfig.test.json' mocha --require ts-node/register 'test/**/*.test.ts'",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
@@ -39,6 +40,7 @@
     "cross-env": "^7.0.3",
     "eslint": "^7.16.0",
     "eslint-plugin-security": "^1.4.0",
+    "feathers-memory": "^4.1.0",
     "mocha": "^8.2.1",
     "shx": "^0.3.3",
     "ts-node": "^9.1.1",

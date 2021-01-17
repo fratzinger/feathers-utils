@@ -1,7 +1,7 @@
 import assert from "assert";
 import isMulti from "../src/isMulti";
 
-describe("isMulti", function() {
+describe("util - isMulti", function() {
   it("returns true", function() {
     const makeContext = (type: string, method: string) => {
       const context = {

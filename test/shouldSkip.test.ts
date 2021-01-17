@@ -1,7 +1,7 @@
 import assert from "assert";
 import shouldSkip from "../src/shouldSkip";
 
-describe("shouldSkip", function() {
+describe("util - shouldSkip", function() {
   it("returns false if skipHooks not defined", function() {
     ["before", "after"].forEach(type => {
       ["find", "get", "create", "update", "patch", "remove"].forEach(method => {

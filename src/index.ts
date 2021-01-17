@@ -6,12 +6,14 @@ export const hooks = {
   setData
 };
 
+import addHook from "./addHook";
 import isMulti from "./isMulti";
 import mergeQuery from "./mergeQuery/index";
 import mergeArrays from "./mergeQuery/mergeArrays";
 import pushSet from "./pushSet";
 import shouldSkip from "./shouldSkip";
 
+export { addHook };
 export { isMulti };
 export { mergeQuery };
 export { mergeArrays };

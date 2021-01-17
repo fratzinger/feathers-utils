@@ -4,8 +4,7 @@
 import { GeneralError } from "@feathersjs/errors";
 import { HookContext } from "@feathersjs/feathers";
 
-// Wrap a hook declaration to make it skippable
-export default (hookName: string, context: HookContext): boolean => {
+const shouldSkip = (hookName: string, context: HookContext): boolean => {
   if (!context.params || !context.params.skipHooks) {
     return false;
   }
@@ -39,3 +38,5 @@ export default (hookName: string, context: HookContext): boolean => {
 
   return false;
 };
+
+export default shouldSkip;
