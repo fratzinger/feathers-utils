@@ -26,7 +26,7 @@ const handleArray = (target: Record<string, unknown>, source: Record<string, unk
   const sourceVal = _get(source, key);
   if (!sourceVal && !targetVal) { return; }
   const handle: Handle = _get(options, `handle.${key}`, options.defaultHandle);
-  const arr = mergeArrays(targetVal, sourceVal, handle, options.actionOnEmptyIntersect);
+  const arr = mergeArrays(targetVal, sourceVal, handle, key, options.actionOnEmptyIntersect);
   _set(target, key, arr);
 };
 
@@ -40,7 +40,7 @@ const handleCircular = (target: Record<string, unknown>, source: Record<string, 
 
   const {
     defaultHandle,
-    actionOnIntersect
+    actionOnEmptyIntersect
   } = options;
 
   if (defaultHandle === "target") { return; }
@@ -75,9 +75,7 @@ const handleCircular = (target: Record<string, unknown>, source: Record<string, 
 
   if (["boolean"].includes(typeOfTargetVal)) {
     if (defaultHandle === "intersect") {
-      if (actionOnIntersect) {
-        actionOnIntersect(target, source, prependKey);
-      }
+      actionOnEmptyIntersect(target, source, prependKey);
     }
     _set(target, prependKey, sourceVal);
     return;
@@ -94,9 +92,7 @@ const handleCircular = (target: Record<string, unknown>, source: Record<string, 
         _set(target, prependKey, { $in: [...new Set([targetVal, sourceVal])] });
         return;
       } else if (defaultHandle === "intersect") {
-        if (actionOnIntersect) {
-          actionOnIntersect(target, source, prependKey);
-        }
+        actionOnEmptyIntersect(target, source, prependKey);
       } else {
         throw new Error("should not reach here");
       }
@@ -118,9 +114,8 @@ const handleCircular = (target: Record<string, unknown>, source: Record<string, 
         if ($in.some((x: unknown) => _isEqual(x, otherVal))) {
           _set(target, prependKey, otherVal);
         } else {
-          if (actionOnIntersect) {
-            actionOnIntersect(target, source, prependKey);
-          }
+          actionOnEmptyIntersect(target, source, prependKey);
+          
         }
         return;
       }
@@ -152,9 +147,8 @@ const handleCircular = (target: Record<string, unknown>, source: Record<string, 
     } else if (defaultHandle === "intersect") {
       const $in = targetIn.filter((x: unknown) => sourceIn.some((y: unknown) => _isEqual(x, y)));
       if ($in.length === 0) {
-        if (actionOnIntersect) {
-          actionOnIntersect(target, source, `${prependKey}.$in`);
-        }
+        actionOnEmptyIntersect(target, source, `${prependKey}.$in`);
+        
       } else if ($in.length === 1) {
         _set(target, prependKey, $in[0]);
         return;
@@ -173,7 +167,7 @@ const handleCircular = (target: Record<string, unknown>, source: Record<string, 
   }
 };
 
-const makeDefaultOptions = (options?: MergeQueryOptions) => {
+const makeDefaultOptions = (options?: Partial<MergeQueryOptions>): MergeQueryOptions => {
   options = options || {} as MergeQueryOptions;
   options.defaultHandle = options.defaultHandle || "combine";
   options.actionOnEmptyIntersect = options.actionOnEmptyIntersect || (() => {
@@ -183,21 +177,21 @@ const makeDefaultOptions = (options?: MergeQueryOptions) => {
   if (options.defaultHandle === "intersect") {
     options.handle.$select = options.handle.$select || "intersectOrFull";
   }
-  return options;
+  return options as MergeQueryOptions;
 };
 
-const mergeQuery = (target: Query, source: Query, options?: MergeQueryOptions): Query => {
-  options = makeDefaultOptions(options);
+const mergeQuery = (target: Query, source: Query, options?: Partial<MergeQueryOptions>): Query => {
+  const fullOptions = makeDefaultOptions(options);
   const { filters: targetFilters, query: targetQuery } = filterQuery(target);
   const { filters: sourceFilters, query: sourceQuery } = filterQuery(source);
-  handleArray(targetFilters, sourceFilters, "$select", options);
+  handleArray(targetFilters, sourceFilters, "$select", fullOptions);
   // remaining filters
   delete sourceFilters["$select"];
   _merge(targetFilters, sourceFilters);
   const keys = Object.keys(sourceQuery);
   for (let i = 0, n = keys.length; i < n; i++) {
     const key = keys[i];
-    handleCircular(targetQuery, sourceQuery, key, options);
+    handleCircular(targetQuery, sourceQuery, key, fullOptions);
   }
   const result = Object.assign({}, targetFilters, targetQuery) as Query;
   return result;

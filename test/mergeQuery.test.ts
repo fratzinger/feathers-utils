@@ -116,7 +116,7 @@ describe("util - mergeQuery", function() {
         source: { id: 2 },
         options: { defaultHandle: "intersect" }
       },
-      "intersect bools": {
+      "intersect booleans": {
         target: { test: true },
         source: { test: false },
         options: { defaultHandle: "intersect" }
@@ -137,7 +137,7 @@ describe("util - mergeQuery", function() {
       it(`'${key}'`, function() {
         assert.throws(() => {
           mergeQuery(target, source, options);
-        }, "throws as expected");
+        }, err => err.name === "Forbidden", "throws as expected");
       });
     }
   });

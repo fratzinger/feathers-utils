@@ -1,8 +1,10 @@
 import {
-  Handle
+  Handle,
+  ActionOnEmptyIntersect,
+  Path
 } from "../types";
 
-const mergeArray = (targetArr: unknown[], sourceArr: unknown[], handle: Handle, actionOnIntersect?: () => void): unknown[]|undefined => {
+const mergeArray = (targetArr: unknown[], sourceArr: unknown[], handle: Handle, prependKey?: Path, actionOnEmptyIntersect?: ActionOnEmptyIntersect): unknown[]|undefined => {
   if (!sourceArr && !targetArr) { return; }
   if (handle === "target") {
     return targetArr;
@@ -18,7 +20,9 @@ const mergeArray = (targetArr: unknown[], sourceArr: unknown[], handle: Handle, 
     const sourceIsArray = !sourceArr || !Array.isArray(sourceArr);
 
     if ((targetIsArray || sourceIsArray) && handle === "intersect") {
-      if (actionOnIntersect) { actionOnIntersect(); }
+      if (actionOnEmptyIntersect) {
+        actionOnEmptyIntersect(targetArr as unknown, sourceArr, prependKey || "");
+      }
       return;
     }
 
