@@ -1,5 +1,5 @@
 import assert from "assert";
-import isMulti from "../src/isMulti";
+import isMulti from "../../src/utils/isMulti";
 
 describe("util - isMulti", function() {
   it("returns true", function() {

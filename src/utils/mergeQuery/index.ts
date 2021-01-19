@@ -13,7 +13,7 @@ import {
   Path,
   Handle,
   MergeQueryOptions
-} from "../types";
+} from "../../types";
 
 import { Query } from "@feathersjs/feathers";
 

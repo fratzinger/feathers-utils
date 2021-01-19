@@ -1,5 +1,5 @@
 import { Application } from "@feathersjs/feathers";
-import { AddHookOptions, HookType } from "./types";
+import { AddHookOptions, HookType } from "../types";
 
 const defaultOptions = (): Partial<AddHookOptions> => {
   return {

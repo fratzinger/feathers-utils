@@ -1,6 +1,6 @@
 import { MethodNotAllowed } from "@feathersjs/errors";
-import shouldSkip from "../shouldSkip";
-import isMulti from "../isMulti";
+import shouldSkip from "../utils/shouldSkip";
+import isMulti from "../utils/isMulti";
 import { HookContext } from "@feathersjs/feathers";
 
 export default (): ((context: HookContext) => HookContext) => {

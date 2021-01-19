@@ -16,8 +16,12 @@ npm i feathers-utils
 
 ### Hooks
 
-- `checkMulti()`: throws if the request is **multi** data, but the service has `allowsMulti(method)` returns `false`
-- `setData({ allowUndefined: Boolean })`
+- `hooks/checkMulti()`: throws if the request is **multi** data, but the service has `allowsMulti(method)` returns `false`
+- `hooks/setData({ allowUndefined: Boolean })`
+
+### Mixins
+
+- `mixins/debounceMixin`
 
 ### Utils
 

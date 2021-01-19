@@ -1,5 +1,5 @@
 import assert from"assert";
-import mergeQuery from "../src/mergeQuery";
+import mergeQuery from "../../src/utils/mergeQuery";
 
 describe("util - mergeQuery", function() {
   describe("simple objects passing", function() {

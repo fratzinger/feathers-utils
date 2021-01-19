@@ -2,9 +2,9 @@ import assert from "assert";
 import feathers from "@feathersjs/feathers";
 import createService from "feathers-memory";
 
-import addHook from "../src/addHook";
+import addHook from "../../src/utils/addHook";
 
-import { HookType, ServiceMethodName } from "../src/types";
+import { HookType, ServiceMethodName } from "../../src/types";
 
 const mockApp = (withHooks?: boolean) => {
   const app = feathers();

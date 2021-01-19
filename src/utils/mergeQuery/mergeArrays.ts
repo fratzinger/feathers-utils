@@ -2,7 +2,7 @@ import {
   Handle,
   ActionOnEmptyIntersect,
   Path
-} from "../types";
+} from "../../types";
 
 const mergeArray = (targetArr: unknown[], sourceArr: unknown[], handle: Handle, prependKey?: Path, actionOnEmptyIntersect?: ActionOnEmptyIntersect): unknown[]|undefined => {
   if (!sourceArr && !targetArr) { return; }

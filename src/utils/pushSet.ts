@@ -5,7 +5,7 @@ import _set from "lodash/set";
 import {
   PushSetOptions,
   Path
-} from "./types";
+} from "../types";
 
 const pushSet = (obj: Record<string, unknown>, path: Path, val: unknown, options?: PushSetOptions): unknown[] => {
   options = options || {};
