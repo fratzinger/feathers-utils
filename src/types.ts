@@ -1,4 +1,4 @@
-import { Application } from "@feathersjs/feathers";
+import { Application, Service } from "@feathersjs/feathers";
 
 export type Path = string|Array<string|number>;
 export type HookType = "before"|"after"|"error";
@@ -51,12 +51,31 @@ export interface PushSetOptions {
 }
 
 export type ActionOnEmptyIntersect = (target: unknown, source: unknown, prependKey: Path) => void
-export interface MergeQueryOptions {
+export interface MergeQueryOptions<T> {
   defaultHandle: Handle,
   actionOnEmptyIntersect: ActionOnEmptyIntersect
+  service?: Service<T>
   handle?: {
     [key: string]: Handle
   }
+}
+
+export interface FilterQueryOptions<T> {
+  service?: Service<T>
+  operators?: string[],
+  filters?: string[],
+}
+
+export interface PlainFilterQueryOptions {
+  operators?: string[],
+  filters?: string[],
+}
+
+export interface FilterQueryResult {
+  filters: Record<string, unknown>
+  query: Record<string, unknown>
+  paginate?: unknown
+  [key: string]: unknown
 }
 
 //#endregion

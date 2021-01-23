@@ -1,4 +1,3 @@
-import { filterQuery } from "@feathersjs/adapter-commons";
 import _get from "lodash/get";
 import _has from "lodash/has";
 import _isEqual from "lodash/isEqual";
@@ -6,6 +5,7 @@ import _merge from "lodash/merge";
 import _set from "lodash/set";
 
 import mergeArrays from "./mergeArrays";
+import filterQuery from "../filterQuery";
 
 import { Forbidden } from "@feathersjs/errors";
 
@@ -21,16 +21,16 @@ const hasOnlyProperty = (obj: Record<string, unknown>, key: string): boolean => 
   return typeof obj === "object" && Object.keys(obj).length === 1 && obj[key] !== undefined;
 };
 
-const handleArray = (target: Record<string, unknown>, source: Record<string, unknown>, key: Path, options: MergeQueryOptions): void => {
+function handleArray<T>(target: Record<string, unknown>, source: Record<string, unknown>, key: Path, options: MergeQueryOptions<T>): void {
   const targetVal = _get(target, key);
   const sourceVal = _get(source, key);
   if (!sourceVal && !targetVal) { return; }
   const handle: Handle = _get(options, `handle.${key}`, options.defaultHandle);
   const arr = mergeArrays(targetVal, sourceVal, handle, key, options.actionOnEmptyIntersect);
   _set(target, key, arr);
-};
+}
 
-const handleCircular = (target: Record<string, unknown>, source: Record<string, unknown>, prependKey: Path, options: MergeQueryOptions): void => {
+function handleCircular<T>(target: Record<string, unknown>, source: Record<string, unknown>, prependKey: Path, options: MergeQueryOptions<T>): void {
   if (!_has(source, prependKey)) { return; }
 
   if (!_has(target, prependKey)) {
@@ -165,10 +165,10 @@ const handleCircular = (target: Record<string, unknown>, source: Record<string, 
     const key = sourceKeys[i];
     handleCircular(target, source, `${prependKey}.${key}`, options);
   }
-};
+}
 
-const makeDefaultOptions = (options?: Partial<MergeQueryOptions>): MergeQueryOptions => {
-  options = options || {} as MergeQueryOptions;
+function makeDefaultOptions<T>(options?: Partial<MergeQueryOptions<T>>): MergeQueryOptions<T> {
+  options = options || {} as MergeQueryOptions<T>;
   options.defaultHandle = options.defaultHandle || "combine";
   options.actionOnEmptyIntersect = options.actionOnEmptyIntersect || (() => {
     throw new Forbidden("You're not allowed to make this request");
@@ -177,13 +177,13 @@ const makeDefaultOptions = (options?: Partial<MergeQueryOptions>): MergeQueryOpt
   if (options.defaultHandle === "intersect") {
     options.handle.$select = options.handle.$select || "intersectOrFull";
   }
-  return options as MergeQueryOptions;
-};
+  return options as MergeQueryOptions<T>;
+}
 
-const mergeQuery = (target: Query, source: Query, options?: Partial<MergeQueryOptions>): Query => {
+function mergeQuery<T>(target: Query, source: Query, options?: Partial<MergeQueryOptions<T>>): Query {
   const fullOptions = makeDefaultOptions(options);
-  const { filters: targetFilters, query: targetQuery } = filterQuery(target);
-  const { filters: sourceFilters, query: sourceQuery } = filterQuery(source);
+  const { filters: targetFilters, query: targetQuery } = filterQuery(target, { service: fullOptions.service });
+  const { filters: sourceFilters, query: sourceQuery } = filterQuery(source, { service: fullOptions.service });
   handleArray(targetFilters, sourceFilters, "$select", fullOptions);
   // remaining filters
   delete sourceFilters["$select"];
@@ -195,6 +195,6 @@ const mergeQuery = (target: Query, source: Query, options?: Partial<MergeQueryOp
   }
   const result = Object.assign({}, targetFilters, targetQuery) as Query;
   return result;
-};
+}
 
 export default mergeQuery;
