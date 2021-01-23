@@ -26,6 +26,7 @@ npm i feathers-utils
 ### Utils
 
 - `addHook`: add hooks to specific services
+- `filterQuery`
 - `isMulti(context) => Boolean`: returns true, if `find`, `create/patch/remove`: multi
 - `mergeQuery`: deeply merges queries
 - `mergeArrays`: merges arrays with intersection options

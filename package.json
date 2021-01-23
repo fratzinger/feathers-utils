@@ -22,7 +22,7 @@
     "release:patch": "npm version patch && npm publish",
     "release:minor": "npm version minor && npm publish",
     "release:major": "npm version major && npm publish",
-    "test": "cross-env NODE_ENV=test TS_NODE_PROJECT='tsconfig.test.json' mocha --require ts-node/register 'test/**/*.test.ts'",
+    "test": "cross-env NODE_ENV=test TS_NODE_PROJECT='tsconfig.test.json' mocha --require ts-node/register 'test/**/*.test.ts' --timeout 5000",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {

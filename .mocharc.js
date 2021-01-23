@@ -7,5 +7,5 @@ module.exports = {
   ui: "bdd",
   spec: [
     "./test/**/*.test.ts",
-  ],
+  ]
 };
