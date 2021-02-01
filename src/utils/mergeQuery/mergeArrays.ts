@@ -4,7 +4,7 @@ import {
   Path
 } from "../../types";
 
-const mergeArray = (targetArr: unknown[], sourceArr: unknown[], handle: Handle, prependKey?: Path, actionOnEmptyIntersect?: ActionOnEmptyIntersect): unknown[]|undefined => {
+function mergeArrays<T> (targetArr: T[], sourceArr: T[], handle: Handle, prependKey?: Path, actionOnEmptyIntersect?: ActionOnEmptyIntersect): T[]|undefined {
   if (!sourceArr && !targetArr) { return; }
   if (handle === "target") {
     return targetArr;
@@ -34,6 +34,6 @@ const mergeArray = (targetArr: unknown[], sourceArr: unknown[], handle: Handle, 
     return targetArr.filter(val => sourceArr.includes(val));
   }
   return undefined;
-};
+}
 
-export default mergeArray;
+export default mergeArrays;
