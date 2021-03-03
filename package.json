@@ -29,7 +29,7 @@
     "@feathersjs/adapter-commons": "^4.5.11",
     "@feathersjs/errors": "^4.5.11",
     "@feathersjs/feathers": "^4.5.11",
-    "feathers-hooks-common": "^5.0.4",
+    "feathers-hooks-common": "^5.0.5",
     "lodash": "^4.17.20"
   },
   "devDependencies": {
