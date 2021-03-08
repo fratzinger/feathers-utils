@@ -6,10 +6,11 @@ export const hooks = {
   setData
 };
 
-import debounceMixin from "./mixins/debounce-mixin";
+import debounceMixin, { DebouncedStore } from "./mixins/debounce-mixin";
 
 export const mixins = {
-  debounceMixin
+  debounceMixin,
+  DebouncedStore
 };
 
 import addHook from "./utils/addHook";

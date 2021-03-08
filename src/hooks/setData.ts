@@ -11,7 +11,7 @@ import {
   Path 
 } from "../types";
 
-export default (from: Path, to: Path, options?: HookSetDataOptions): ((context: HookContext) => HookContext) => {
+function setData(from: Path, to: Path, options?: HookSetDataOptions): ((context: HookContext) => HookContext) {
   options = options || {};
   return (context: HookContext): HookContext => {
 
@@ -34,4 +34,6 @@ export default (from: Path, to: Path, options?: HookSetDataOptions): ((context: 
 
     return context;
   };
-};
+}
+
+export default setData;

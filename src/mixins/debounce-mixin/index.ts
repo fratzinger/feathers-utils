@@ -1,16 +1,16 @@
 import { Application } from "@feathersjs/feathers";
-import DebouncedStore from "./DebouncedStore";
+
+import DebouncedStore, {
+  makeDefaultOptions
+} from "./DebouncedStore";
 
 import {
   MixinDebounceStoreOptions,
 } from "../../types";
-import {
-  makeDefaultOptions
-} from "./DebouncedStore";
 
 interface InitDebounceMixinOptions {
   default: Partial<MixinDebounceStoreOptions>
-  //blacklist: string[]
+  blacklist: string[]
   [key: string]: unknown
 }
 
@@ -27,4 +27,5 @@ export default function initDebounceMixin(options?: Partial<InitDebounceMixinOpt
     });
   };
 }
-  
+
+export { DebouncedStore };
