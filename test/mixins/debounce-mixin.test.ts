@@ -8,7 +8,6 @@ const mockApp = () => {
   const app = feathers();
   app.configure(makeMixin({
     default: {
-      idField: "id",
       wait: 50,
       maxWait: 1000
     },

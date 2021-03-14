@@ -25,16 +25,18 @@ export interface AddHookOptions {
 
 //#region mixins
 
-export type MixinDebounceFunctionApp = (app?: Application) => void | Promise<void>;
-
-export interface MixinDebounceOptions {
-    leading: boolean,
-    maxWait: number | undefined
-    trailing: boolean
+export interface InitDebounceMixinOptions {
+  default: Partial<DebouncedStoreOptions>
+  blacklist: string[]
+  [key: string]: unknown
 }
 
-export interface MixinDebounceStoreOptions extends MixinDebounceOptions {
-  idField: string,
+export type DebouncedFunctionApp = (app?: Application) => void | Promise<void>;
+
+export interface DebouncedStoreOptions {
+  leading: boolean
+  maxWait: number | undefined
+  trailing: boolean
   wait: number
 }
 

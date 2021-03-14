@@ -3,12 +3,11 @@ import _debounce from "lodash/debounce";
 import { DebouncedFunc } from "lodash";
 
 import {
-  MixinDebounceFunctionApp,
-  MixinDebounceOptions,
-  MixinDebounceStoreOptions
+  DebouncedFunctionApp,
+  DebouncedStoreOptions
 } from "../../types";
 
-export const makeDefaultOptions = (): Partial<MixinDebounceStoreOptions> => {
+export const makeDefaultOptions = (): DebouncedStoreOptions => {
   return {
     leading: false,
     maxWait: undefined,
@@ -19,15 +18,12 @@ export const makeDefaultOptions = (): Partial<MixinDebounceStoreOptions> => {
 
 class DebouncedStore {
     private _app: Application;
-    private _options: MixinDebounceStoreOptions;
+    private _options: DebouncedStoreOptions;
     private _isRunningById: Record<string, unknown>;
-    _queueById: Record<string, DebouncedFunc<((id: Id, action: MixinDebounceFunctionApp) => void | Promise<void>)>>;
+    _queueById: Record<string, DebouncedFunc<((id: Id, action: DebouncedFunctionApp) => void | Promise<void>)>>;
     //_waitingById: Record<string, WaitingObject>;
     add;
-    constructor(app: Application, options: MixinDebounceStoreOptions) {
-      if (!options.idField) {
-        throw new Error("'feathers-utils/DebounceStore': options.idField needs to be provided");
-      }
+    constructor(app: Application, options: Partial<DebouncedStoreOptions>) {
       this._app = app;
       this._options = Object.assign(makeDefaultOptions(), options);
       this._queueById = {};
@@ -45,7 +41,7 @@ class DebouncedStore {
       );
     }
 
-    private async unbounced(id: Id, action: MixinDebounceFunctionApp): Promise<void> {
+    private async unbounced(id: Id, action: DebouncedFunctionApp): Promise<void> {
       if (this._queueById[id] === undefined) {
         return;
       }
@@ -56,9 +52,9 @@ class DebouncedStore {
     }
 
     private debounceById(
-      func: ((id: Id, action: MixinDebounceFunctionApp) => Promise<void>), 
+      func: ((id: Id, action: DebouncedFunctionApp) => Promise<void>), 
       wait: number, 
-      options?: Partial<MixinDebounceOptions>
+      options?: Partial<DebouncedStoreOptions>
     ) {
       return (id: Id, action: ((app?: Application) => void | Promise<void>)) => {
         if (typeof this._queueById[id] === "function") {
