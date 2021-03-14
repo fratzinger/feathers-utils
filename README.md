@@ -3,7 +3,7 @@
 ![npm](https://img.shields.io/npm/v/feathers-utils)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/fratzinger/feathers-utils/Node.js%20CI)
 ![npm](https://img.shields.io/npm/dm/feathers-utils)
-[![GitHub license](https://img.shields.io/github/license/fratzinger/feathers-utils)](https://github.com/fratzinger/feathers-utils/blob/master/LICENSE.md)
+[![GitHub license](https://img.shields.io/github/license/fratzinger/feathers-utils)](https://github.com/fratzinger/feathers-utils/blob/main/LICENSE.md)
 
 
 ## Installation
