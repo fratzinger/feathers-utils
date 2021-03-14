@@ -184,6 +184,23 @@ function mergeQuery<T>(target: Query, source: Query, options?: Partial<MergeQuer
   const fullOptions = makeDefaultOptions(options);
   const { filters: targetFilters, query: targetQuery } = filterQuery(target, { service: fullOptions.service });
   const { filters: sourceFilters, query: sourceQuery } = filterQuery(source, { service: fullOptions.service });
+  
+  if (
+    target && 
+    !Object.prototype.hasOwnProperty.call(target, "$limit") && 
+    Object.prototype.hasOwnProperty.call(targetFilters, "$limit")
+  ) {
+    delete targetFilters.$limit;
+  }
+
+  if (
+    source && 
+    !Object.prototype.hasOwnProperty.call(source, "$limit") && 
+    Object.prototype.hasOwnProperty.call(sourceFilters, "$limit")
+  ) {
+    delete sourceFilters.$limit;
+  }
+
   handleArray(targetFilters, sourceFilters, "$select", fullOptions);
   // remaining filters
   delete sourceFilters["$select"];

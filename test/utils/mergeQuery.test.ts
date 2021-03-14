@@ -1,8 +1,14 @@
 import assert from"assert";
 import mergeQuery from "../../src/utils/mergeQuery";
+import feathers from "@feathersjs/feathers";
+import { Service } from "feathers-memory";
 
 describe("util - mergeQuery", function() {
   describe("simple objects passing", function() {
+    const app = feathers();
+    let service = new Service({ paginate: { default: 10, max: 100 } });
+    app.use("/service", service);
+    service = app.service("/service");
     const passingPairs = {
       "empty": {
         target: {},
@@ -80,6 +86,18 @@ describe("util - mergeQuery", function() {
         source: { id: { $in: [1, 3] } },
         options: { defaultHandle: "intersect" },
         expected: { id: 1 }
+      },
+      "$limit for target stays the same": {
+        target: { $limit: 50, $skip: 10, $sort: { id: 1 } },
+        source: { id: 1 },
+        options: { defaultHandle: "intersect", service },
+        expected: { id: 1, $limit: 50, $skip: 10, $sort: { id: 1 } }
+      },
+      "$limit gets overridden": {
+        target: { $limit: 50, $skip: 10, $sort: { id: 1 } },
+        source: { $limit: 10, id: 1 },
+        options: { defaultHandle: "intersect", service },
+        expected: { id: 1, $limit: 10, $skip: 10, $sort: { id: 1 } }
       }
       /*"intersect number and $nin": {
         target: { id: 1 },
@@ -103,6 +121,9 @@ describe("util - mergeQuery", function() {
     for (const key in passingPairs) {
       const { target, source, options, expected } = passingPairs[key];
       it(`'${key}'`, function() {
+        if (key === "$limit") {
+          const hallo = "";
+        }
         const query = mergeQuery(target, source, options);
         assert.deepStrictEqual(query, expected, "works as expected");
       });
