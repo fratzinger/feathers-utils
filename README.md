@@ -21,14 +21,15 @@ npm i feathers-utils
 
 ### Mixins
 
-- `mixins/debounceMixin`
+- `mixins/debounceMixin` & `mixins/DebouncedStore`
 
 ### Utils
 
 - `addHook`: add hooks to specific services
 - `filterQuery`
 - `isMulti(context) => Boolean`: returns true, if `find`, `create/patch/remove`: multi
+- `markHookForSkip`: add hookName to `context.params.skipHooks` - also see `shouldSkip`
 - `mergeQuery`: deeply merges queries
 - `mergeArrays`: merges arrays with intersection options
 - `pushSet`: if existing array: *push*, else *set*
-- `shouldSkip`: checks `context.params.skipHooks` for `'all' | '${hookName}' | '${type}:${hookName}'`
+- `shouldSkip`: checks `context.params.skipHooks` for `'all' | '${hookName}' | '${type}:${hookName}'` - also see `markHookForSkip`

@@ -149,7 +149,7 @@ describe("mixin: debounce-mixin", function() {
         });
         counter++;
         callTwo();
-      }, 10);
+      }, 5);
     };
     callTwo();
   });
