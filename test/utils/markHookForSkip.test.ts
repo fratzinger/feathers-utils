@@ -1,10 +1,16 @@
 import assert from "assert";
-import feathers from "@feathersjs/feathers";
+import feathers, { HookContext } from "@feathersjs/feathers";
 import { Service } from "feathers-memory";
 import shouldSkip from "../../src/utils/shouldSkip";
 import markHookForSkip from "../../src/utils/markHookForSkip";
 
 describe("util - markHookForSkip", function() {
+  it("returns hook object", function() {
+    const context = markHookForSkip("test", "all", {} as HookContext);
+    assert.ok(context, "returned context");
+    assert.ok(context.params.skipHooks, "has skipHooks");
+  });
+  
   it("skips explicitly before hook", async function() {
     const app = feathers();
     app.use("service", new Service());
