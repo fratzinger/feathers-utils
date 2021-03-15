@@ -5,8 +5,9 @@ import pushSet from "./pushSet";
 function markHookForSkip<T>(
   hookName: string, 
   type: "all" | HookType | HookType[], 
-  context: HookContext<T>
-): HookContext<T> {
+  context?: Partial<HookContext<T>>
+): Partial<HookContext<T>> {
+  context = context || {};
   const params = context.params || {};
   const types: string[] = (Array.isArray(type)) ? type : [type];
   

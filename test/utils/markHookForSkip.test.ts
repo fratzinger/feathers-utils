@@ -1,12 +1,18 @@
 import assert from "assert";
-import feathers, { HookContext } from "@feathersjs/feathers";
+import feathers from "@feathersjs/feathers";
 import { Service } from "feathers-memory";
 import shouldSkip from "../../src/utils/shouldSkip";
 import markHookForSkip from "../../src/utils/markHookForSkip";
 
 describe("util - markHookForSkip", function() {
   it("returns hook object", function() {
-    const context = markHookForSkip("test", "all", {} as HookContext);
+    const context = markHookForSkip("test", "all", {});
+    assert.ok(context, "returned context");
+    assert.ok(context.params.skipHooks, "has skipHooks");
+  });
+
+  it("returns hook object for undefined context", function() {
+    const context = markHookForSkip("test", "all");
     assert.ok(context, "returned context");
     assert.ok(context.params.skipHooks, "has skipHooks");
   });
