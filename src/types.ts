@@ -53,10 +53,10 @@ export interface PushSetOptions {
 }
 
 export type ActionOnEmptyIntersect = (target: unknown, source: unknown, prependKey: Path) => void
-export interface MergeQueryOptions<T> {
+
+export interface MergeQueryOptions<T> extends FilterQueryOptions<T> {
   defaultHandle: Handle,
   actionOnEmptyIntersect: ActionOnEmptyIntersect
-  service?: Service<T>
   handle?: {
     [key: string]: Handle
   }

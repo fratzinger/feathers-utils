@@ -15,7 +15,7 @@ function filterQuery<T>(query: Query, options?: FilterQueryOptions<T>): FilterQu
   if (options?.service) {
     const { service } = options;
     const operators = options.operators 
-      ?  options.operators
+      ? options.operators
       : service.options?.whitelist;
     const filters = options.filters
       ? options.filters
