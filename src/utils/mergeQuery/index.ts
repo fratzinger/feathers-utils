@@ -3,7 +3,6 @@ import _has from "lodash/has";
 import _isEmpty from "lodash/isEmpty";
 import _isEqual from "lodash/isEqual";
 import _merge from "lodash/merge";
-import _omit from "lodash/omit";
 import _set from "lodash/set";
 
 import mergeArrays from "./mergeArrays";
@@ -132,7 +131,7 @@ function handleCircular<T>(target: Record<string, unknown>, source: Record<strin
     const key = prependKey[prependKey.length-1];
     if (key === "$or") {
       if (defaultHandle === "combine") {
-        const newVals = sourceVal.filter(x => !targetVal.some(y => _isEqual(x, y)));
+        const newVals = sourceVal.filter((x: unknown) => !targetVal.some((y: unknown) => _isEqual(x, y)));
         targetVal.push(...newVals);
       } else if (defaultHandle === "intersect") {
         // combine into "$and"
@@ -164,7 +163,7 @@ function handleCircular<T>(target: Record<string, unknown>, source: Record<strin
         handleCircular(target, source, [...prependKey, "$or"], options);
         return;
       } else if (defaultHandle === "intersect") {
-        const newVals = sourceVal.filter(x => !targetVal.some(y => _isEqual(x, y)));
+        const newVals = sourceVal.filter((x: unknown) => !targetVal.some((y: unknown) => _isEqual(x, y)));
         targetVal.push(...newVals);
         return;
       }

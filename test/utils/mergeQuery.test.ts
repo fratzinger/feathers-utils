@@ -181,9 +181,6 @@ describe("util - mergeQuery", function() {
     for (const key in passingPairs) {
       const { target, source, options, expected } = passingPairs[key];
       it(`'${key}'`, function() {
-        if (key === "combine two $or queries") {
-          const hallo = "";
-        }
         const query = mergeQuery(target, source, options);
         assert.deepStrictEqual(query, expected, "works as expected");
       });
