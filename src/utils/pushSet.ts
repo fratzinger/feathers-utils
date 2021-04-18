@@ -3,11 +3,11 @@ import _get from "lodash/get";
 import _set from "lodash/set";
 
 import {
-  PushSetOptions,
-  Path
+  Path,
+  PushSetOptions
 } from "../types";
 
-const pushSet = (obj: Record<string, unknown>, path: Path, val: unknown, options?: PushSetOptions): unknown[] => {
+const pushSet = (obj: Record<string, unknown>, path: string | Path, val: unknown, options?: PushSetOptions): unknown[] => {
   options = options || {};
   let arr = _get(obj, path);
   if (!arr || !Array.isArray(arr)) {

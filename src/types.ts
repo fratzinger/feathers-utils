@@ -1,10 +1,10 @@
 import { Application, Service } from "@feathersjs/feathers";
 
-export type Path = string|Array<string|number>;
-export type HookType = "before"|"after"|"error";
-export type ServiceMethodName = "find"|"get"|"create"|"update"|"patch"|"remove";
+export type Path = Array<string|number>;
+export type HookType = "before" | "after" | "error";
+export type ServiceMethodName = "find" | "get" | "create" | "update" | "patch" | "remove";
 
-export type Handle = "target"|"source"|"combine"|"intersect"|"intersectOrFull";
+export type Handle = "target" | "source" | "combine" | "intersect"| "intersectOrFull";
 export type FirstLast = "first" | "last";
 
 //#region hooks

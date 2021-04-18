@@ -4,7 +4,13 @@ import {
   Path
 } from "../../types";
 
-function mergeArrays<T> (targetArr: T[], sourceArr: T[], handle: Handle, prependKey?: Path, actionOnEmptyIntersect?: ActionOnEmptyIntersect): T[]|undefined {
+function mergeArrays<T> (
+  targetArr: T[], 
+  sourceArr: T[], 
+  handle: Handle, 
+  prependKey?: Path, 
+  actionOnEmptyIntersect?: ActionOnEmptyIntersect
+): T[]|undefined {
   if (!sourceArr && !targetArr) { return; }
   if (handle === "target") {
     return targetArr;
@@ -21,7 +27,7 @@ function mergeArrays<T> (targetArr: T[], sourceArr: T[], handle: Handle, prepend
 
     if ((targetIsArray || sourceIsArray) && handle === "intersect") {
       if (actionOnEmptyIntersect) {
-        actionOnEmptyIntersect(targetArr as unknown, sourceArr, prependKey || "");
+        actionOnEmptyIntersect(targetArr as unknown, sourceArr, prependKey || []);
       }
       return;
     }

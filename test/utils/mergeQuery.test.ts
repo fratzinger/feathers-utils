@@ -6,7 +6,7 @@ import { Service } from "feathers-memory";
 describe("util - mergeQuery", function() {
   describe("simple objects passing", function() {
     const app = feathers();
-    let service = new Service({ paginate: { default: 10, max: 100 } });
+    let service = new Service({ paginate: { default: 10, max: 100 }, whitelist: ["$and"] });
     app.use("/service", service);
     service = app.service("/service");
     const passingPairs = {
@@ -98,7 +98,67 @@ describe("util - mergeQuery", function() {
         source: { $limit: 10, id: 1 },
         options: { defaultHandle: "intersect", service },
         expected: { id: 1, $limit: 10, $skip: 10, $sort: { id: 1 } }
-      }
+      },
+      "combine two $or queries": {
+        target: { $or: [ { id: 1 }, { id: 2 } ] },
+        source: { $or: [ { id: 3 } ] },
+        options: { defaultHandle: "combine", service },
+        expected: { $or: [ { id: 1 }, { id: 2 }, { id: 3 } ] }
+      },
+      "intersects two $or queries": {
+        target: { $or: [ { id: 1 }, { id: 2 } ] },
+        source: { $or: [ { id: 3 } ] },
+        options: { defaultHandle: "intersect", service },
+        expected: { $and: [{ $or: [{ id: 1 }, { id: 2 }] }, { $or: [{ id: 3 }] }] }
+      },
+      "combine two $and queries": {
+        target: { $and: [ { id: 1 }, { id: 2 } ] },
+        source: { $and: [ { id: 3 } ] },
+        options: { defaultHandle: "combine", service },
+        expected: { $or: [{ $and: [{ id: 1 }, { id: 2 }] }, { $and: [{ id: 3 }] }] }
+      },
+      "intersects two $and queries": {
+        target: { $and: [ { id: 1 }, { id: 2 } ] },
+        source: { $and: [ { id: 3 } ] },
+        options: { defaultHandle: "intersect", service },
+        expected: { $and: [ { id: 1 }, { id: 2 }, { id: 3 } ] }
+      },
+      "combine $or and $and queries": {
+        target: { $or: [ { id: 1 }, { id: 2 } ], $and: [{ id: 4 }] },
+        source: { $or: [ { id: 3 } ], $and: [{ id: 5 }] },
+        options: { defaultHandle: "combine", service },
+        expected: { $or: [ { id: 1 }, { id: 2 }, { id: 3 }, { $and: [{ id: 4 }] }, { $and: [{ id: 5 }] } ] }
+      },
+      "intersect $or and $and queries": {
+        target: { $or: [ { id: 1 }, { id: 2 } ], $and: [{ id: 4 }] },
+        source: { $or: [ { id: 3 } ], $and: [{ id: 5 }] },
+        options: { defaultHandle: "intersect", service },
+        expected: { $and: [{ id: 4 }, { $or: [ { id: 1 }, { id: 2 } ] }, { $or: [{ id: 3 }] }, { id: 5 }] }
+      },
+      "removes unnecessary $or in target with intersect": {
+        target: { $or: [{}] },
+        source: { hi: "test" },
+        options: { defaultHandle: "intersect", service },
+        expected: { hi: "test" }
+      },
+      "removes unnecessary $or in source with intersect": {
+        target: { hi: "test" },
+        source: { $or: [{}]  },
+        options: { defaultHandle: "intersect", service },
+        expected: { hi: "test" }
+      },
+      "removes unnecessary $or in target with combine": {
+        target: { $or: [{}] },
+        source: { hi: "test" },
+        options: { defaultHandle: "combine", service },
+        expected: { hi: "test" }
+      },
+      "removes unnecessary $or in source with combine": {
+        target: { hi: "test" },
+        source: { $or: [{}]  },
+        options: { defaultHandle: "combine", service },
+        expected: { hi: "test" }
+      },
       /*"intersect number and $nin": {
         target: { id: 1 },
         source: { id: { $nin: [1] } },
@@ -121,6 +181,9 @@ describe("util - mergeQuery", function() {
     for (const key in passingPairs) {
       const { target, source, options, expected } = passingPairs[key];
       it(`'${key}'`, function() {
+        if (key === "combine two $or queries") {
+          const hallo = "";
+        }
         const query = mergeQuery(target, source, options);
         assert.deepStrictEqual(query, expected, "works as expected");
       });

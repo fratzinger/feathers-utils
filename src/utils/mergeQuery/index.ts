@@ -1,7 +1,9 @@
 import _get from "lodash/get";
 import _has from "lodash/has";
+import _isEmpty from "lodash/isEmpty";
 import _isEqual from "lodash/isEqual";
 import _merge from "lodash/merge";
+import _omit from "lodash/omit";
 import _set from "lodash/set";
 
 import mergeArrays from "./mergeArrays";
@@ -10,9 +12,9 @@ import filterQuery from "../filterQuery";
 import { Forbidden } from "@feathersjs/errors";
 
 import {
-  Path,
   Handle,
-  MergeQueryOptions
+  MergeQueryOptions,
+  Path
 } from "../../types";
 
 import { Query } from "@feathersjs/feathers";
@@ -25,7 +27,7 @@ function handleArray<T>(target: Record<string, unknown>, source: Record<string, 
   const targetVal = _get(target, key);
   const sourceVal = _get(source, key);
   if (!sourceVal && !targetVal) { return; }
-  const handle: Handle = _get(options, `handle.${key}`, options.defaultHandle);
+  const handle: Handle = _get(options, ["handle", ...key], options.defaultHandle);
   const arr = mergeArrays(targetVal, sourceVal, handle, key, options.actionOnEmptyIntersect);
   _set(target, key, arr);
 }
@@ -127,6 +129,47 @@ function handleCircular<T>(target: Record<string, unknown>, source: Record<strin
   const isSourceArray = Array.isArray(sourceVal);
 
   if (isTargetArray && isSourceArray) {
+    const key = prependKey[prependKey.length-1];
+    if (key === "$or") {
+      if (defaultHandle === "combine") {
+        const newVals = sourceVal.filter(x => !targetVal.some(y => _isEqual(x, y)));
+        targetVal.push(...newVals);
+      } else if (defaultHandle === "intersect") {
+        // combine into "$and"
+        const targetParent = getParentProp(target, prependKey);
+        const sourceParent = getParentProp(source, prependKey);
+        targetParent.$and = targetParent.$and || [];
+        targetParent.$and.push(
+          { $or: targetVal },
+          { $or: sourceVal }
+        );
+        delete targetParent.$or;
+        delete sourceParent.$or;
+        handleCircular(target, source, [...prependKey, "$and"], options);
+        return;
+      }
+      return;
+    } else if (key === "$and") {
+      if (defaultHandle === "combine") {
+        // combine into "$or"
+        const targetParent = getParentProp(target, prependKey);
+        const sourceParent = getParentProp(source, prependKey);
+        targetParent.$or = targetParent.$or || [];
+        targetParent.$or.push(
+          { $and: targetVal },
+          { $and: sourceVal }
+        );
+        delete targetParent.$and;
+        delete sourceParent.$and;
+        handleCircular(target, source, [...prependKey, "$or"], options);
+        return;
+      } else if (defaultHandle === "intersect") {
+        const newVals = sourceVal.filter(x => !targetVal.some(y => _isEqual(x, y)));
+        targetVal.push(...newVals);
+        return;
+      }
+    }
+    
     _set(target, prependKey, sourceVal);
     return;
   }
@@ -142,18 +185,18 @@ function handleCircular<T>(target: Record<string, unknown>, source: Record<strin
     if (defaultHandle === "combine") {
       let $in: unknown[] = targetIn.concat(sourceIn);
       $in = [...new Set($in)];
-      _set(target, `${prependKey}.$in`, $in);
+      _set(target, [...prependKey, "$in"], $in);
       return;
     } else if (defaultHandle === "intersect") {
       const $in = targetIn.filter((x: unknown) => sourceIn.some((y: unknown) => _isEqual(x, y)));
       if ($in.length === 0) {
-        actionOnEmptyIntersect(target, source, `${prependKey}.$in`);
+        actionOnEmptyIntersect(target, source, [...prependKey, "$in"]);
         
       } else if ($in.length === 1) {
         _set(target, prependKey, $in[0]);
         return;
       } else {
-        _set(target, `${prependKey}.$in`, $in);
+        _set(target, [...prependKey, "$in"], $in);
       }
     }
   }
@@ -163,7 +206,7 @@ function handleCircular<T>(target: Record<string, unknown>, source: Record<strin
 
   for (let i = 0, n = sourceKeys.length; i < n; i++) {
     const key = sourceKeys[i];
-    handleCircular(target, source, `${prependKey}.${key}`, options);
+    handleCircular(target, source, [...prependKey, key], options);
   }
 }
 
@@ -201,17 +244,33 @@ function mergeQuery<T>(target: Query, source: Query, options?: Partial<MergeQuer
     delete sourceFilters.$limit;
   }
 
-  handleArray(targetFilters, sourceFilters, "$select", fullOptions);
+  handleArray(targetFilters, sourceFilters, ["$select"], fullOptions);
   // remaining filters
   delete sourceFilters["$select"];
   _merge(targetFilters, sourceFilters);
+
+  // remove unnecessary $or
+  if (targetQuery?.$or && Array.isArray(targetQuery.$or) && targetQuery.$or.some(x => _isEmpty(x))) {
+    delete targetQuery.$or;
+  }
+  if (sourceQuery?.$or && Array.isArray(sourceQuery.$or) && sourceQuery.$or.some(x => _isEmpty(x))) {
+    delete sourceQuery.$or;
+  }
+
   const keys = Object.keys(sourceQuery);
   for (let i = 0, n = keys.length; i < n; i++) {
     const key = keys[i];
-    handleCircular(targetQuery, sourceQuery, key, fullOptions);
+    handleCircular(targetQuery, sourceQuery, [key], fullOptions);
   }
   const result = Object.assign({}, targetFilters, targetQuery) as Query;
+
   return result;
+}
+
+function getParentProp(target: Record<string, unknown>, path: Path) {
+  if (path.length <= 1) { return target; }
+  const pathOneUp = path.slice(0, -1);
+  return _get(target, pathOneUp);
 }
 
 export default mergeQuery;

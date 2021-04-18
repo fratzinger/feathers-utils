@@ -15,7 +15,7 @@ function markHookForSkip<T>(
     const combinedName = (t === "all")
       ? hookName
       : `${type}:${hookName}`;
-    pushSet(params, "skipHooks", combinedName, { unique: true });
+    pushSet(params, ["skipHooks"], combinedName, { unique: true });
   });
   
   context.params = params;

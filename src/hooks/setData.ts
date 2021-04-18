@@ -7,11 +7,10 @@ import { Forbidden } from "@feathersjs/errors";
 import { HookContext } from "@feathersjs/feathers";
 
 import {
-  HookSetDataOptions,
-  Path 
+  HookSetDataOptions
 } from "../types";
 
-function setData(from: Path, to: Path, options?: HookSetDataOptions): ((context: HookContext) => HookContext) {
+function setData(from: string[], to: string[], options?: HookSetDataOptions): ((context: HookContext) => HookContext) {
   options = options || {};
   return (context: HookContext): HookContext => {
 
@@ -25,7 +24,7 @@ function setData(from: Path, to: Path, options?: HookSetDataOptions): ((context:
         return context;
       }
 
-      throw new Forbidden(`Expected field ${from} not available`);
+      throw new Forbidden(`Expected field ${from.toString()} not available`);
     }
 
     items.forEach((item: Record<string, unknown>) => {
