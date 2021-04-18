@@ -224,8 +224,21 @@ function makeDefaultOptions<T>(options?: Partial<MergeQueryOptions<T>>): MergeQu
 
 function mergeQuery<T>(target: Query, source: Query, options?: Partial<MergeQueryOptions<T>>): Query {
   const fullOptions = makeDefaultOptions(options);
-  const { filters: targetFilters, query: targetQuery } = filterQuery(target, { service: fullOptions.service });
-  const { filters: sourceFilters, query: sourceQuery } = filterQuery(source, { service: fullOptions.service });
+  const {
+    filters: targetFilters, 
+    query: targetQuery 
+  } = filterQuery(target, { 
+    operators: fullOptions.operators, 
+    service: fullOptions.service 
+  });
+  
+  const { 
+    filters: sourceFilters, 
+    query: sourceQuery 
+  } = filterQuery(source, { 
+    operators: fullOptions.operators, 
+    service: fullOptions.service 
+  });
   
   if (
     target && 
