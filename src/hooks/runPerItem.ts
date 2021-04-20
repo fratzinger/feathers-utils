@@ -1,5 +1,5 @@
 import { HookContext } from "@feathersjs/feathers";
-import { getItems } from "feathers-hooks-common/types";
+import { getItems } from "feathers-hooks-common";
 import { HookRunPerItemOptions } from "../types";
 import shouldSkip from "../utils/shouldSkip";
 
