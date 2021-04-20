@@ -1,9 +1,11 @@
 import checkMulti from "./hooks/checkMulti";
 import setData from "./hooks/setData";
+import runPerItem from "./hooks/runPerItem";
 
 export const hooks = {
   checkMulti,
-  setData
+  setData,
+  runPerItem
 };
 
 import debounceMixin, { DebouncedStore } from "./mixins/debounce-mixin";

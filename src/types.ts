@@ -21,6 +21,10 @@ export interface AddHookOptions {
   blacklist?: string[],
 }
 
+export interface HookRunPerItemOptions {
+  wait?: boolean
+}
+
 //#endregion
 
 //#region mixins
