@@ -43,11 +43,13 @@ function handleCircular<T>(target: Record<string, unknown>, source: Record<strin
   }
 
   if (target?.$and) {
-    target.$and = arrayWithoutDuplicates(target.$and as unknown[]);
+    target.$and = cleanAnd(target.$and as Record<string, unknown>[]);
+    if (!target.$and) { delete target.$and; }
   }
 
   if (source?.$and) {
-    source.$and = arrayWithoutDuplicates(source.$and as unknown[]);
+    source.$and = cleanAnd(source.$and as Record<string, unknown>[]);
+    if (!source.$and) { delete source.$and; }
   }
 
   if (!_has(source, prependKey)) { return; }
@@ -161,7 +163,8 @@ function handleCircular<T>(target: Record<string, unknown>, source: Record<strin
           { $or: sourceVal }
         );
         
-        targetParent.$and = arrayWithoutDuplicates(targetParent.$and);
+        targetParent.$and = cleanAnd(targetParent.$and);
+        if (!targetParent.$and) { delete targetParent.$and; }
         delete targetParent.$or;
         delete sourceParent.$or;
         handleCircular(target, source, [...prependKey, "$and"], options);
@@ -306,6 +309,17 @@ function cleanOr(target: Record<string, unknown>[]): Record<string, unknown>[] |
   if (target.some(x => _isEmpty(x))) {
     return undefined;
   } else {
+    return arrayWithoutDuplicates(target);
+  }
+}
+
+function cleanAnd(target: Record<string, unknown>[]): Record<string, unknown>[] | undefined {
+  if (!target || !Array.isArray(target) || target.length <= 0) { return target; }
+  
+  if (target.every(x => _isEmpty(x))) {
+    return undefined;
+  } else {
+    target = target.filter(x => !_isEmpty(x));
     return arrayWithoutDuplicates(target);
   }
 }

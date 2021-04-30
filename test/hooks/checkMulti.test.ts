@@ -19,17 +19,6 @@ describe("hook - checkMulti", function() {
     });
   });
 
-  it("check", async function() {
-    const app = feathers();
-    app.use("/test", new Service({}));
-    const service = app.service("test");
-
-    await service.create({ test: true });
-
-    const result = await service.find({ query: { test: false, $or: [{}] } });
-    const hallo = "";
-  });
-
   it("passes if 'allowsMulti' returns true", function() {
     const makeContext = (type: string, method: string) => {
       const context = {
