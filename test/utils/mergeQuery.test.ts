@@ -135,27 +135,57 @@ describe("util - mergeQuery", function() {
         options: { defaultHandle: "intersect", service },
         expected: { $and: [{ id: 4 }, { $or: [ { id: 1 }, { id: 2 } ] }, { $or: [{ id: 3 }] }, { id: 5 }] }
       },
-      "removes unnecessary $or in target with intersect": {
+      "removes empty $or for both": {
         target: { $or: [{}] },
+        source: { $or: [{}] },
+        options: { defaultHandle: "combine", service },
+        expected: {}
+      },
+      "removes empty $and for both": {
+        target: { $and: [{}] },
+        source: { $and: [{}] },
+        options: { defaultHandle: "combine", service },
+        expected: {}
+      },
+      "cleans up $and with empty entries": {
+        target: { $and: [{}, { id: 1 }, { id: 1 }, { id: 2 }] },
+        source: { $and: [{}, { id: 2 }] },
+        options: { defaultHandle: "intersect", service },
+        expected: { $and: [{ id: 1 }, { id: 2 }] }
+      },
+      "removes duplicate entries in $or": {
+        target: { $or: [{ id: 1 }, { id: 1 }, { id: 2 }] },
+        source: { $or: [{ id: 2 }] },
+        options: { defaultHandle: "combine", service },
+        expected: { $or: [{ id: 1 }, { id: 2 }] }
+      },
+      "removes duplicate entries in $and": {
+        target: { $and: [{ id: 1 }, { id: 1 }, { id: 2 }] },
+        source: { $and: [{ id: 2 }] },
+        options: { defaultHandle: "intersect", service },
+        expected: { $and: [{ id: 1 }, { id: 2 }] }
+      },
+      "removes unnecessary $or in target with intersect": {
+        target: { $or: [{ id: 1 }, {}] },
         source: { hi: "test" },
         options: { defaultHandle: "intersect", service },
         expected: { hi: "test" }
       },
       "removes unnecessary $or in source with intersect": {
         target: { hi: "test" },
-        source: { $or: [{}]  },
+        source: { $or: [{ id: 1 }, {}]  },
         options: { defaultHandle: "intersect", service },
         expected: { hi: "test" }
       },
       "removes unnecessary $or in target with combine": {
-        target: { $or: [{}] },
+        target: { $or: [{ id: 1 }, {}] },
         source: { hi: "test" },
         options: { defaultHandle: "combine", service },
         expected: { hi: "test" }
       },
       "removes unnecessary $or in source with combine": {
         target: { hi: "test" },
-        source: { $or: [{}]  },
+        source: { $or: [{ id: 1 }, {}]  },
         options: { defaultHandle: "combine", service },
         expected: { hi: "test" }
       },
