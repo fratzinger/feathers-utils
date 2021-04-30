@@ -189,6 +189,12 @@ describe("util - mergeQuery", function() {
         options: { defaultHandle: "combine", service },
         expected: { hi: "test" }
       },
+      "$in and other props": {
+        target: { id: { $in: [1, 2, 3] }, status: "complete" },
+        source: { id: { $in: [2, 3, 4] }, status: { $in: ["complete", "pending", "draft"] } },
+        options: { defaultHandle: "intersect", service },
+        expected: { id: { $in: [ 2, 3 ] }, status: "complete" }
+      }
       /*"intersect number and $nin": {
         target: { id: 1 },
         source: { id: { $nin: [1] } },

@@ -19,8 +19,8 @@ import {
 
 import { Query } from "@feathersjs/feathers";
 
-const hasOnlyProperty = (obj: Record<string, unknown>, key: string): boolean => {
-  return typeof obj === "object" && Object.keys(obj).length === 1 && obj[key] !== undefined;
+const hasOwnProperty = (obj: Record<string, unknown>, key: string): boolean => {
+  return Object.prototype.hasOwnProperty.call(obj, key);
 };
 
 function handleArray<T>(target: Record<string, unknown>, source: Record<string, unknown>, key: Path, options: MergeQueryOptions<T>): void {
@@ -117,9 +117,9 @@ function handleCircular<T>(target: Record<string, unknown>, source: Record<strin
       } else {
         throw new Error("should not reach here");
       }
-    } else if (hasOnlyProperty(targetVal, "$in") || hasOnlyProperty(sourceVal, "$in")) {
-      const targetHasIn = hasOnlyProperty(targetVal, "$in");
-      //const sourceHasIn = hasOnlyProperty(sourceVal, "$in");
+    } else if (hasOwnProperty(targetVal, "$in") || hasOwnProperty(sourceVal, "$in")) {
+      const targetHasIn = hasOwnProperty(targetVal, "$in");
+      
       const $in = (targetHasIn) ? targetVal["$in"] : sourceVal["$in"];
       const otherVal = (isTargetSimple) ? targetVal : sourceVal;
       if ($in.length === 1 && _isEqual($in[0], otherVal)) {
@@ -193,6 +193,25 @@ function handleCircular<T>(target: Record<string, unknown>, source: Record<strin
         targetVal.push(...newVals);
         return;
       }
+    } else if (key === "$in") {
+      if (defaultHandle === "combine") {
+        let $in: unknown[] = targetVal.concat(sourceVal);
+        $in = [...new Set($in)];
+        _set(target, prependKey, $in);
+        return;
+      } else if (defaultHandle === "intersect") {
+        const $in = targetVal.filter((x: unknown) => sourceVal.some((y: unknown) => _isEqual(x, y)));
+        if ($in.length === 0) {
+          actionOnEmptyIntersect(target, source, prependKey);
+          
+        } else if ($in.length === 1) {
+          _set(target, prependKey.slice(0, -1), $in[0]);
+          return;
+        } else {
+          _set(target, prependKey, $in);
+        }
+      }
+      return;
     }
     
     _set(target, prependKey, sourceVal);
@@ -202,28 +221,6 @@ function handleCircular<T>(target: Record<string, unknown>, source: Record<strin
   if (typeOfTargetVal !== "object" || typeOfSourceVal !== "object") {
     _set(target, prependKey, sourceVal);
     return;
-  }
-
-  if (hasOnlyProperty(targetVal, "$in") && hasOnlyProperty(sourceVal, "$in")) {
-    const targetIn = targetVal["$in"];
-    const sourceIn = sourceVal["$in"];
-    if (defaultHandle === "combine") {
-      let $in: unknown[] = targetIn.concat(sourceIn);
-      $in = [...new Set($in)];
-      _set(target, [...prependKey, "$in"], $in);
-      return;
-    } else if (defaultHandle === "intersect") {
-      const $in = targetIn.filter((x: unknown) => sourceIn.some((y: unknown) => _isEqual(x, y)));
-      if ($in.length === 0) {
-        actionOnEmptyIntersect(target, source, [...prependKey, "$in"]);
-        
-      } else if ($in.length === 1) {
-        _set(target, prependKey, $in[0]);
-        return;
-      } else {
-        _set(target, [...prependKey, "$in"], $in);
-      }
-    }
   }
 
   // both are objects
