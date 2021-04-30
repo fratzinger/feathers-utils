@@ -1,7 +1,5 @@
 import assert from "assert";
 import checkMulti from "../../src/hooks/checkMulti";
-import feathers from "@feathersjs/feathers";
-import { Service } from "feathers-memory";
 
 describe("hook - checkMulti", function() {
   it("passes if 'allowsMulti' not defined", function() {
