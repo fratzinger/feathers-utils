@@ -1,5 +1,7 @@
 import assert from "assert";
 import checkMulti from "../../src/hooks/checkMulti";
+import feathers from "@feathersjs/feathers";
+import { Service } from "feathers-memory";
 
 describe("hook - checkMulti", function() {
   it("passes if 'allowsMulti' not defined", function() {
@@ -15,6 +17,17 @@ describe("hook - checkMulti", function() {
         assert.doesNotThrow(() => checkMulti()(context), `'${type}:${method}': does not throw`);
       });
     });
+  });
+
+  it("check", async function() {
+    const app = feathers();
+    app.use("/test", new Service({}));
+    const service = app.service("test");
+
+    await service.create({ test: true });
+
+    const result = await service.find({ query: { test: false, $or: [{}] } });
+    const hallo = "";
   });
 
   it("passes if 'allowsMulti' returns true", function() {

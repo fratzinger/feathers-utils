@@ -135,6 +135,24 @@ describe("util - mergeQuery", function() {
         options: { defaultHandle: "intersect", service },
         expected: { $and: [{ id: 4 }, { $or: [ { id: 1 }, { id: 2 } ] }, { $or: [{ id: 3 }] }, { id: 5 }] }
       },
+      "removes empty $or for both": {
+        target: { $or: [{}] },
+        source: { $or: [{}] },
+        options: { defaultHandle: "combine", service },
+        expected: {}
+      },
+      "removes duplicate entries in $or": {
+        target: { $or: [{ id: 1 }, { id: 1 }, { id: 2 }] },
+        source: { $or: [{ id: 2 }] },
+        options: { defaultHandle: "combine", service },
+        expected: { $or: [{ id: 1 }, { id: 2 }] }
+      },
+      "removes duplicate entries in $and": {
+        target: { $and: [{ id: 1 }, { id: 1 }, { id: 2 }] },
+        source: { $and: [{ id: 2 }] },
+        options: { defaultHandle: "intersect", service },
+        expected: { $and: [{ id: 1 }, { id: 2 }] }
+      },
       "removes unnecessary $or in target with intersect": {
         target: { $or: [{}] },
         source: { hi: "test" },

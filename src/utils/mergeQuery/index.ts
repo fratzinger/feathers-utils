@@ -4,6 +4,7 @@ import _isEmpty from "lodash/isEmpty";
 import _isEqual from "lodash/isEqual";
 import _merge from "lodash/merge";
 import _set from "lodash/set";
+import _uniqWith from "lodash/uniqWith";
 
 import mergeArrays from "./mergeArrays";
 import filterQuery from "../filterQuery";
@@ -32,6 +33,23 @@ function handleArray<T>(target: Record<string, unknown>, source: Record<string, 
 }
 
 function handleCircular<T>(target: Record<string, unknown>, source: Record<string, unknown>, prependKey: Path, options: MergeQueryOptions<T>): void {
+  if (target?.$or) {
+    target.$or = cleanOr(target.$or as Record<string, unknown>[]);
+    if (!target.$or) { delete target.$or; }
+  }
+  if (source?.$or) {
+    source.$or = cleanOr(source.$or as Record<string, unknown>[]);
+    if (!source.$or) { delete source.$or; }
+  }
+
+  if (target?.$and) {
+    target.$and = arrayWithoutDuplicates(target.$and as unknown[]);
+  }
+
+  if (source?.$and) {
+    source.$and = arrayWithoutDuplicates(source.$and as unknown[]);
+  }
+
   if (!_has(source, prependKey)) { return; }
 
   if (!_has(target, prependKey)) {
@@ -116,7 +134,6 @@ function handleCircular<T>(target: Record<string, unknown>, source: Record<strin
           _set(target, prependKey, otherVal);
         } else {
           actionOnEmptyIntersect(target, source, prependKey);
-          
         }
         return;
       }
@@ -138,10 +155,13 @@ function handleCircular<T>(target: Record<string, unknown>, source: Record<strin
         const targetParent = getParentProp(target, prependKey);
         const sourceParent = getParentProp(source, prependKey);
         targetParent.$and = targetParent.$and || [];
+
         targetParent.$and.push(
           { $or: targetVal },
           { $or: sourceVal }
         );
+        
+        targetParent.$and = arrayWithoutDuplicates(targetParent.$and);
         delete targetParent.$or;
         delete sourceParent.$or;
         handleCircular(target, source, [...prependKey, "$and"], options);
@@ -153,11 +173,14 @@ function handleCircular<T>(target: Record<string, unknown>, source: Record<strin
         // combine into "$or"
         const targetParent = getParentProp(target, prependKey);
         const sourceParent = getParentProp(source, prependKey);
+
         targetParent.$or = targetParent.$or || [];
         targetParent.$or.push(
           { $and: targetVal },
           { $and: sourceVal }
         );
+        targetParent.$or = cleanOr(targetParent.$or);
+        if (!targetParent.$or) { delete targetParent.$or; }
         delete targetParent.$and;
         delete sourceParent.$and;
         handleCircular(target, source, [...prependKey, "$or"], options);
@@ -261,14 +284,6 @@ function mergeQuery<T>(target: Query, source: Query, options?: Partial<MergeQuer
   delete sourceFilters["$select"];
   _merge(targetFilters, sourceFilters);
 
-  // remove unnecessary $or
-  if (targetQuery?.$or && Array.isArray(targetQuery.$or) && targetQuery.$or.some(x => _isEmpty(x))) {
-    delete targetQuery.$or;
-  }
-  if (sourceQuery?.$or && Array.isArray(sourceQuery.$or) && sourceQuery.$or.some(x => _isEmpty(x))) {
-    delete sourceQuery.$or;
-  }
-
   const keys = Object.keys(sourceQuery);
   for (let i = 0, n = keys.length; i < n; i++) {
     const key = keys[i];
@@ -283,6 +298,21 @@ function getParentProp(target: Record<string, unknown>, path: Path) {
   if (path.length <= 1) { return target; }
   const pathOneUp = path.slice(0, -1);
   return _get(target, pathOneUp);
+}
+
+function cleanOr(target: Record<string, unknown>[]): Record<string, unknown>[] | undefined {
+  if (!target || !Array.isArray(target) || target.length <= 0) { return target; }
+  
+  if (target.some(x => _isEmpty(x))) {
+    return undefined;
+  } else {
+    return arrayWithoutDuplicates(target);
+  }
+}
+
+function arrayWithoutDuplicates<T>(target: T[]): T[] {
+  if (!target || !Array.isArray(target)) { return target; }
+  return _uniqWith(target, _isEqual);
 }
 
 export default mergeQuery;
