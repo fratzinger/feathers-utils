@@ -2,6 +2,9 @@
 
 ![npm](https://img.shields.io/npm/v/feathers-utils)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/fratzinger/feathers-utils/Node.js%20CI)
+![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/fratzinger/feathers-utils)
+![Code Climate coverage](https://img.shields.io/codeclimate/coverage/fratzinger/feathers-utils)
+![David](https://img.shields.io/david/fratzinger/feathers-casl)
 ![npm](https://img.shields.io/npm/dm/feathers-utils)
 [![GitHub license](https://img.shields.io/github/license/fratzinger/feathers-utils)](https://github.com/fratzinger/feathers-utils/blob/main/LICENSE.md)
 
