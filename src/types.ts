@@ -61,6 +61,7 @@ export type ActionOnEmptyIntersect = (target: unknown, source: unknown, prependK
 export interface MergeQueryOptions<T> extends FilterQueryOptions<T> {
   defaultHandle: Handle,
   actionOnEmptyIntersect: ActionOnEmptyIntersect
+  useLogicalConjunction: boolean
   handle?: {
     [key: string]: Handle
   }

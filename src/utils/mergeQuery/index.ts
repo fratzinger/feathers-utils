@@ -235,6 +235,10 @@ function handleCircular<T>(target: Record<string, unknown>, source: Record<strin
 function makeDefaultOptions<T>(options?: Partial<MergeQueryOptions<T>>): MergeQueryOptions<T> {
   options = options || {} as MergeQueryOptions<T>;
   options.defaultHandle = options.defaultHandle || "combine";
+  options.useLogicalConjunction =
+    (Object.prototype.hasOwnProperty.call(options, "useLogicalConjunction"))
+      ? options.useLogicalConjunction
+      : false;
   options.actionOnEmptyIntersect = options.actionOnEmptyIntersect || (() => {
     throw new Forbidden("You're not allowed to make this request");
   });
@@ -255,7 +259,8 @@ function mergeQuery<T>(target: Query, source: Query, options?: Partial<MergeQuer
     service: fullOptions.service 
   });
   
-  const { 
+  let { 
+    // eslint-disable-next-line prefer-const
     filters: sourceFilters, 
     query: sourceQuery 
   } = filterQuery(source, { 
@@ -283,6 +288,28 @@ function mergeQuery<T>(target: Query, source: Query, options?: Partial<MergeQuer
   // remaining filters
   delete sourceFilters["$select"];
   _merge(targetFilters, sourceFilters);
+
+  if (
+    options?.useLogicalConjunction && 
+    (
+      options.defaultHandle === "combine" ||
+      options.defaultHandle === "intersect"
+    )
+  ) {
+    const logicalOp = 
+      (options.defaultHandle === "combine")
+        ? "$or"
+        : "$and";
+    if (Object.prototype.hasOwnProperty.call(sourceQuery, logicalOp)) {
+      // omit '$or'/'$and' and put all other props into '$or'/'$and'
+      const andOr = sourceQuery[logicalOp] as unknown[];
+      delete sourceQuery[logicalOp];
+      andOr.push(sourceQuery);
+      sourceQuery = { [logicalOp]: andOr };
+    } else {
+      sourceQuery = { [logicalOp]: [sourceQuery] };
+    }
+  }
 
   const keys = Object.keys(sourceQuery);
   for (let i = 0, n = keys.length; i < n; i++) {
