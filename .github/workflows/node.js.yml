@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
+        node-version: [12.x, 14.x, 16.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -26,13 +26,20 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
-    - run: npm run coverage
+    - run: npm run test
 
   coverage:
     needs: [ test ]
-    name: publish coverage
+    name: coverage
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@master
+    - uses: actions/setup-node@master
+      with:
+        node-version: '14'
+    - run: npm i
     - uses: paambaati/codeclimate-action@v2.7.5
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      with:
+        coverageCommand: npm run coverage
