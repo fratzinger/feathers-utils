@@ -267,6 +267,8 @@ function mergeQuery<T>(target: Query, source: Query, options?: Partial<MergeQuer
     operators: fullOptions.operators, 
     service: fullOptions.service 
   });
+
+  //#region filters
   
   if (
     target && 
@@ -289,12 +291,17 @@ function mergeQuery<T>(target: Query, source: Query, options?: Partial<MergeQuer
   delete sourceFilters["$select"];
   _merge(targetFilters, sourceFilters);
 
+  //#endregion
+
+  //#region '$or' / '$and'
+
   if (
     options?.useLogicalConjunction && 
     (
       options.defaultHandle === "combine" ||
       options.defaultHandle === "intersect"
-    )
+    ) &&
+    !_isEmpty(targetQuery)
   ) {
     const logicalOp = 
       (options.defaultHandle === "combine")
@@ -310,6 +317,8 @@ function mergeQuery<T>(target: Query, source: Query, options?: Partial<MergeQuer
       sourceQuery = { [logicalOp]: [sourceQuery] };
     }
   }
+
+  //#endregion
 
   const keys = Object.keys(sourceQuery);
   for (let i = 0, n = keys.length; i < n; i++) {

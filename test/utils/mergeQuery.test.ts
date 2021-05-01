@@ -170,6 +170,12 @@ describe("util - mergeQuery", function() {
           options: { defaultHandle: "combine", useLogicalConjunction: true },
           expected: { id: 1 }
         },
+        "merge empty target": {
+          target: {  },
+          source: { id: 1 },
+          options: { defaultHandle: "combine", useLogicalConjunction: true },
+          expected: { id: 1 }
+        },
         "merge queries with $or": {
           target: { id: 1 },
           source: { $or: [{ id: { $in: [1, 3] } }], id: 2 },
@@ -315,6 +321,12 @@ describe("util - mergeQuery", function() {
         "merge empty source": {
           target: { id: 1 },
           source: {},
+          options: { defaultHandle: "intersect", useLogicalConjunction: true },
+          expected: { id: 1 }
+        },
+        "merge empty target": {
+          target: {},
+          source: { id: 1 },
           options: { defaultHandle: "intersect", useLogicalConjunction: true },
           expected: { id: 1 }
         },
