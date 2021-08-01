@@ -1,8 +1,11 @@
+// hooks
+import changesById from "./hooks/changesById";
 import checkMulti from "./hooks/checkMulti";
 import setData from "./hooks/setData";
 import runPerItem from "./hooks/runPerItem";
 
 export const hooks = {
+  changesById,
   checkMulti,
   setData,
   runPerItem
