@@ -42,4 +42,6 @@ export { shouldSkip };
 
 export { filterQuery };
 
+export { getOrFindById };
+
 export * from "./types";

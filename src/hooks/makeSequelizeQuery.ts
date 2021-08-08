@@ -29,7 +29,6 @@ const makeIncludeArray = (
 ) => {
   const queryKeys = Object.keys(query);
   const { associations: associationsByKey } = Model;
-  Model.
   const associationsKeys = Object.keys(associationsByKey);
 
   const associationKeysInQuery = _intersection(queryKeys, associationsKeys);
