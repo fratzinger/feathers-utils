@@ -4,7 +4,7 @@ import _transform from "lodash/transform";
 import _intersection from "lodash/intersection";
 import { HookContext, Query } from "@feathersjs/feathers";
 
-import { Sequelize, ModelType, Model, ModelStatic } from "sequelize";
+import { Model } from "sequelize";
 
 function replaceKeysDeep(
   obj: Record<string, unknown>, 
