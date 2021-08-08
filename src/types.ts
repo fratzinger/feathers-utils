@@ -1,4 +1,4 @@
-import { Application, Service } from "@feathersjs/feathers";
+import type { Application, HookContext, Params, Service } from "@feathersjs/feathers";
 
 export type Path = Array<string|number>;
 export type HookType = "before" | "after" | "error";
@@ -13,9 +13,7 @@ export interface HookChangesByIdOptions {
   removeSelect: boolean
   skipHooks: boolean
   refetchItems: boolean
-  params: undefined | ((params: Params, context: HookContext) => (Params | Promise<Params>))
-  paramsBefore: undefined | ((params: Params, context: HookContext) => (Params | Promise<Params>))
-  paramsAfter: undefined | ((params: Params, context: HookContext) => (Params | Promise<Params>))
+  params?: (params: Params, context: HookContext) => (Promise<Params>)
 }
 
 export type ChangeById<T> = {

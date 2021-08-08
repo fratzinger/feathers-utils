@@ -29,6 +29,8 @@ import shouldSkip from "./utils/shouldSkip";
 
 import filterQuery from "./utils/filterQuery";
 
+import getOrFindById from "./utils/getOrFindById";
+
 export { addHook };
 export { isMulti };
 export { mergeQuery };
