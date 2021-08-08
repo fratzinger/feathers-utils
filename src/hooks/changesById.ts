@@ -31,7 +31,7 @@ const changesById = <T>(
   };
 };
 
-const changesByIdBefore = async (
+export const changesByIdBefore = async (
   context: HookContext, 
   options: Pick<HookChangesByIdOptions, "params" | "skipHooks">
 ): Promise<HookContext> => {
@@ -42,7 +42,7 @@ const changesByIdBefore = async (
   return context;
 };
 
-const changesByIdAfter = async <T>(
+export const changesByIdAfter = async <T>(
   context: HookContext,
   cb: (changesById: Record<Id, ChangeById<T>>, context: HookContext) => void | Promise<void>,
   options: HookChangesByIdOptions

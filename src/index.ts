@@ -11,6 +11,11 @@ export const hooks = {
   runPerItem
 };
 
+export { changesById };
+export { checkMulti };
+export { setData };
+export { runPerItem };
+
 import debounceMixin, { DebouncedStore } from "./mixins/debounce-mixin";
 
 export const mixins = {
@@ -29,6 +34,10 @@ import shouldSkip from "./utils/shouldSkip";
 
 import filterQuery from "./utils/filterQuery";
 
+import { 
+  changesByIdBefore, 
+  changesByIdAfter 
+} from "./hooks/changesById";
 import getOrFindById from "./utils/getOrFindById";
 
 export { addHook };
@@ -42,6 +51,8 @@ export { shouldSkip };
 
 export { filterQuery };
 
+export { changesByIdBefore };
+export { changesByIdAfter };
 export { getOrFindById };
 
 export * from "./types";
