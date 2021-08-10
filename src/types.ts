@@ -9,18 +9,6 @@ export type FirstLast = "first" | "last";
 
 //#region hooks
 
-export interface HookChangesByIdOptions {
-  removeSelect: boolean
-  skipHooks: boolean
-  refetchItems: boolean
-  params?: (params: Params, context: HookContext) => (Promise<Params>)
-}
-
-export type ChangeById<T> = {
-  before: T
-  after: T
-}
-
 export interface HookSetDataOptions {
   allowUndefined?: boolean
 }

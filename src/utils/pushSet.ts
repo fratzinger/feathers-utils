@@ -2,7 +2,7 @@ import _isEqual from "lodash/isEqual";
 import _get from "lodash/get";
 import _set from "lodash/set";
 
-import {
+import type {
   Path,
   PushSetOptions
 } from "../types";

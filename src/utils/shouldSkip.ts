@@ -2,7 +2,8 @@
 // Definitely check it out! https://daddywarbucks.github.io/feathers-fletching/overview.html
 
 import { GeneralError } from "@feathersjs/errors";
-import { HookContext } from "@feathersjs/feathers";
+
+import type { HookContext } from "@feathersjs/feathers";
 
 const shouldSkip = (hookName: string, context: HookContext): boolean => {
   if (!context.params || !context.params.skipHooks) {

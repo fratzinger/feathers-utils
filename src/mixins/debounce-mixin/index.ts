@@ -1,10 +1,10 @@
-import { Application } from "@feathersjs/feathers";
-
 import DebouncedStore, {
   makeDefaultOptions
 } from "./DebouncedStore";
 
-import {
+import type { Application } from "@feathersjs/feathers";
+
+import type {
   InitDebounceMixinOptions,
   DebouncedStoreOptions,
 } from "../../types";

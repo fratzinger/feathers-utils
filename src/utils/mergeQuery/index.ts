@@ -11,13 +11,13 @@ import filterQuery from "../filterQuery";
 
 import { Forbidden } from "@feathersjs/errors";
 
-import {
+import type { Query } from "@feathersjs/feathers";
+
+import type {
   Handle,
   MergeQueryOptions,
   Path
 } from "../../types";
-
-import { Query } from "@feathersjs/feathers";
 
 const hasOwnProperty = (obj: Record<string, unknown>, key: string): boolean => {
   return Object.prototype.hasOwnProperty.call(obj, key);

@@ -1,7 +1,9 @@
-import { HookContext } from "@feathersjs/feathers";
 import { getItems } from "feathers-hooks-common";
-import { HookRunPerItemOptions } from "../types";
+
 import shouldSkip from "../utils/shouldSkip";
+
+import type { HookRunPerItemOptions } from "../types";
+import type { HookContext } from "@feathersjs/feathers";
 
 const makeOptions = (
   options: HookRunPerItemOptions
