@@ -258,6 +258,8 @@ function mergeQuery<T>(target: Query, source: Query, options?: Partial<MergeQuer
     operators: fullOptions.operators, 
     service: fullOptions.service 
   });
+
+  if (target.$limit) { targetFilters.$limit = target.$limit; }
   
   let { 
     // eslint-disable-next-line prefer-const
@@ -267,6 +269,8 @@ function mergeQuery<T>(target: Query, source: Query, options?: Partial<MergeQuer
     operators: fullOptions.operators, 
     service: fullOptions.service 
   });
+
+  if (source.$limit) { sourceFilters.$limit = source.$limit; }
 
   //#region filters
   
