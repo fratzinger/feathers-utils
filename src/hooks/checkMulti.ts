@@ -1,7 +1,8 @@
 import { MethodNotAllowed } from "@feathersjs/errors";
 import shouldSkip from "../utils/shouldSkip";
 import isMulti from "../utils/isMulti";
-import { HookContext } from "@feathersjs/feathers";
+
+import type { HookContext } from "@feathersjs/feathers";
 
 function checkMulti(): ((context: HookContext) => HookContext) {
   return (context: HookContext): HookContext => {

@@ -1,3 +1,4 @@
+// hooks
 import checkMulti from "./hooks/checkMulti";
 import setData from "./hooks/setData";
 import runPerItem from "./hooks/runPerItem";
@@ -7,6 +8,10 @@ export const hooks = {
   setData,
   runPerItem
 };
+
+export { checkMulti };
+export { setData };
+export { runPerItem };
 
 import debounceMixin, { DebouncedStore } from "./mixins/debounce-mixin";
 
@@ -25,6 +30,7 @@ import markHookForSkip from "./utils/markHookForSkip";
 import shouldSkip from "./utils/shouldSkip";
 
 import filterQuery from "./utils/filterQuery";
+
 
 export { addHook };
 export { isMulti };

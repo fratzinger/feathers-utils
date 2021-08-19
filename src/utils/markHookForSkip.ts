@@ -1,6 +1,7 @@
-import { HookContext } from "@feathersjs/feathers";
-import { HookType } from "feathers-hooks-common/types";
 import pushSet from "./pushSet";
+
+import type { HookContext } from "@feathersjs/feathers";
+import type { HookType } from "feathers-hooks-common/types";
 
 function markHookForSkip<T>(
   hookName: string, 
