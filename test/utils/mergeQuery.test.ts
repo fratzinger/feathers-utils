@@ -4,6 +4,13 @@ import feathers from "@feathersjs/feathers";
 import { Service } from "feathers-memory";
 
 describe("util - mergeQuery", function() {
+  describe("general", function() {
+    it("$limit: -1", function() {
+      const query = mergeQuery({ $limit: -1 }, { id: 1 });
+      assert.deepStrictEqual(query, { $limit: -1, id: 1 });
+    });
+  });
+
   describe("simple objects passing", function() {
     const app = feathers();
     app.use(
@@ -364,7 +371,6 @@ describe("util - mergeQuery", function() {
       }
     });
   });
-
 
   describe("simple objects failing", function() {
     const failingPairs = {

@@ -4,9 +4,10 @@ import _set from "lodash/set";
 import { getItems } from "feathers-hooks-common";
 
 import { Forbidden } from "@feathersjs/errors";
-import { HookContext } from "@feathersjs/feathers";
 
-import {
+import type { HookContext } from "@feathersjs/feathers";
+
+import type {
   HookSetDataOptions
 } from "../types";
 

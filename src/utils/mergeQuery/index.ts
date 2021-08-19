@@ -11,13 +11,13 @@ import filterQuery from "../filterQuery";
 
 import { Forbidden } from "@feathersjs/errors";
 
-import {
+import type { Query } from "@feathersjs/feathers";
+
+import type {
   Handle,
   MergeQueryOptions,
   Path
 } from "../../types";
-
-import { Query } from "@feathersjs/feathers";
 
 const hasOwnProperty = (obj: Record<string, unknown>, key: string): boolean => {
   return Object.prototype.hasOwnProperty.call(obj, key);
@@ -258,6 +258,8 @@ function mergeQuery<T>(target: Query, source: Query, options?: Partial<MergeQuer
     operators: fullOptions.operators, 
     service: fullOptions.service 
   });
+
+  if (target.$limit) { targetFilters.$limit = target.$limit; }
   
   let { 
     // eslint-disable-next-line prefer-const
@@ -267,6 +269,8 @@ function mergeQuery<T>(target: Query, source: Query, options?: Partial<MergeQuer
     operators: fullOptions.operators, 
     service: fullOptions.service 
   });
+
+  if (source.$limit) { sourceFilters.$limit = source.$limit; }
 
   //#region filters
   

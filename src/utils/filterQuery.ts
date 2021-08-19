@@ -1,13 +1,14 @@
-import { Query } from "@feathersjs/feathers";
 import { 
   filterQuery as plainFilterQuery
 } from "@feathersjs/adapter-commons";
 
-import {
+import type {
   FilterQueryOptions,
   FilterQueryResult,
   PlainFilterQueryOptions
 } from "../types";
+
+import type { Query } from "@feathersjs/feathers";
 
 function filterQuery<T>(query: Query, options?: FilterQueryOptions<T>): FilterQueryResult {
   query = query || {};

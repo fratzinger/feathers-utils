@@ -1,6 +1,7 @@
-import { Application, Id } from "@feathersjs/feathers";
 import _debounce from "lodash/debounce";
-import { DebouncedFunc } from "lodash";
+
+import type { DebouncedFunc } from "lodash";
+import type { Application, Id } from "@feathersjs/feathers";
 
 import {
   DebouncedFunctionApp,
