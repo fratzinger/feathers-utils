@@ -28,19 +28,23 @@ function setData(
     let items = getItems(context);
     items = (Array.isArray(items)) ? items : [items];
 
-    const val = _get(context, from);
-
-    if (val === undefined) {
+    if (!_has(context, from)) {
       if (!context.params?.provider || options.allowUndefined === true) {
+        return context;
+      }
+
+      if (!options.overwrite && items.every((item: Record<string, unknown>) => _has(item, to))) {
         return context;
       }
 
       throw new Forbidden(`Expected field ${from.toString()} not available`);
     }
 
+    const val = _get(context, from);
+
     items.forEach((item: Record<string, unknown>) => {
       if (!options.overwrite && _has(item, to)) { return; }
-      
+
       _set(item, to, val);
     });
 

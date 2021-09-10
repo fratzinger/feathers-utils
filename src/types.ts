@@ -1,4 +1,4 @@
-import type { Application, HookContext, Params, Service } from "@feathersjs/feathers";
+import type { Application, Service } from "@feathersjs/feathers";
 
 export type Path = Array<string|number>;
 export type HookType = "before" | "after" | "error";

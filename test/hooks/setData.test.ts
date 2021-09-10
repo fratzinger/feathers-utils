@@ -190,6 +190,33 @@ describe("hook - setData", function() {
     });
   });
 
+  it("passes if 'external' is set and context.user.id is undefined but overwrite: false", function() {
+    const methodsByType = {
+      "before": ["create", "update", "patch", "remove"],
+      "after": ["find", "get", "create", "update", "patch", "remove"]
+    };
+    Object.keys(methodsByType).forEach(type => {
+      methodsByType[type].forEach(method => {
+        const context = {
+          method,
+          type,
+          params: {
+            provider: "socket.io"
+          }
+        };
+
+        const dataOrResult = (type === "before") ? "data" : "result";
+        context[dataOrResult] = { userId: 1 };
+
+        assert.doesNotThrow(
+          //@ts-ignore
+          () => setData("params.user.id", "userId", { overwrite: false })(context),
+          `'${type}/${method}': passes`
+        );
+      });
+    });
+  });
+
   describe("overwrite: false", function() {
     it("sets userId for single item", function() {
       const methodsByType = {
