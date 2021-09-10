@@ -189,4 +189,118 @@ describe("hook - setData", function() {
       });
     });
   });
+
+  describe("overwrite: false", function() {
+    it("sets userId for single item", function() {
+      const methodsByType = {
+        "before": ["create", "update", "patch", "remove"],
+        "after": ["find", "get", "create", "update", "patch", "remove"]
+      };
+      Object.keys(methodsByType).forEach(type => {
+        methodsByType[type].forEach(method => {
+          const context = {
+            method,
+            type,
+            params: {
+              user: {
+                id: 1
+              }
+            }
+          };
+  
+          const dataOrResult = (type === "before") ? "data" : "result";
+          context[dataOrResult] = {};
+  
+          //@ts-ignore
+          const result = setData("params.user.id", "userId", { overwrite: false })(context);
+          assert.strictEqual(result[dataOrResult].userId, 1, `'${type}/${method}': ${dataOrResult} has 'userId:1'`);
+        });
+      });
+    });
+
+    it("does not overwrite userId for single item", function() {
+      const methodsByType = {
+        "before": ["create", "update", "patch", "remove"],
+        "after": ["find", "get", "create", "update", "patch", "remove"]
+      };
+      Object.keys(methodsByType).forEach(type => {
+        methodsByType[type].forEach(method => {
+          const context = {
+            method,
+            type,
+            params: {
+              user: {
+                id: 1
+              }
+            }
+          };
+  
+          const dataOrResult = (type === "before") ? "data" : "result";
+          context[dataOrResult] = { userId: 2 };
+  
+          //@ts-ignore
+          const result = setData("params.user.id", "userId", { overwrite: false })(context);
+          assert.strictEqual(result[dataOrResult].userId, 2, `'${type}/${method}': ${dataOrResult} has 'userId:2'`);
+        });
+      });
+    });
+  
+    it("sets userId for multiple items", function() {
+      const methodsByType = {
+        "before": ["create", "update", "patch", "remove"],
+        "after": ["find", "get", "create", "update", "patch", "remove"]
+      };
+      Object.keys(methodsByType).forEach(type => {
+        methodsByType[type].forEach(method => {
+          const context = {
+            method,
+            type,
+            params: {
+              user: {
+                id: 1
+              }
+            },
+          };
+  
+          const dataOrResult = (type === "before") ? "data" : "result";
+          context[dataOrResult] = [{}, {}, {}];
+  
+          //@ts-ignore
+          const result = setData("params.user.id", "userId", { overwrite: false })(context);
+          result[dataOrResult].forEach((item) => {
+            assert.strictEqual(item.userId, 1, `${type}/${method}': ${dataOrResult} has 'userId:1'`);
+          });
+        });
+      });
+    });
+  
+    it("overwrites userId for multiple items", function() {
+      const methodsByType = {
+        "before": ["create", "update", "patch", "remove"],
+        "after": ["find", "get", "create", "update", "patch", "remove"]
+      };
+      Object.keys(methodsByType).forEach(type => {
+        methodsByType[type].forEach(method => {
+          const context = {
+            method,
+            type,
+            params: {
+              user: {
+                id: 1
+              }
+            }
+          };
+  
+          const dataOrResult = (type === "before") ? "data" : "result";
+          context[dataOrResult] = [{ userId: 0 }, {}, { userId: 2 }];
+  
+          //@ts-ignore
+          const result = setData("params.user.id", "userId", { overwrite: false })(context);
+          result[dataOrResult].forEach((item, i) => {
+            assert.strictEqual(item.userId, i, `${type}/${method}': ${dataOrResult} has 'userId:${i}`);
+          });
+        });
+      });
+    });
+  });
 });

@@ -11,6 +11,7 @@ export type FirstLast = "first" | "last";
 
 export interface HookSetDataOptions {
   allowUndefined?: boolean
+  overwrite?: boolean
 }
 
 export interface AddHookOptions {
