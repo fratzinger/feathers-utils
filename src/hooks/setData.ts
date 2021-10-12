@@ -11,6 +11,7 @@ import type { HookContext } from "@feathersjs/feathers";
 import type {
   HookSetDataOptions
 } from "../types";
+import { PropertyPath } from "lodash";
 
 const defaultOptions: Required<HookSetDataOptions> = {
   allowUndefined: false,
@@ -18,8 +19,8 @@ const defaultOptions: Required<HookSetDataOptions> = {
 };
 
 function setData(
-  from: string[], 
-  to: string[], 
+  from: PropertyPath, 
+  to: PropertyPath, 
   _options?: HookSetDataOptions
 ): ((context: HookContext) => HookContext) {
   const options: Required<HookSetDataOptions> = Object.assign({}, defaultOptions, _options);

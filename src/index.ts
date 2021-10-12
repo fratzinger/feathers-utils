@@ -20,27 +20,15 @@ export const mixins = {
   DebouncedStore
 };
 
-import addHook from "./utils/addHook";
-import isMulti from "./utils/isMulti";
-import mergeQuery from "./utils/mergeQuery/index";
-import mergeArrays from "./utils/mergeQuery/mergeArrays";
-import pushSet from "./utils/pushSet";
+export * as addHook from "./utils/addHook";
+export * as isMulti from "./utils/isMulti";
+export * as mergeQuery from "./utils/mergeQuery/index";
+export * as mergeArrays from "./utils/mergeQuery/mergeArrays";
+export * as pushSet from "./utils/pushSet";
 
-import markHookForSkip from "./utils/markHookForSkip";
-import shouldSkip from "./utils/shouldSkip";
+export * as markHookForSkip from "./utils/markHookForSkip";
+export * as shouldSkip from "./utils/shouldSkip";
 
-import filterQuery from "./utils/filterQuery";
-
-
-export { addHook };
-export { isMulti };
-export { mergeQuery };
-export { mergeArrays };
-export { pushSet };
-
-export { markHookForSkip };
-export { shouldSkip };
-
-export { filterQuery };
+export * as filterQuery from "./utils/filterQuery";
 
 export * from "./types";
