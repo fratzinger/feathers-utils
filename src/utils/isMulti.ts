@@ -1,6 +1,6 @@
 import type { HookContext } from "@feathersjs/feathers";
 
-const isMulti = (context: HookContext): boolean => {
+export const isMulti = (context: HookContext): boolean => {
   const { method } = context;
   if (method === "find") {
     return true;
@@ -15,5 +15,3 @@ const isMulti = (context: HookContext): boolean => {
   }
   return false;
 };
-
-export default isMulti;

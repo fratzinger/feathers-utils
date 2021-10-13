@@ -1,8 +1,7 @@
 import assert from "assert";
 import feathers from "@feathersjs/feathers";
 import { Service } from "feathers-memory";
-import shouldSkip from "../../src/utils/shouldSkip";
-import markHookForSkip from "../../src/utils/markHookForSkip";
+import { shouldSkip, markHookForSkip } from "../../src";
 
 describe("util - markHookForSkip", function() {
   it("returns hook object", function() {

@@ -1,5 +1,5 @@
 import assert from "assert";
-import checkMulti from "../../src/hooks/checkMulti";
+import { checkMulti } from "../../src";
 
 describe("hook - checkMulti", function() {
   it("passes if 'allowsMulti' not defined", function() {

@@ -11,14 +11,14 @@ import type { HookContext } from "@feathersjs/feathers";
 import type {
   HookSetDataOptions
 } from "../types";
-import { PropertyPath } from "lodash";
+import type { PropertyPath } from "lodash";
 
 const defaultOptions: Required<HookSetDataOptions> = {
   allowUndefined: false,
   overwrite: true
 };
 
-function setData(
+export function setData(
   from: PropertyPath, 
   to: PropertyPath, 
   _options?: HookSetDataOptions
@@ -52,5 +52,3 @@ function setData(
     return context;
   };
 }
-
-export default setData;

@@ -1,7 +1,7 @@
 // hooks
-import checkMulti from "./hooks/checkMulti";
-import setData from "./hooks/setData";
-import runPerItem from "./hooks/runPerItem";
+import { checkMulti } from "./hooks/checkMulti";
+import { setData } from "./hooks/setData";
+import { runPerItem } from "./hooks/runPerItem";
 
 export const hooks = {
   checkMulti,
@@ -13,22 +13,25 @@ export { checkMulti };
 export { setData };
 export { runPerItem };
 
-import debounceMixin, { DebouncedStore } from "./mixins/debounce-mixin";
+import { debounceMixin, DebouncedStore } from "./mixins/debounce-mixin";
 
 export const mixins = {
   debounceMixin,
   DebouncedStore
 };
 
-export * as addHook from "./utils/addHook";
-export * as isMulti from "./utils/isMulti";
-export * as mergeQuery from "./utils/mergeQuery/index";
-export * as mergeArrays from "./utils/mergeQuery/mergeArrays";
-export * as pushSet from "./utils/pushSet";
+export { debounceMixin };
+export { DebouncedStore };
 
-export * as markHookForSkip from "./utils/markHookForSkip";
-export * as shouldSkip from "./utils/shouldSkip";
+export { addHook } from "./utils/addHook";
+export { isMulti } from "./utils/isMulti";
+export { mergeQuery } from "./utils/mergeQuery/index";
+export { mergeArrays } from "./utils/mergeQuery/mergeArrays";
+export { pushSet } from "./utils/pushSet";
 
-export * as filterQuery from "./utils/filterQuery";
+export { markHookForSkip } from "./utils/markHookForSkip";
+export { shouldSkip } from "./utils/shouldSkip";
+
+export { filterQuery } from "./utils/filterQuery";
 
 export * from "./types";

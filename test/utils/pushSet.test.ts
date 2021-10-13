@@ -1,5 +1,5 @@
 import assert from "assert";
-import pushSet from "../../src/utils/pushSet";
+import { pushSet } from "../../src";
 
 describe("util - pushSet", function() {
   it("pushes to existing array", function() {

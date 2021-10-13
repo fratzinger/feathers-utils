@@ -4,7 +4,7 @@ import type {
   Path
 } from "../../types";
 
-function mergeArrays<T> (
+export function mergeArrays<T> (
   targetArr: T[], 
   sourceArr: T[], 
   handle: Handle, 
@@ -41,5 +41,3 @@ function mergeArrays<T> (
   }
   return undefined;
 }
-
-export default mergeArrays;

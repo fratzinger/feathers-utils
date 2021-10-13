@@ -8,7 +8,7 @@ const defaultOptions = (): Partial<AddHookOptions> => {
   };
 };
 
-const addHook = (app: Application, hook: unknown, options: AddHookOptions): void => {
+export const addHook = (app: Application, hook: unknown, options: AddHookOptions): void => {
   options = Object.assign(defaultOptions(), options);
 
   const {
@@ -47,5 +47,3 @@ const addHook = (app: Application, hook: unknown, options: AddHookOptions): void
     });
   }
 };
-
-export default addHook;

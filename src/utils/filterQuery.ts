@@ -10,7 +10,7 @@ import type {
 
 import type { Query } from "@feathersjs/feathers";
 
-function filterQuery<T>(query: Query, options?: FilterQueryOptions<T>): FilterQueryResult {
+export function filterQuery<T>(query: Query, options?: FilterQueryOptions<T>): FilterQueryResult {
   query = query || {};
   options = options || {};
   if (options?.service) {
@@ -32,5 +32,3 @@ function filterQuery<T>(query: Query, options?: FilterQueryOptions<T>): FilterQu
   }
   return plainFilterQuery(query, options) as FilterQueryResult;
 }
-
-export default filterQuery;

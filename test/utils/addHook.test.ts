@@ -2,7 +2,7 @@ import assert from "assert";
 import feathers from "@feathersjs/feathers";
 import createService from "feathers-memory";
 
-import addHook from "../../src/utils/addHook";
+import { addHook } from "../../src";
 
 import { HookType, ServiceMethodName } from "../../src/types";
 

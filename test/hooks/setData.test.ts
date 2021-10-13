@@ -1,5 +1,5 @@
 import assert from "assert";
-import setData from "../../src/hooks/setData";
+import { setData } from "../../src";
 
 describe("hook - setData", function() {
   it("sets userId for single item", function() {

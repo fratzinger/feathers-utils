@@ -17,7 +17,7 @@ export const makeDefaultOptions = (): DebouncedStoreOptions => {
   };
 };
 
-class DebouncedStore {
+export class DebouncedStore {
     private _app: Application;
     private _options: DebouncedStoreOptions;
     private _isRunningById: Record<string, unknown>;
@@ -73,5 +73,3 @@ class DebouncedStore {
       delete this._queueById[id];
     }
 }
-
-export default DebouncedStore;

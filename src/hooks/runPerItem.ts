@@ -1,6 +1,6 @@
 import { getItems } from "feathers-hooks-common";
 
-import shouldSkip from "../utils/shouldSkip";
+import { shouldSkip } from "../utils/shouldSkip";
 
 import type { HookRunPerItemOptions } from "../types";
 import type { HookContext } from "@feathersjs/feathers";
@@ -14,7 +14,7 @@ const makeOptions = (
   }, options);
 };
 
-const runPerItem = (
+export const runPerItem = (
   actionPerItem: (item: unknown, context: HookContext) => Promise<unknown>, 
   options: HookRunPerItemOptions
 ): ((context: HookContext) => Promise<HookContext>) => {
@@ -35,5 +35,3 @@ const runPerItem = (
     return context;
   };
 };
-
-export default runPerItem;

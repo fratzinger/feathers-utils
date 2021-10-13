@@ -1,5 +1,5 @@
 import assert from"assert";
-import mergeQuery from "../../src/utils/mergeQuery";
+import { mergeQuery } from "../../src";
 import feathers from "@feathersjs/feathers";
 import { Service } from "feathers-memory";
 

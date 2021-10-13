@@ -5,7 +5,7 @@ import { GeneralError } from "@feathersjs/errors";
 
 import type { HookContext } from "@feathersjs/feathers";
 
-const shouldSkip = (hookName: string, context: HookContext): boolean => {
+export const shouldSkip = (hookName: string, context: HookContext): boolean => {
   if (!context.params || !context.params.skipHooks) {
     return false;
   }
@@ -39,5 +39,3 @@ const shouldSkip = (hookName: string, context: HookContext): boolean => {
 
   return false;
 };
-
-export default shouldSkip;

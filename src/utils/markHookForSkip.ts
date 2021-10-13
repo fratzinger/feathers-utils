@@ -1,9 +1,9 @@
-import pushSet from "./pushSet";
+import { pushSet } from "./pushSet";
 
 import type { HookContext } from "@feathersjs/feathers";
 import type { HookType } from "feathers-hooks-common/types";
 
-function markHookForSkip<T>(
+export function markHookForSkip<T>(
   hookName: string, 
   type: "all" | HookType | HookType[], 
   context?: Partial<HookContext<T>>
@@ -22,5 +22,3 @@ function markHookForSkip<T>(
   context.params = params;
   return context;
 }
-
-export default markHookForSkip;

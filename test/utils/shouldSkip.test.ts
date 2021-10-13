@@ -1,5 +1,5 @@
 import assert from "assert";
-import shouldSkip from "../../src/utils/shouldSkip";
+import { shouldSkip } from "../../src";
 
 describe("util - shouldSkip", function() {
   it("returns false if skipHooks not defined", function() {

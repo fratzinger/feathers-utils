@@ -6,8 +6,8 @@ import _merge from "lodash/merge";
 import _set from "lodash/set";
 import _uniqWith from "lodash/uniqWith";
 
-import mergeArrays from "./mergeArrays";
-import filterQuery from "../filterQuery";
+import { mergeArrays } from "./mergeArrays";
+import { filterQuery } from "../filterQuery";
 
 import { Forbidden } from "@feathersjs/errors";
 
@@ -249,7 +249,7 @@ function makeDefaultOptions<T>(options?: Partial<MergeQueryOptions<T>>): MergeQu
   return options as MergeQueryOptions<T>;
 }
 
-function mergeQuery<T>(target: Query, source: Query, options?: Partial<MergeQueryOptions<T>>): Query {
+export function mergeQuery<T>(target: Query, source: Query, options?: Partial<MergeQueryOptions<T>>): Query {
   const fullOptions = makeDefaultOptions(options);
   const {
     filters: targetFilters, 
@@ -365,5 +365,3 @@ function arrayWithoutDuplicates<T>(target: T[]): T[] {
   if (!target || !Array.isArray(target)) { return target; }
   return _uniqWith(target, _isEqual);
 }
-
-export default mergeQuery;
