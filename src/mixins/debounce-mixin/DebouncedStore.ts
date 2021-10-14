@@ -24,7 +24,7 @@ export class DebouncedStore {
     _queueById: Record<string, DebouncedFunc<((id: Id, action: DebouncedFunctionApp) => void | Promise<void>)>>;
     //_waitingById: Record<string, WaitingObject>;
     add;
-    constructor(app: Application, options: Partial<DebouncedStoreOptions>) {
+    constructor(app: Application, options?: Partial<DebouncedStoreOptions>) {
       this._app = app;
       this._options = Object.assign(makeDefaultOptions(), options);
       this._queueById = {};
