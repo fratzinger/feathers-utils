@@ -15,13 +15,9 @@
     "dist": "dist"
   },
   "scripts": {
-    "preversion": "npm run lint && npm run test && npm run compile",
-    "publish": "git push origin --tags && git push origin",
-    "compile": "shx rm -rf lib/ && tsc",
-    "release:pre": "npm version prerelease && npm publish --tag pre",
-    "release:patch": "npm version patch && npm publish",
-    "release:minor": "npm version minor && npm publish",
-    "release:major": "npm version major && npm publish",
+    "build": "shx rm -rf dist/ && tsc",
+    "version": "npm run build",
+    "release": "np",
     "test": "cross-env NODE_ENV=test TS_NODE_PROJECT='tsconfig.test.json' mocha --require ts-node/register 'test/**/*.test.ts' --timeout 5000",
     "coverage": "nyc npm run test",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
@@ -45,6 +41,7 @@
     "eslint-plugin-security": "^1.4.0",
     "feathers-memory": "^4.1.0",
     "mocha": "^8.3.2",
+    "np": "^7.5.0",
     "nyc": "^15.1.0",
     "shx": "^0.3.3",
     "ts-node": "^9.1.1",
