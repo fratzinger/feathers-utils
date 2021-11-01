@@ -24,10 +24,13 @@ export { debounceMixin };
 export { DebouncedStore };
 
 export { addHook } from "./utils/addHook";
+export { getPaginate } from "./utils/getPaginate";
 export { isMulti } from "./utils/isMulti";
+export { isPaginated } from "./utils/isPaginated";
 export { mergeQuery } from "./utils/mergeQuery/index";
 export { mergeArrays } from "./utils/mergeQuery/mergeArrays";
 export { pushSet } from "./utils/pushSet";
+export { setResultEmpty } from "./utils/setResultEmpty";
 
 export { markHookForSkip } from "./utils/markHookForSkip";
 export { shouldSkip } from "./utils/shouldSkip";
