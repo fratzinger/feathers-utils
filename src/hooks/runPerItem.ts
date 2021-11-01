@@ -15,7 +15,7 @@ const makeOptions = (
 };
 
 export const runPerItem = (
-  actionPerItem: (item: unknown, context: HookContext) => Promise<unknown>, 
+  actionPerItem: (item: any, context: HookContext) => Promise<any>, 
   options: HookRunPerItemOptions
 ): ((context: HookContext) => Promise<HookContext>) => {
   options = makeOptions(options);

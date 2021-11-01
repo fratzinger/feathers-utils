@@ -3,7 +3,7 @@ import _debounce from "lodash/debounce";
 import type { DebouncedFunc } from "lodash";
 import type { Application, Id } from "@feathersjs/feathers";
 
-import {
+import type {
   DebouncedFunctionApp,
   DebouncedStoreOptions
 } from "../../types";
