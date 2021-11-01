@@ -4,13 +4,12 @@ export const isMulti = (context: HookContext): boolean => {
   const { method } = context;
   if (method === "find") {
     return true;
-  } else if (["patch", "remove"].includes(context.method)) {
+  } else if (["patch", "remove"].includes(method)) {
     return context.id == null;
   } else if (method === "create") {
     const items = context.type === "before" ? context.data : context.result;
-    items && context.method === "find" ? items.data || items : items;
     return Array.isArray(items);
-  } else if (method === "get" || method === "update") {
+  } else if (["get", "update"].includes(method)) {
     return false;
   }
   return false;
