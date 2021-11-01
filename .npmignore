@@ -1,0 +1,20 @@
+# dot_env
+.env
+.env.*
+
+node_modules
+
+.github
+
+# nyc
+.nyc_output
+coverage
+
+# docs
+docs
+.temp
+
+test
+
+.github
+.vscode
