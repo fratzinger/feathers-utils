@@ -10,12 +10,20 @@
   "homepage": "https://github.com/fratzinger/feathers-utils",
   "license": "MIT",
   "main": "dist/",
+  "module": "dist/esm/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/index.js"
+    }
+  },
   "types": "dist/",
   "directories": {
     "dist": "dist"
   },
   "scripts": {
-    "build": "shx rm -rf dist/ && tsc",
+    "build": "shx rm -rf dist/ && npm run tsc",
+    "tsc": "tsc -p tsconfig.json && tsc -p tsconfig-esm.json",
     "version": "npm run build",
     "release": "np",
     "test": "cross-env NODE_ENV=test TS_NODE_PROJECT='tsconfig.test.json' mocha --require ts-node/register 'test/**/*.test.ts' --timeout 5000",
