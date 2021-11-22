@@ -4,6 +4,7 @@ import { shouldSkip } from "../utils/shouldSkip";
 
 import type { HookRunPerItemOptions } from "../types";
 import type { HookContext } from "@feathersjs/feathers";
+import type { Promisable } from "type-fest";
 
 const makeOptions = (
   options: HookRunPerItemOptions
@@ -15,7 +16,7 @@ const makeOptions = (
 };
 
 export const runPerItem = (
-  actionPerItem: (item: any, context: HookContext) => Promise<any>, 
+  actionPerItem: (item: any, context: HookContext) => Promisable<any>, 
   options: HookRunPerItemOptions
 ): ((context: HookContext) => Promise<HookContext>) => {
   options = makeOptions(options);

@@ -35,7 +35,8 @@
     "@feathersjs/errors": "^4.5.11",
     "@feathersjs/feathers": "^4.5.11",
     "feathers-hooks-common": "^5.0.5",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "type-fest": "^2.5.4"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
