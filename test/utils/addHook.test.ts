@@ -1,5 +1,5 @@
 import assert from "assert";
-import { feathers } from "@feathersjs/feathers";
+import { feathers, FeathersService } from "@feathersjs/feathers";
 import createService from "feathers-memory";
 
 import { addHook } from "../../src";
@@ -11,9 +11,12 @@ const mockApp = (withHooks?: boolean) => {
   app.use("users", createService());
   app.use("tasks", createService());
   app.use("authentication", createService());
-  const usersService = app.service("users");
-  const tasksService = app.service("tasks");
-  const authenticationService = app.service("authentication");
+  type ServiceWithPath = FeathersService & {
+    path?: string;
+  };
+  const usersService: ServiceWithPath = app.service("users");
+  const tasksService: ServiceWithPath = app.service("tasks");
+  const authenticationService: ServiceWithPath = app.service("authentication");
   usersService.path = "users";
   tasksService.path = "tasks";
   authenticationService.path = "authentication";
