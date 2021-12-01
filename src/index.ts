@@ -24,7 +24,6 @@ export { debounceMixin };
 export { DebouncedService };
 export { DebouncedStore };
 
-export { addHook } from "./utils/addHook";
 export { getPaginate } from "./utils/getPaginate";
 export { isMulti } from "./utils/isMulti";
 export { isPaginated } from "./utils/isPaginated";

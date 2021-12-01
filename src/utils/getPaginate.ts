@@ -13,6 +13,7 @@ export const getPaginate = (
   if (Object.prototype.hasOwnProperty.call(context.params, "paginate")) {
     return context.params.paginate as PaginationOptions || undefined;
   }
+  
   if (context.params.paginate === false) { return undefined; }
   let options = context.service.options || {};
   
