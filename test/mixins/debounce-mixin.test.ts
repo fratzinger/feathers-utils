@@ -1,7 +1,7 @@
 import assert from "assert";
-import feathers from "@feathersjs/feathers";
+import { feathers } from "@feathersjs/feathers";
 import createService from "feathers-memory";
-import { debounceMixin as makeMixin } from "../../src";
+import { DebouncedService, debounceMixin as makeMixin } from "../../src";
 import { performance } from "perf_hooks";
 
 const mockApp = () => {
@@ -19,10 +19,10 @@ const mockApp = () => {
 
   app.use("authentication", createService());
 
-  const usersService = app.service("users");
-  const tasksService = app.service("tasks");
-  const postsService = app.service("posts");
-  const authenticationService = app.service("authentication");
+  const usersService: DebouncedService = app.service("users");
+  const tasksService: DebouncedService = app.service("tasks");
+  const postsService: DebouncedService = app.service("posts");
+  const authenticationService: DebouncedService = app.service("authentication");
 
   return {
     app,
@@ -67,6 +67,7 @@ describe("mixin: debounce-mixin", function() {
     assert.strictEqual(items[0].id, 49, "called with last iteration");
     assert.strictEqual(callCounter, 1, "only called once");
     assert.deepStrictEqual(usersService.debouncedStore._queueById, {}, "queue is empty");
+    // @ts-ignore access to private property
     assert.deepStrictEqual(usersService.debouncedStore._isRunningById, {}, "nothing is running");
   });
 

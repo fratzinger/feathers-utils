@@ -1,4 +1,5 @@
-import type { Application, Service } from "@feathersjs/feathers";
+import type { Application } from "@feathersjs/feathers";
+import type { AdapterService } from "@feathersjs/adapter-commons";
 
 export type Path = Array<string|number>;
 export type HookType = "before" | "after" | "error";
@@ -69,7 +70,7 @@ export interface MergeQueryOptions<T> extends FilterQueryOptions<T> {
 }
 
 export interface FilterQueryOptions<T> {
-  service?: Service<T>
+  service?: AdapterService<T>
   operators?: string[],
   filters?: string[],
 }

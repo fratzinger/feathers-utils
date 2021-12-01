@@ -1,6 +1,6 @@
 import assert from"assert";
 import { mergeQuery } from "../../src";
-import feathers from "@feathersjs/feathers";
+import { feathers } from "@feathersjs/feathers";
 import { Service } from "feathers-memory";
 
 describe("util - mergeQuery", function() {

@@ -13,7 +13,7 @@ export { checkMulti };
 export { setData };
 export { runPerItem };
 
-import { debounceMixin, DebouncedStore } from "./mixins/debounce-mixin";
+import { debounceMixin, DebouncedService, DebouncedStore } from "./mixins/debounce-mixin";
 
 export const mixins = {
   debounceMixin,
@@ -21,6 +21,7 @@ export const mixins = {
 };
 
 export { debounceMixin };
+export { DebouncedService };
 export { DebouncedStore };
 
 export { addHook } from "./utils/addHook";

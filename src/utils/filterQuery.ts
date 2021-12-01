@@ -25,7 +25,7 @@ export function filterQuery<T>(query: Query, options?: FilterQueryOptions<T>): F
     if (operators) { optionsForFilterQuery.operators = operators; }
     if (filters) { optionsForFilterQuery.filters = filters; }
     if (typeof service?.filterQuery === "function") {
-      return service.filterQuery({ query }, optionsForFilterQuery);
+      return service.filterQuery({ query }, optionsForFilterQuery) as FilterQueryResult;
     } else {
       return plainFilterQuery(query, optionsForFilterQuery) as FilterQueryResult;
     }
