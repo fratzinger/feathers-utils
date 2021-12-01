@@ -42,7 +42,8 @@ export const addHook = (app: Application, hook: unknown, options: AddHookOptions
       const order = orderByType[type];
       const unshiftOrPush = (order === "first") ? "unshift" : "push";
       methods.forEach(method => {
-        service.__hooks[type][method][unshiftOrPush](hook);
+        // TODO: adjust to new feathers interals
+        // service.__hooks[type][method][unshiftOrPush](hook);
       });
     });
   }
