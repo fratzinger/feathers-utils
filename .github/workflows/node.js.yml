@@ -17,14 +17,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      with:
-        persist-credentials: false
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: git config --global url."https://github.com/".insteadOf ssh://git@github.com/
-    - run: npm ci
+    - run: npm i
     - run: npm run test
 
   coverage:
@@ -36,7 +33,7 @@ jobs:
     - uses: actions/setup-node@master
       with:
         node-version: '14'
-    - run: npm ci
+    - run: npm i
     - uses: paambaati/codeclimate-action@v2.7.5
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
