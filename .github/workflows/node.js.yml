@@ -21,6 +21,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+        persist-credentials: false
+    - run: >
+      git config --global url."https://github.com/".insteadOf
+      ssh://git@github.com/
     - run: npm ci
     - run: npm run test
 
