@@ -28,7 +28,6 @@ npm i feathers-utils
 
 ### Utils
 
-- `addHook`: add hooks to specific services
 - `filterQuery`
 - `isMulti(context) => Boolean`: returns true, if `find`, `create/patch/remove`: multi
 - `markHookForSkip`: add hookName to `context.params.skipHooks` - also see `shouldSkip`
