@@ -22,6 +22,8 @@ export const runPerItem = (
   options = makeOptions(options);
   return async (context: HookContext): Promise<HookContext> => {
     if (shouldSkip("runForItems", context)) { return context; }
+    
+    //@ts-expect-error type error because feathers-hooks-common is feathers@4
     let items = getItems(context);
     items = (Array.isArray(items)) ? items : [items];
 

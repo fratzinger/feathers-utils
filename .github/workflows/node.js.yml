@@ -21,7 +21,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm i
+    - run: npm ci
     - run: npm run test
 
   coverage:
@@ -33,7 +33,7 @@ jobs:
     - uses: actions/setup-node@master
       with:
         node-version: '14'
-    - run: npm i
+    - run: npm ci
     - uses: paambaati/codeclimate-action@v2.7.5
       env:
         CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}

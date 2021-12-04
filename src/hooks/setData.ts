@@ -26,6 +26,7 @@ export function setData(
   const options: Required<HookSetDataOptions> = Object.assign({}, defaultOptions, _options);
   return (context: HookContext): HookContext => {
 
+    //@ts-expect-error type error because feathers-hooks-common is feathers@4
     let items = getItems(context);
     items = (Array.isArray(items)) ? items : [items];
 
