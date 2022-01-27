@@ -4,7 +4,7 @@ import createService from "feathers-memory";
 
 import { addHook } from "../../src";
 
-import { HookType, ServiceMethodName } from "../../src/types";
+import type { HookType, ServiceMethodName } from "../../src/types";
 
 const mockApp = (withHooks?: boolean) => {
   const app = feathers();

@@ -1,4 +1,4 @@
-import { HookContext, PaginationOptions } from "@feathersjs/feathers";
+import type { HookContext, PaginationOptions } from "@feathersjs/feathers";
 
 export const getPaginate = (
   context: HookContext

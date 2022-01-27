@@ -1,4 +1,4 @@
-import { HookContext } from "@feathersjs/feathers";
+import type { HookContext } from "@feathersjs/feathers";
 import { getPaginate } from "./getPaginate";
 
 export const isPaginated = (

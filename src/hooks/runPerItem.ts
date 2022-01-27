@@ -16,6 +16,7 @@ const makeOptions = (
 };
 
 export const runPerItem = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   actionPerItem: (item: any, context: HookContext) => Promisable<any>, 
   options: HookRunPerItemOptions
 ): ((context: HookContext) => Promise<HookContext>) => {

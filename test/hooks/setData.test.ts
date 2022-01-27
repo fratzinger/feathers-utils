@@ -159,7 +159,7 @@ describe("hook - setData", function() {
         assert.throws(
           //@ts-ignore
           () => setData("params.user.id", "userId")(context),
-          err => err.name === "Forbidden",
+          (err: any) => err.name === "Forbidden",
           `'${type}/${method}': throws 'Forbidden' error`
         );
       });
@@ -353,7 +353,7 @@ describe("hook - setData", function() {
           context[dataOrResult] = [{ userId: 2 }, {}, { userId: "abc" }];
   
           //@ts-ignore
-          const result = setData("params.user.id", "userId", { overwrite: (item) => true })(context);
+          const result = setData("params.user.id", "userId", { overwrite: () => true })(context);
           result[dataOrResult].forEach(item => {
             assert.strictEqual(item.userId, 1, `'${type}/${method}': ${dataOrResult} has 'userId:1'`);
           });
