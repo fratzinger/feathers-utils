@@ -44,7 +44,14 @@ export function setData(
     const val = _get(context, from);
 
     items.forEach((item: Record<string, unknown>) => {
-      if (!options.overwrite && _has(item, to)) { return; }
+      let overwrite: boolean;
+      if (typeof options.overwrite === "function") {
+        overwrite = options.overwrite(item, context);
+      } else {
+        overwrite = options.overwrite;
+      }
+
+      if (!overwrite && _has(item, to)) { return; }
 
       _set(item, to, val);
     });

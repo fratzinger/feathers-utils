@@ -1,4 +1,4 @@
-import type { Application, Service } from "@feathersjs/feathers";
+import type { Application, HookContext, Service } from "@feathersjs/feathers";
 
 export type Path = Array<string|number>;
 export type HookType = "before" | "after" | "error";
@@ -7,11 +7,14 @@ export type ServiceMethodName = "find" | "get" | "create" | "update" | "patch" |
 export type Handle = "target" | "source" | "combine" | "intersect"| "intersectOrFull";
 export type FirstLast = "first" | "last";
 
+export type Predicate<T = any> = (item: T) => boolean
+export type PredicateWithContext<T = any> = (item: T, context: HookContext) => boolean
+
 //#region hooks
 
 export interface HookSetDataOptions {
   allowUndefined?: boolean
-  overwrite?: boolean
+  overwrite?: boolean | PredicateWithContext
 }
 
 export interface AddHookOptions {
