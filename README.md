@@ -19,8 +19,9 @@ npm i feathers-utils
 
 ### Hooks
 
-- `hooks/checkMulti()`: throws if the request is **multi** data, but the service has `allowsMulti(method)` returns `false`
-- `hooks/setData({ allowUndefined: Boolean })`
+- `checkMulti()`: throws if the request is **multi** data, but the service has `allowsMulti(method)` returns `false`
+- `runPerItem`
+- `setData({ allowUndefined: Boolean })`
 
 ### Mixins
 
@@ -30,9 +31,13 @@ npm i feathers-utils
 
 - `addHook`: add hooks to specific services
 - `filterQuery`
+- `getItemsIsArray(context)`: returns `{ items: any[], isArray: boolean }`
+- `getPaginate`
 - `isMulti(context) => Boolean`: returns true, if `find`, `create/patch/remove`: multi
+- `isPaginated`
 - `markHookForSkip`: add hookName to `context.params.skipHooks` - also see `shouldSkip`
 - `mergeQuery`: deeply merges queries
 - `mergeArrays`: merges arrays with intersection options
 - `pushSet`: if existing array: *push*, else *set*
+- `setResultEmpty`
 - `shouldSkip`: checks `context.params.skipHooks` for `'all' | '${hookName}' | '${type}:${hookName}'` - also see `markHookForSkip`
