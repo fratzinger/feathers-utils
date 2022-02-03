@@ -33,7 +33,7 @@
     "security/detect-object-injection": "off",
     "object-curly-spacing": ["warn", "always"],
     "prefer-const": ["warn"],
-    "@typescript-eslint/consistent-type-imports": ["warn", { "prefer": "type-imports" }],
+    "@typescript-eslint/consistent-type-imports": ["warn", { "prefer": "type-imports" }]
   },
   "overrides": [
     {

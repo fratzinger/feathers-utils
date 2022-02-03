@@ -91,4 +91,10 @@ export interface FilterQueryResult {
   [key: string]: unknown
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface GetItemsIsArrayOptions<T = any> {
+  items: T[]
+  isArray: boolean
+}
+
 //#endregion

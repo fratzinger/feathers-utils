@@ -33,8 +33,9 @@ export { pushSet } from "./utils/pushSet";
 export { setResultEmpty } from "./utils/setResultEmpty";
 
 export { markHookForSkip } from "./utils/markHookForSkip";
+export { filterQuery } from "./utils/filterQuery";
+export { getItemsIsArray } from "./utils/getItemsIsArray";
 export { shouldSkip } from "./utils/shouldSkip";
 
-export { filterQuery } from "./utils/filterQuery";
 
 export * from "./types";
