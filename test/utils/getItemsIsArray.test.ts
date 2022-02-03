@@ -14,7 +14,7 @@ describe("util - getItemsIsArray", function() {
       } as any as HookContext;
         
       const { items, isArray } = getItemsIsArray(context);
-      assert.deepStrictEqual(items, [undefined]);
+      assert.deepStrictEqual(items, []);
       assert.deepStrictEqual(isArray, false);
     });
         
@@ -29,7 +29,7 @@ describe("util - getItemsIsArray", function() {
       } as any as HookContext;
         
       const { items, isArray } = getItemsIsArray(context);
-      assert.deepStrictEqual(items, [undefined]);
+      assert.deepStrictEqual(items, []);
       assert.deepStrictEqual(isArray, false);
     });
         
@@ -122,7 +122,7 @@ describe("util - getItemsIsArray", function() {
       } as any as HookContext;
         
       const { items, isArray } = getItemsIsArray(context);
-      assert.deepStrictEqual(items, [undefined]);
+      assert.deepStrictEqual(items, []);
       assert.deepStrictEqual(isArray, false);
     });
         
@@ -137,7 +137,7 @@ describe("util - getItemsIsArray", function() {
       } as any as HookContext;
         
       const { items, isArray } = getItemsIsArray(context);
-      assert.deepStrictEqual(items, [undefined]);
+      assert.deepStrictEqual(items, []);
       assert.deepStrictEqual(isArray, false);
     });
   });
