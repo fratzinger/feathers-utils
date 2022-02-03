@@ -3,8 +3,10 @@ import { shouldSkip } from "../utils/shouldSkip";
 import { isMulti } from "../utils/isMulti";
 
 import type { HookContext } from "@feathersjs/feathers";
+import type { ReturnSyncHook } from "../types";
 
-export function checkMulti(): ((context: HookContext) => HookContext) {
+export function checkMulti(
+): ReturnSyncHook {
   return (context: HookContext): HookContext => {
     if (shouldSkip("checkMulti", context)) { return context; }
     const { service, method } = context;

@@ -2,16 +2,16 @@ import _get from "lodash/get";
 import _set from "lodash/set";
 import _has from "lodash/has";
 
-import { getItems } from "feathers-hooks-common";
-
 import { Forbidden } from "@feathersjs/errors";
+import { getItemsIsArray } from "../utils/getItemsIsArray";
 
 import type { HookContext } from "@feathersjs/feathers";
+import type { PropertyPath } from "lodash";
 
 import type {
-  HookSetDataOptions
+  HookSetDataOptions, 
+  ReturnSyncHook 
 } from "../types";
-import type { PropertyPath } from "lodash";
 
 const defaultOptions: Required<HookSetDataOptions> = {
   allowUndefined: false,
@@ -22,12 +22,11 @@ export function setData(
   from: PropertyPath, 
   to: PropertyPath, 
   _options?: HookSetDataOptions
-): ((context: HookContext) => HookContext) {
+): ReturnSyncHook {
   const options: Required<HookSetDataOptions> = Object.assign({}, defaultOptions, _options);
   return (context: HookContext): HookContext => {
 
-    let items = getItems(context);
-    items = (Array.isArray(items)) ? items : [items];
+    const { items } = getItemsIsArray(context);
 
     if (!_has(context, from)) {
       if (!context.params?.provider || options.allowUndefined === true) {

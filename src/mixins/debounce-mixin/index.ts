@@ -10,7 +10,9 @@ import type {
   DebouncedStoreOptions,
 } from "../../types";
 
-export function debounceMixin(options?: Partial<InitDebounceMixinOptions>): ((app: Application) => void) {
+export function debounceMixin(
+  options?: Partial<InitDebounceMixinOptions>
+): ((app: Application) => void) {
   return (app: Application): void => {
     options = options || {};
     const defaultOptions = Object.assign(makeDefaultOptions(), options?.default);

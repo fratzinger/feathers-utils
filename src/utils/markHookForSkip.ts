@@ -1,11 +1,11 @@
 import { pushSet } from "./pushSet";
 
 import type { HookContext } from "@feathersjs/feathers";
-import type { HookType } from "feathers-hooks-common/types";
+import type { HookType, MaybeArray } from "../types";
 
 export function markHookForSkip<T>(
   hookName: string, 
-  type: "all" | HookType | HookType[], 
+  type: "all" | MaybeArray<HookType>, 
   context?: Partial<HookContext<T>>
 ): Partial<HookContext<T>> {
   context = context || {};

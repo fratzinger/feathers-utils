@@ -1,8 +1,13 @@
 import type { Application, HookContext, Service } from "@feathersjs/feathers";
 
 export type Path = Array<string|number>;
+export type MaybeArray<T> = T | T[]
+export type Promisable<T> = T | Promise<T>
+
 export type HookType = "before" | "after" | "error";
 export type ServiceMethodName = "find" | "get" | "create" | "update" | "patch" | "remove";
+export type ReturnSyncHook = (context: HookContext) => HookContext
+export type ReturnAsyncHook = (context: HookContext) => Promise<HookContext>
 
 export type Handle = "target" | "source" | "combine" | "intersect"| "intersectOrFull";
 export type FirstLast = "first" | "last";
