@@ -5,7 +5,7 @@ import type { HookContext } from "@feathersjs/feathers";
 import { getItemsIsArray } from "../utils/getItemsIsArray";
 
 const makeOptions = (
-  options: HookRunPerItemOptions
+  options?: HookRunPerItemOptions
 ): Required<HookRunPerItemOptions> => {
   options = options || {};
   return Object.assign({
@@ -16,9 +16,9 @@ const makeOptions = (
 export const runPerItem = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   actionPerItem: (item: any, context: HookContext) => Promisable<any>, 
-  options: HookRunPerItemOptions
+  _options?: HookRunPerItemOptions
 ): ReturnAsyncHook => {
-  options = makeOptions(options);
+  const options = makeOptions(_options);
   return async (context: HookContext): Promise<HookContext> => {
     if (shouldSkip("runForItems", context)) { return context; }
     const { items } = getItemsIsArray(context);
