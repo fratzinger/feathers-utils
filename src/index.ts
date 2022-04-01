@@ -1,6 +1,7 @@
 // hooks
 import { checkMulti } from "./hooks/checkMulti";
 import { setData } from "./hooks/setData";
+
 import { runPerItem } from "./hooks/runPerItem";
 
 export const hooks = {
@@ -10,7 +11,9 @@ export const hooks = {
 };
 
 export { checkMulti };
+export { createRelated } from "./hooks/createRelated";
 export { setData };
+export { removeRelated } from "./hooks/removeRelated";
 export { runPerItem };
 
 import { debounceMixin, DebouncedStore } from "./mixins/debounce-mixin";

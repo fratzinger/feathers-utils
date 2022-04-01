@@ -36,6 +36,19 @@ export interface HookRunPerItemOptions {
   wait?: boolean
 }
 
+export interface RemoveRelatedOptions<S = Record<string, any>> {
+  service: keyof S
+  keyThere: string
+  keyHere: string
+  blocking?: boolean
+}
+
+export interface CreateRelatedOptions<S = Record<string, any>> {
+  service: keyof S
+  multi?: boolean
+  data: (item: any, context: HookContext) => Promisable<Record<string, any>>
+}
+
 //#endregion
 
 //#region mixins
