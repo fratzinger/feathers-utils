@@ -19,9 +19,11 @@ npm i feathers-utils
 
 ### Hooks
 
-- `checkMulti()`: throws if the request is **multi** data, but the service has `allowsMulti(method)` returns `false`
-- `runPerItem`
-- `setData({ allowUndefined: Boolean })`
+- `checkMulti`: throws if the request is **multi** data, but the service has `allowsMulti(method)` returns `false`
+- `createRelated`: simply create related items from a hook.
+- `removeRelated`: simple remove related items from a hook. Basically `cascade` at feathers level.
+- `runPerItem`: run a function for every item. Meant for `multi:true`.
+- `setData`: map properties from `context` to `data`. Something like `userId: context.params.user.id`
 
 ### Mixins
 
