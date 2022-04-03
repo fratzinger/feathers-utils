@@ -118,4 +118,35 @@ describe("hook - checkMulti", function() {
       });
     });
   });
+
+  it("can skip hook", function() {
+    const makeContext = (type: string, method: string) => {
+      const context = {
+        service: {
+          allowsMulti: () => false
+        },
+        method,
+        type,
+        params: {}
+      };
+      if (method === "create") {
+        (type === "before") 
+        //@ts-ignore
+          ? context.data = []
+        //@ts-ignore
+          : context.result = [];
+      }
+      return context;
+    };
+    ["before", "after"].forEach(type => {
+      ["create", "patch", "remove"].forEach(method => {
+        const context = makeContext(type, method);
+        context.params = {
+          skipHooks: ["checkMulti"]
+        };
+        //@ts-ignore
+        assert.doesNotThrow(() => checkMulti()(context), `'${type}:${method}': throws`);
+      });
+    });
+  });
 });

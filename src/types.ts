@@ -47,6 +47,7 @@ export interface CreateRelatedOptions<S = Record<string, any>> {
   service: keyof S
   multi?: boolean
   data: (item: any, context: HookContext) => Promisable<Record<string, any>>
+  createItemsInDataArraySeparately?: boolean
 }
 
 //#endregion

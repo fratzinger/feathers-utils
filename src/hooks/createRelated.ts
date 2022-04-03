@@ -6,7 +6,8 @@ import { getItemsIsArray } from "../utils/getItemsIsArray";
 export function createRelated<S = Record<string, any>>({
   service,
   multi = true,
-  data
+  data,
+  createItemsInDataArraySeparately = true
 }: CreateRelatedOptions<S>) {
   if (!service || !data) {
     throw "initialize hook 'createRelated' completely!";
@@ -16,9 +17,13 @@ export function createRelated<S = Record<string, any>>({
 
     const { items } = getItemsIsArray(context);
 
-    const dataToCreate = await Promise.all(
+    let dataToCreate = (await Promise.all(
       items.map(async item => data(item, context))
-    );
+    )).filter(x => !!x);
+
+    if (createItemsInDataArraySeparately) {
+      dataToCreate = dataToCreate.flat();
+    }
 
     if (!dataToCreate || dataToCreate.length <= 0) { 
       return context; 
