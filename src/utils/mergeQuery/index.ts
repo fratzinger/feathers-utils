@@ -1,10 +1,10 @@
-import _get from "lodash/get";
-import _has from "lodash/has";
-import _isEmpty from "lodash/isEmpty";
-import _isEqual from "lodash/isEqual";
-import _merge from "lodash/merge";
-import _set from "lodash/set";
-import _uniqWith from "lodash/uniqWith";
+import _get from "lodash/get.js";
+import _has from "lodash/has.js";
+import _isEmpty from "lodash/isEmpty.js";
+import _isEqual from "lodash/isEqual.js";
+import _merge from "lodash/merge.js";
+import _set from "lodash/set.js";
+import _uniqWith from "lodash/uniqWith.js";
 
 import { mergeArrays } from "./mergeArrays";
 import { filterQuery } from "../filterQuery";

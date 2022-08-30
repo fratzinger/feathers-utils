@@ -1,4 +1,4 @@
-import _debounce from "lodash/debounce";
+import _debounce from "lodash/debounce.js";
 
 import type { DebouncedFunc } from "lodash";
 import type { Application, Id } from "@feathersjs/feathers";

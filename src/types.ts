@@ -50,6 +50,15 @@ export interface CreateRelatedOptions<S = Record<string, any>> {
   createItemsInDataArraySeparately?: boolean
 }
 
+export type OnDeleteAction = "cascade" | "set null";
+
+export interface OnDeleteOptions {
+    keyThere: string
+    keyHere: string
+    onDelete: OnDeleteAction
+    blocking?: boolean
+}
+
 //#endregion
 
 //#region mixins

@@ -38,6 +38,7 @@ export { setResultEmpty } from "./utils/setResultEmpty";
 export { markHookForSkip } from "./utils/markHookForSkip";
 export { filterQuery } from "./utils/filterQuery";
 export { getItemsIsArray } from "./utils/getItemsIsArray";
+export { onDelete } from "./hooks/onDelete";
 export { shouldSkip } from "./utils/shouldSkip";
 
 
