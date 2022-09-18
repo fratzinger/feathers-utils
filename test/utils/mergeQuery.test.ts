@@ -24,7 +24,7 @@ describe("util - mergeQuery", function() {
           filters: {
             $and: (and: any, { operators }: FilterQueryOptions) => {
               if (Array.isArray(and)) {
-                return and.map((current) => validateQueryProperty(current, operators))
+                return and.map((current) => validateQueryProperty(current, operators));
               }
           
               return and;
@@ -86,7 +86,7 @@ describe("util - mergeQuery", function() {
           filters: {
             $and: (and: any, { operators }: FilterQueryOptions) => {
               if (Array.isArray(and)) {
-                return and.map((current) => validateQueryProperty(current, operators))
+                return and.map((current) => validateQueryProperty(current, operators));
               }
           
               return and;
@@ -193,7 +193,7 @@ describe("util - mergeQuery", function() {
             filters: {
               $and: (and: any, { operators }: FilterQueryOptions) => {
                 if (Array.isArray(and)) {
-                  return and.map((current) => validateQueryProperty(current, operators))
+                  return and.map((current) => validateQueryProperty(current, operators));
                 }
             
                 return and;
@@ -262,7 +262,7 @@ describe("util - mergeQuery", function() {
           filters: {
             $and: (and: any, { operators }: FilterQueryOptions) => {
               if (Array.isArray(and)) {
-                return and.map((current) => validateQueryProperty(current, operators))
+                return and.map((current) => validateQueryProperty(current, operators));
               }
           
               return and;
@@ -365,7 +365,7 @@ describe("util - mergeQuery", function() {
             filters: {
               $and: (and: any, { operators }: FilterQueryOptions) => {
                 if (Array.isArray(and)) {
-                  return and.map((current) => validateQueryProperty(current, operators))
+                  return and.map((current) => validateQueryProperty(current, operators));
                 }
             
                 return and;
