@@ -249,6 +249,12 @@ function makeDefaultOptions<T>(options?: Partial<MergeQueryOptions<T>>): MergeQu
   return options as MergeQueryOptions<T>;
 }
 
+function moveProperty(source: Record<string, any>, target: Record<string, any>, key: string): void {
+  if (!Object.prototype.hasOwnProperty.call(source, key)) { return; }
+  target[key] = source[key];
+  delete source[key];
+}
+
 export function mergeQuery<T>(target: Query, source: Query, options?: Partial<MergeQueryOptions<T>>): Query {
   const fullOptions = makeDefaultOptions(options);
   const {
@@ -259,9 +265,12 @@ export function mergeQuery<T>(target: Query, source: Query, options?: Partial<Me
     service: fullOptions.service 
   });
 
+  moveProperty(targetFilters, targetQuery, "$or");
+  moveProperty(targetFilters, targetQuery, "$and");
+
   if (target.$limit) { targetFilters.$limit = target.$limit; }
   
-  let { 
+  let {
     // eslint-disable-next-line prefer-const
     filters: sourceFilters, 
     query: sourceQuery 
@@ -269,6 +278,9 @@ export function mergeQuery<T>(target: Query, source: Query, options?: Partial<Me
     operators: fullOptions.operators, 
     service: fullOptions.service 
   });
+
+  moveProperty(sourceFilters, sourceQuery, "$or");
+  moveProperty(sourceFilters, sourceQuery, "$and");
 
   if (source.$limit) { sourceFilters.$limit = source.$limit; }
 

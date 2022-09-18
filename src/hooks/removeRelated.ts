@@ -1,4 +1,4 @@
-import type { HookContext } from "@feathersjs/feathers";
+import type { HookContext, Params, Query } from "@feathersjs/feathers";
 import { checkContext } from "feathers-hooks-common";
 import type { RemoveRelatedOptions } from "../types";
 import { getItemsIsArray } from "../utils/getItemsIsArray";
@@ -23,6 +23,7 @@ export function removeRelated<S = Record<string, any>>({
 
     if (!ids || ids.length <= 0) { return context; }
 
+    // feathers does not accept `paginate: false` for remove, but some adapters need it to work properly
     const promise: Promise<any> = context.app.service(service as string).remove(null, {
       query: {
         [keyThere]: {
@@ -30,7 +31,7 @@ export function removeRelated<S = Record<string, any>>({
         }
       },
       paginate: false
-    });
+    } as Params<Query>);
 
     if (blocking) {
       await promise;

@@ -1,13 +1,13 @@
 import assert from "assert";
 import { feathers } from "@feathersjs/feathers";
-import { Service } from "feathers-memory";
+import { MemoryService } from "@feathersjs/memory";
 import { runPerItem } from "../../src";
 
 const mockApp = () => {
   const app = feathers();
   
-  app.use("users", new Service({ startId: 1, multi: true }));
-  app.use("todos", new Service({ startId: 1, multi: true }));
+  app.use("users", new MemoryService({ startId: 1, multi: true }));
+  app.use("todos", new MemoryService({ startId: 1, multi: true }));
   
   const usersService = app.service("users");
   const todosService = app.service("todos");
@@ -61,6 +61,7 @@ describe("hook - runPerItem", function() {
       }
     });
 
+    // @ts-expect-error - params don't support skipHooks
     const user = await usersService.create({
       name: "John Doe"
     }, { skipHooks: ["runForItems"] });

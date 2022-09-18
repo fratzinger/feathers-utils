@@ -1,6 +1,6 @@
 import assert from "assert";
 import { feathers } from "@feathersjs/feathers";
-import createService from "feathers-memory";
+import { MemoryService } from "@feathersjs/memory";
 import { debounceMixin as makeMixin } from "../../src";
 import type { DebouncedService } from "../../src";
 import { performance } from "perf_hooks";
@@ -14,16 +14,16 @@ const mockApp = () => {
     },
     blacklist: ["authentication"]
   }));
-  app.use("users", createService());
-  app.use("tasks", createService());
-  app.use("posts", createService());
+  app.use("users", new MemoryService());
+  app.use("tasks", new MemoryService());
+  app.use("posts", new MemoryService());
 
-  app.use("authentication", createService());
+  app.use("authentication", new MemoryService());
 
-  const usersService: DebouncedService = app.service("users");
-  const tasksService: DebouncedService = app.service("tasks");
-  const postsService: DebouncedService = app.service("posts");
-  const authenticationService: DebouncedService = app.service("authentication");
+  const usersService: DebouncedService = app.service("users") as any;
+  const tasksService: DebouncedService = app.service("tasks") as any;
+  const postsService: DebouncedService = app.service("posts") as any;
+  const authenticationService = app.service("authentication");
 
   return {
     app,
@@ -48,6 +48,7 @@ describe("mixin: debounce-mixin", function() {
       assert.strictEqual(typeof service.debouncedStore.add, "function", "service has 'add' function");
     });
 
+    // @ts-expect-error - wrong type
     assert.strictEqual(authenticationService.debouncedStore, undefined, "authentication has no debounced Store");
   });
 
@@ -63,6 +64,7 @@ describe("mixin: debounce-mixin", function() {
       });
     }
     await new Promise(resolve => setTimeout(resolve, 400));
+    // @ts-expect-error - params is not typed properly
     const items = await usersService.find({ query: {}, paginate: false });
     assert.strictEqual(items.length, 1, "only has one item");
     assert.strictEqual(items[0].id, 49, "called with last iteration");
@@ -83,6 +85,7 @@ describe("mixin: debounce-mixin", function() {
         return usersService.create({ id: i, test: true });
       });
     }
+    // @ts-expect-error - params is not typed properly
     const items = await usersService.find({ query: {}, paginate: false });
     assert.strictEqual(items.length, 0, "hasn't any items yet");
     assert.strictEqual(callCounter, 0, "not called yet");
@@ -105,6 +108,7 @@ describe("mixin: debounce-mixin", function() {
     }
     
     await new Promise(resolve => setTimeout(resolve, 400));
+    // @ts-expect-error - params is not typed properly
     const items = await usersService.find({ query: { $sort: { id: 1 } }, paginate: false });
     assert.strictEqual(items.length, times, `has ${times} items`);
     items.forEach((item, i) => {
@@ -132,6 +136,7 @@ describe("mixin: debounce-mixin", function() {
       if (counter > times) {
         assert(performance.now() - started > 200, "enough time elapsed");
         usersService
+          // @ts-expect-error - params is not typed properly
           .find({ query: { $sort: { id: 1 } }, paginate: false })
           .then(items => {
             assert.strictEqual(items.length, 1, "has just one item yet");
@@ -169,6 +174,7 @@ describe("mixin: debounce-mixin", function() {
     }
     usersService.debouncedStore.cancel(1);
     await new Promise(resolve => setTimeout(resolve, 400));
+    // @ts-expect-error - params is not typed properly
     const items = await usersService.find({ query: {}, paginate: false });
     assert.strictEqual(items.length, 0, "hasn't items");
     assert.strictEqual(callCounter, 0, "not called once");

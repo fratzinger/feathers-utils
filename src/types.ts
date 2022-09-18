@@ -1,5 +1,8 @@
 import type { Application, HookContext } from "@feathersjs/feathers";
-import type { AdapterService } from "@feathersjs/adapter-commons";
+import type { 
+  AdapterBase,
+  FilterQueryOptions as PlainFilterQueryOptions
+} from "@feathersjs/adapter-commons";
 
 export type Path = Array<string|number>;
 export type MaybeArray<T> = T | T[]
@@ -103,21 +106,9 @@ export interface MergeQueryOptions<T> extends FilterQueryOptions<T> {
 }
 
 export interface FilterQueryOptions<T> {
-  service?: AdapterService<T>
-  operators?: string[],
-  filters?: string[],
-}
-
-export interface PlainFilterQueryOptions {
-  operators?: string[],
-  filters?: string[],
-}
-
-export interface FilterQueryResult {
-  filters: Record<string, unknown>
-  query: Record<string, unknown>
-  paginate?: unknown
-  [key: string]: unknown
+  service?: AdapterBase<T>
+  operators?: PlainFilterQueryOptions["operators"],
+  filters?: PlainFilterQueryOptions["filters"],
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

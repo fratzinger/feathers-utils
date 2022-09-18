@@ -11,7 +11,7 @@ import type {
 } from "../../types";
 
 export type DebouncedService = FeathersService & {
-  debouncedStore?: DebouncedStore;
+  debouncedStore: DebouncedStore;
 };
 
 export function debounceMixin(

@@ -1,6 +1,6 @@
 import assert from "assert";
 import { feathers } from "@feathersjs/feathers";
-import { Service } from "feathers-memory";
+import { MemoryService } from "@feathersjs/memory";
 import { createRelated } from "../../src";
 
 type MockAppOptions = {
@@ -15,8 +15,8 @@ const mockApp = (_options?: MockAppOptions) => {
   const options = Object.assign({}, defaultOptions, _options);
   const app = feathers();
 
-  app.use("users", new Service({ startId: 1, multi: true }));
-  app.use("todos", new Service({ startId: 1, multi: options.multi }));
+  app.use("users", new MemoryService({ startId: 1, multi: true }));
+  app.use("todos", new MemoryService({ startId: 1, multi: options.multi }));
 
   const usersService = app.service("users");
   const todosService = app.service("todos");

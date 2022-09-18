@@ -1,6 +1,6 @@
 import assert from "assert";
 import { feathers } from "@feathersjs/feathers";
-import { Service } from "feathers-memory";
+import { MemoryService } from "@feathersjs/memory";
 import { shouldSkip, markHookForSkip } from "../../src";
 
 describe("util - markHookForSkip", function() {
@@ -18,7 +18,7 @@ describe("util - markHookForSkip", function() {
   
   it("skips explicitly before hook", async function() {
     const app = feathers();
-    app.use("service", new Service());
+    app.use("service", new MemoryService());
     const service = app.service("service");
     const ranInto = {};
     service.hooks({
@@ -92,7 +92,7 @@ describe("util - markHookForSkip", function() {
 
   it("skips explicitly after hook", async function() {
     const app = feathers();
-    app.use("service", new Service());
+    app.use("service", new MemoryService());
     const service = app.service("service");
     const ranInto = {};
     service.hooks({
@@ -172,7 +172,7 @@ describe("util - markHookForSkip", function() {
 
   it("skips all hooks", async function() {
     const app = feathers();
-    app.use("service", new Service());
+    app.use("service", new MemoryService());
     const service = app.service("service");
     const ranIntoBefore = {};
     const ranIntoAfter = {};

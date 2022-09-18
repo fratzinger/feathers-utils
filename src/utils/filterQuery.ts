@@ -1,34 +1,35 @@
 import { 
-  filterQuery as plainFilterQuery
+  filterQuery as plainFilterQuery,
 } from "@feathersjs/adapter-commons";
 
 import type {
-  FilterQueryOptions,
-  FilterQueryResult,
-  PlainFilterQueryOptions
-} from "../types";
+  FilterQueryOptions as PlainFilterQueryOptions,
+} from "@feathersjs/adapter-commons";
 
 import type { Query } from "@feathersjs/feathers";
+import type { FilterQueryOptions } from "../types";
 
-export function filterQuery<T>(query: Query, options?: FilterQueryOptions<T>): FilterQueryResult {
+export function filterQuery<T>(query: Query, _options?: FilterQueryOptions<T>) {
   query = query || {};
-  options = options || {};
-  if (options?.service) {
-    const { service } = options;
+  _options = _options || {};
+  const { service, ...options } = _options;
+  if (service) {
     const operators = options.operators 
       ? options.operators
-      : service.options?.whitelist;
+      : service.options?.operators;
     const filters = options.filters
       ? options.filters
       : service.options?.filters;
     const optionsForFilterQuery: PlainFilterQueryOptions = {}; 
     if (operators) { optionsForFilterQuery.operators = operators; }
     if (filters) { optionsForFilterQuery.filters = filters; }
-    if (typeof service?.filterQuery === "function") {
-      return service.filterQuery({ query }, optionsForFilterQuery) as FilterQueryResult;
+    // @ts-expect-error service has no filterQuery method
+    if (service && "filterQuery" in service && typeof service.filterQuery === "function") {
+      // @ts-expect-error service has no filterQuery method
+      return service.filterQuery({ query }, optionsForFilterQuery);
     } else {
-      return plainFilterQuery(query, optionsForFilterQuery) as FilterQueryResult;
+      return plainFilterQuery(query, optionsForFilterQuery);
     }
   }
-  return plainFilterQuery(query, options) as FilterQueryResult;
+  return plainFilterQuery(query, options);
 }

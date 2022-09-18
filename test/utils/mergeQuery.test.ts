@@ -1,7 +1,9 @@
 import assert from"assert";
 import { mergeQuery } from "../../src";
 import { feathers } from "@feathersjs/feathers";
-import { Service } from "feathers-memory";
+import { MemoryService } from "@feathersjs/memory";
+import type { FilterQueryOptions } from "@feathersjs/adapter-commons";
+import { validateQueryProperty } from "../../src/utils/validateQueryProperty";
 
 describe("util - mergeQuery", function() {
   describe("general", function() {
@@ -15,10 +17,19 @@ describe("util - mergeQuery", function() {
     const app = feathers();
     app.use(
       "/service", 
-      new Service(
+      new MemoryService(
         { 
           paginate: { default: 10, max: 100 }, 
-          whitelist: ["$and"] 
+          operators: ["$and"],
+          filters: {
+            $and: (and: any, { operators }: FilterQueryOptions) => {
+              if (Array.isArray(and)) {
+                return and.map((current) => validateQueryProperty(current, operators))
+              }
+          
+              return and;
+            }
+          }
         }
       )
     );
@@ -68,10 +79,19 @@ describe("util - mergeQuery", function() {
     const app = feathers();
     app.use(
       "/service", 
-      new Service(
+      new MemoryService(
         { 
           paginate: { default: 10, max: 100 }, 
-          whitelist: ["$and"] 
+          operators: ["$and"],
+          filters: {
+            $and: (and: any, { operators }: FilterQueryOptions) => {
+              if (Array.isArray(and)) {
+                return and.map((current) => validateQueryProperty(current, operators))
+              }
+          
+              return and;
+            }
+          }
         }
       )
     );
@@ -153,6 +173,10 @@ describe("util - mergeQuery", function() {
     for (const key in passingPairs) {
       const { target, source, options, expected } = passingPairs[key];
       it(`'${key}'`, function() {
+        if (key === "combine two $and queries") {
+          console.log("target", target);
+          console.log("source", source);
+        }
         const query = mergeQuery(target, source, Object.assign({ service }, options));
         assert.deepStrictEqual(query, expected, "works as expected");
       });
@@ -162,10 +186,19 @@ describe("util - mergeQuery", function() {
       const app = feathers();
       app.use(
         "/service", 
-        new Service(
+        new MemoryService(
           { 
             paginate: { default: 10, max: 100 }, 
-            whitelist: ["$and"] 
+            operators: ["$and"],
+            filters: {
+              $and: (and: any, { operators }: FilterQueryOptions) => {
+                if (Array.isArray(and)) {
+                  return and.map((current) => validateQueryProperty(current, operators))
+                }
+            
+                return and;
+              }
+            }
           }
         )
       );
@@ -222,10 +255,19 @@ describe("util - mergeQuery", function() {
     const app = feathers();
     app.use(
       "/service", 
-      new Service(
+      new MemoryService(
         { 
           paginate: { default: 10, max: 100 }, 
-          whitelist: ["$and"] 
+          whitelist: ["$and"],
+          filters: {
+            $and: (and: any, { operators }: FilterQueryOptions) => {
+              if (Array.isArray(and)) {
+                return and.map((current) => validateQueryProperty(current, operators))
+              }
+          
+              return and;
+            }
+          }
         }
       )
     );
@@ -316,10 +358,19 @@ describe("util - mergeQuery", function() {
       const app = feathers();
       app.use(
         "/service", 
-        new Service(
+        new MemoryService(
           { 
             paginate: { default: 10, max: 100 }, 
-            whitelist: ["$and"] 
+            operators: ["$and"],
+            filters: {
+              $and: (and: any, { operators }: FilterQueryOptions) => {
+                if (Array.isArray(and)) {
+                  return and.map((current) => validateQueryProperty(current, operators))
+                }
+            
+                return and;
+              }
+            }
           }
         )
       );
