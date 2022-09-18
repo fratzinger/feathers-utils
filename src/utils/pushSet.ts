@@ -1,6 +1,6 @@
-import _isEqual from "lodash/isEqual";
-import _get from "lodash/get";
-import _set from "lodash/set";
+import _isEqual from "lodash/isEqual.js";
+import _get from "lodash/get.js";
+import _set from "lodash/set.js";
 
 import type {
   Path,

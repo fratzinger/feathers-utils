@@ -1,11 +1,10 @@
-import { HookContext } from "@feathersjs/feathers";
+import type { HookContext } from "@feathersjs/feathers";
 
 // TODO: seems like this does no longer exist in feathers
 interface PaginationOptions {
   default: number;
   max: number;
 }
-
 
 export const getPaginate = (
   context: HookContext

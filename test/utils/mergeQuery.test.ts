@@ -400,7 +400,7 @@ describe("util - mergeQuery", function() {
       it(`'${key}'`, function() {
         assert.throws(() => {
           mergeQuery(target, source, options);
-        }, err => err.name === "Forbidden", "throws as expected");
+        }, (err: any) => err.name === "Forbidden", "throws as expected");
       });
     }
   });

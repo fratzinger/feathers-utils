@@ -1,7 +1,8 @@
 import assert from "assert";
 import { feathers } from "@feathersjs/feathers";
 import createService from "feathers-memory";
-import { DebouncedService, debounceMixin as makeMixin } from "../../src";
+import { debounceMixin as makeMixin } from "../../src";
+import type { DebouncedService } from "../../src";
 import { performance } from "perf_hooks";
 
 const mockApp = () => {

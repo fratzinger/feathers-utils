@@ -1,17 +1,17 @@
-import _get from "lodash/get";
-import _set from "lodash/set";
-import _has from "lodash/has";
-
-import { getItems } from "feathers-hooks-common";
+import _get from "lodash/get.js";
+import _set from "lodash/set.js";
+import _has from "lodash/has.js";
 
 import { Forbidden } from "@feathersjs/errors";
+import { getItemsIsArray } from "../utils/getItemsIsArray";
 
 import type { HookContext } from "@feathersjs/feathers";
+import type { PropertyPath } from "lodash";
 
 import type {
-  HookSetDataOptions
+  HookSetDataOptions, 
+  ReturnSyncHook 
 } from "../types";
-import type { PropertyPath } from "lodash";
 
 const defaultOptions: Required<HookSetDataOptions> = {
   allowUndefined: false,
@@ -22,13 +22,11 @@ export function setData(
   from: PropertyPath, 
   to: PropertyPath, 
   _options?: HookSetDataOptions
-): ((context: HookContext) => HookContext) {
+): ReturnSyncHook {
   const options: Required<HookSetDataOptions> = Object.assign({}, defaultOptions, _options);
   return (context: HookContext): HookContext => {
 
-    //@ts-expect-error type error because feathers-hooks-common is feathers@4
-    let items = getItems(context);
-    items = (Array.isArray(items)) ? items : [items];
+    const { items } = getItemsIsArray(context);
 
     if (!_has(context, from)) {
       if (!context.params?.provider || options.allowUndefined === true) {
@@ -45,7 +43,14 @@ export function setData(
     const val = _get(context, from);
 
     items.forEach((item: Record<string, unknown>) => {
-      if (!options.overwrite && _has(item, to)) { return; }
+      let overwrite: boolean;
+      if (typeof options.overwrite === "function") {
+        overwrite = options.overwrite(item, context);
+      } else {
+        overwrite = options.overwrite;
+      }
+
+      if (!overwrite && _has(item, to)) { return; }
 
       _set(item, to, val);
     });

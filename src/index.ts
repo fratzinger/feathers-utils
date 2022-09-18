@@ -1,6 +1,7 @@
 // hooks
 import { checkMulti } from "./hooks/checkMulti";
 import { setData } from "./hooks/setData";
+
 import { runPerItem } from "./hooks/runPerItem";
 
 export const hooks = {
@@ -10,7 +11,9 @@ export const hooks = {
 };
 
 export { checkMulti };
+export { createRelated } from "./hooks/createRelated";
 export { setData };
+export { removeRelated } from "./hooks/removeRelated";
 export { runPerItem };
 
 import { debounceMixin, DebouncedService, DebouncedStore } from "./mixins/debounce-mixin";
@@ -33,8 +36,10 @@ export { pushSet } from "./utils/pushSet";
 export { setResultEmpty } from "./utils/setResultEmpty";
 
 export { markHookForSkip } from "./utils/markHookForSkip";
+export { filterQuery } from "./utils/filterQuery";
+export { getItemsIsArray } from "./utils/getItemsIsArray";
+export { onDelete } from "./hooks/onDelete";
 export { shouldSkip } from "./utils/shouldSkip";
 
-export { filterQuery } from "./utils/filterQuery";
 
 export * from "./types";
