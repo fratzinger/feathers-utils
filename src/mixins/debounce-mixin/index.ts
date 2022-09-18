@@ -20,6 +20,7 @@ export function debounceMixin(
   return (app: Application): void => {
     options = options || {};
     const defaultOptions = Object.assign(makeDefaultOptions(), options?.default);
+    // @ts-expect-error - service types are not compatible
     app.mixins.push((service: DebouncedService, path) => {
       // if path is on blacklist, don't add debouncedStore to service
       if (options?.blacklist && options.blacklist.includes(path)) return;
