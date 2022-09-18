@@ -46,5 +46,6 @@ export { validateQueryProperty } from "./utils/validateQueryProperty";
 
 // query filters
 export { filterArray } from "./filters/array";
+export { filterObject } from "./filters/object";
 
 export * from "./types";
