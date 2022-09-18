@@ -1,9 +1,7 @@
 import assert from"assert";
-import { mergeQuery } from "../../src";
+import { filterArray, mergeQuery } from "../../src";
 import { feathers } from "@feathersjs/feathers";
 import { MemoryService } from "@feathersjs/memory";
-import type { FilterQueryOptions } from "@feathersjs/adapter-commons";
-import { validateQueryProperty } from "../../src/utils/validateQueryProperty";
 
 describe("util - mergeQuery", function() {
   describe("general", function() {
@@ -22,13 +20,7 @@ describe("util - mergeQuery", function() {
           paginate: { default: 10, max: 100 }, 
           operators: ["$and"],
           filters: {
-            $and: (and: any, { operators }: FilterQueryOptions) => {
-              if (Array.isArray(and)) {
-                return and.map((current) => validateQueryProperty(current, operators));
-              }
-          
-              return and;
-            }
+            $and: filterArray()
           }
         }
       )
@@ -84,14 +76,7 @@ describe("util - mergeQuery", function() {
           paginate: { default: 10, max: 100 }, 
           operators: ["$and"],
           filters: {
-            $and: (and: any, { operators }: FilterQueryOptions) => {
-              if (Array.isArray(and)) {
-                return and.map((current) => validateQueryProperty(current, operators));
-              }
-          
-              return and;
-            }
-          }
+            $and: filterArray()
         }
       )
     );
@@ -191,13 +176,7 @@ describe("util - mergeQuery", function() {
             paginate: { default: 10, max: 100 }, 
             operators: ["$and"],
             filters: {
-              $and: (and: any, { operators }: FilterQueryOptions) => {
-                if (Array.isArray(and)) {
-                  return and.map((current) => validateQueryProperty(current, operators));
-                }
-            
-                return and;
-              }
+              $and: filterArray()
             }
           }
         )
@@ -260,13 +239,7 @@ describe("util - mergeQuery", function() {
           paginate: { default: 10, max: 100 }, 
           whitelist: ["$and"],
           filters: {
-            $and: (and: any, { operators }: FilterQueryOptions) => {
-              if (Array.isArray(and)) {
-                return and.map((current) => validateQueryProperty(current, operators));
-              }
-          
-              return and;
-            }
+            $and: filterArray()
           }
         }
       )
@@ -363,13 +336,7 @@ describe("util - mergeQuery", function() {
             paginate: { default: 10, max: 100 }, 
             operators: ["$and"],
             filters: {
-              $and: (and: any, { operators }: FilterQueryOptions) => {
-                if (Array.isArray(and)) {
-                  return and.map((current) => validateQueryProperty(current, operators));
-                }
-            
-                return and;
-              }
+              $and: filterArray()
             }
           }
         )

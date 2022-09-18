@@ -41,5 +41,10 @@ export { getItemsIsArray } from "./utils/getItemsIsArray";
 export { onDelete } from "./hooks/onDelete";
 export { shouldSkip } from "./utils/shouldSkip";
 
+export { validateQueryProperty } from "./utils/validateQueryProperty";
+
+
+// query filters
+export { filterArray } from "./filters/array";
 
 export * from "./types";
