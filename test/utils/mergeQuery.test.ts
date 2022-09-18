@@ -77,6 +77,7 @@ describe("util - mergeQuery", function() {
           operators: ["$and"],
           filters: {
             $and: filterArray()
+          }
         }
       )
     );
