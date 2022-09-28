@@ -9,8 +9,9 @@ export function markHookForSkip<H extends HookContext = HookContext>(
   type: "all" | MaybeArray<HookType>,
   context?: H
 ) {
-  // @ts-ignore
+  // @ts-expect-error context is not of type 'H'
   context = context || {};
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const params = context!.params || {};
   const types: string[] = Array.isArray(type) ? type : [type];
 
@@ -19,6 +20,7 @@ export function markHookForSkip<H extends HookContext = HookContext>(
     pushSet(params, ["skipHooks"], combinedName, { unique: true });
   });
 
-  context.params = params;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  context!.params = params;
   return context;
 }
