@@ -2,9 +2,13 @@ import { _ } from "@feathersjs/commons";
 import { BadRequest } from "@feathersjs/errors";
 import type { Query } from "@feathersjs/feathers";
 
-const isPlainObject = (value: any) => _.isObject(value) && value.constructor === {}.constructor;
+const isPlainObject = (value: any) =>
+  _.isObject(value) && value.constructor === {}.constructor;
 
-export const validateQueryProperty = (query: any, operators: string[] = []): Query => {
+export const validateQueryProperty = (
+  query: any,
+  operators: string[] = []
+): Query => {
   if (!isPlainObject(query)) {
     return query;
   }
@@ -22,6 +26,6 @@ export const validateQueryProperty = (query: any, operators: string[] = []): Que
   }
 
   return {
-    ...query
+    ...query,
   };
 };

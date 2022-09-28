@@ -1,48 +1,30 @@
 // hooks
-import { checkMulti } from "./hooks/checkMulti";
-import { setData } from "./hooks/setData";
+export * from "./hooks/checkMulti";
+export * from "./hooks/createRelated";
+export * from "./hooks/onDelete";
+export * from "./hooks/removeRelated";
+export * from "./hooks/runPerItem";
+export * from "./hooks/setData";
 
-import { runPerItem } from "./hooks/runPerItem";
+// mixins
+export * from "./mixins/debounce-mixin";
 
-export const hooks = {
-  checkMulti,
-  setData,
-  runPerItem
-};
+// utils
+export * from "./utils/isMulti";
 
-export { checkMulti };
-export { createRelated } from "./hooks/createRelated";
-export { setData };
-export { removeRelated } from "./hooks/removeRelated";
-export { runPerItem };
+export * from "./utils/getPaginate";
+export * from "./utils/isPaginated";
 
-import { debounceMixin, DebouncedService, DebouncedStore } from "./mixins/debounce-mixin";
+export * from "./utils/mergeQuery";
+export * from "./utils/pushSet";
+export * from "./utils/setResultEmpty";
+export * from "./utils/filterQuery";
+export * from "./utils/getItemsIsArray";
 
-export const mixins = {
-  debounceMixin,
-  DebouncedStore
-};
+export * from "./utils/shouldSkip";
+export * from "./utils/markHookForSkip";
 
-export { debounceMixin };
-export { DebouncedService };
-export { DebouncedStore };
-
-export { getPaginate } from "./utils/getPaginate";
-export { isMulti } from "./utils/isMulti";
-export { isPaginated } from "./utils/isPaginated";
-export { mergeQuery } from "./utils/mergeQuery/index";
-export { mergeArrays } from "./utils/mergeQuery/mergeArrays";
-export { pushSet } from "./utils/pushSet";
-export { setResultEmpty } from "./utils/setResultEmpty";
-
-export { markHookForSkip } from "./utils/markHookForSkip";
-export { filterQuery } from "./utils/filterQuery";
-export { getItemsIsArray } from "./utils/getItemsIsArray";
-export { onDelete } from "./hooks/onDelete";
-export { shouldSkip } from "./utils/shouldSkip";
-
-export { validateQueryProperty } from "./utils/validateQueryProperty";
-
+export * from "./utils/validateQueryProperty";
 
 // query filters
 export { filterArray } from "./filters/array";

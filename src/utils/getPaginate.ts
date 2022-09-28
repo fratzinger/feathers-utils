@@ -1,25 +1,22 @@
+import type { PaginationOptions } from "@feathersjs/adapter-commons";
 import type { HookContext } from "@feathersjs/feathers";
 
-// TODO: seems like this does no longer exist in feathers
-interface PaginationOptions {
-  default: number;
-  max: number;
-}
-
-export const getPaginate = (
-  context: HookContext
+export const getPaginate = <H extends HookContext = HookContext>(
+  context: H
 ): PaginationOptions | undefined => {
   if (Object.prototype.hasOwnProperty.call(context.params, "paginate")) {
-    return context.params.paginate as PaginationOptions || undefined;
+    return (context.params.paginate as PaginationOptions) || undefined;
   }
-  
-  if (context.params.paginate === false) { return undefined; }
+
+  if (context.params.paginate === false) {
+    return undefined;
+  }
   let options = context.service.options || {};
-  
+
   options = {
     ...options,
-    ...context.params.adapter
+    ...context.params.adapter,
   };
-  
+
   return options.paginate || undefined;
 };

@@ -1,7 +1,7 @@
 import type { HookContext } from "@feathersjs/feathers";
 
-export const isMulti = (
-  context: HookContext
+export const isMulti = <H extends HookContext = HookContext>(
+  context: H
 ): boolean => {
   const { method } = context;
   if (method === "find") {

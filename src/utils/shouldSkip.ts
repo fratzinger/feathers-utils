@@ -5,9 +5,9 @@ import { GeneralError } from "@feathersjs/errors";
 
 import type { HookContext } from "@feathersjs/feathers";
 
-export const shouldSkip = (
-  hookName: string, 
-  context: HookContext
+export const shouldSkip = <H extends HookContext = HookContext>(
+  hookName: string,
+  context: H
 ): boolean => {
   if (!context.params || !context.params.skipHooks) {
     return false;
