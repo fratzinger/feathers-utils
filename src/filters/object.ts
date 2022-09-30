@@ -2,7 +2,7 @@ import type { FilterQueryOptions } from "@feathersjs/adapter-commons";
 import { validateQueryProperty } from "../utils/validateQueryProperty";
 import _isObject from "lodash/isObject";
 
-export const filterObject =
+export const filterQueryObject =
   (key: string) =>
   (obj: any, { operators }: FilterQueryOptions) => {
     if (obj && !_isObject(obj)) {
@@ -13,3 +13,16 @@ export const filterObject =
 
     return validateQueryProperty(obj, operators);
   };
+
+export const filterObject = <T extends string[]>(...keys: T) => {
+  const result: {
+    [key in T[number]]: (value: any, options: FilterQueryOptions) => any;
+  } = {} as any;
+
+  for (const key of keys) {
+    // @ts-expect-error - We know that the key is in the result object
+    result[key] = filterQueryObject(key);
+  }
+
+  return result;
+};

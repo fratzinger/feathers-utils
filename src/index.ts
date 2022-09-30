@@ -27,7 +27,7 @@ export * from "./utils/markHookForSkip";
 export * from "./utils/validateQueryProperty";
 
 // query filters
-export { filterArray } from "./filters/array";
-export { filterObject } from "./filters/object";
+export * from "./filters/array";
+export * from "./filters/object";
 
 export * from "./types";

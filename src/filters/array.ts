@@ -1,7 +1,7 @@
 import type { FilterQueryOptions } from "@feathersjs/adapter-commons";
 import { validateQueryProperty } from "../utils/validateQueryProperty";
 
-export const filterArray =
+export const filterQueryArray =
   (key: string) =>
   (arr: any, { operators }: FilterQueryOptions) => {
     if (arr && !Array.isArray(arr)) {
@@ -16,3 +16,16 @@ export const filterArray =
 
     return arr;
   };
+
+export const filterArray = <T extends string[]>(...keys: T) => {
+  const result: {
+    [key in T[number]]: (value: any, options: FilterQueryOptions) => any;
+  } = {} as any;
+
+  for (const key of keys) {
+    // @ts-expect-error - We know that the key is in the result object
+    result[key] = filterQueryArray(key);
+  }
+
+  return result;
+};
