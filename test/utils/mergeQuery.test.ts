@@ -19,7 +19,7 @@ describe("util - mergeQuery", function () {
         paginate: { default: 10, max: 100 },
         operators: ["$and"],
         filters: {
-          $and: filterArray("$and"),
+          ...filterArray("$and"),
         },
       })
     );
@@ -77,7 +77,7 @@ describe("util - mergeQuery", function () {
         paginate: { default: 10, max: 100 },
         operators: ["$and"],
         filters: {
-          $and: filterArray("$and"),
+          ...filterArray("$and"),
         },
       })
     );
@@ -193,7 +193,7 @@ describe("util - mergeQuery", function () {
           paginate: { default: 10, max: 100 },
           operators: ["$and"],
           filters: {
-            $and: filterArray("$and"),
+            ...filterArray("$and"),
           },
         })
       );
@@ -258,7 +258,7 @@ describe("util - mergeQuery", function () {
         paginate: { default: 10, max: 100 },
         whitelist: ["$and"],
         filters: {
-          $and: filterArray("$and"),
+          ...filterArray("$and"),
         },
       })
     );
@@ -369,7 +369,7 @@ describe("util - mergeQuery", function () {
           paginate: { default: 10, max: 100 },
           operators: ["$and"],
           filters: {
-            $and: filterArray("$and"),
+            ...filterArray("$and"),
           },
         })
       );

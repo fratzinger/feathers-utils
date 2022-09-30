@@ -23,7 +23,7 @@ export const filterArray = <T extends string[]>(...keys: T) => {
   } = {} as any;
 
   for (const key of keys) {
-    // @ts-expect-error - We know that the key is in the result object
+    // @ts-ignore
     result[key] = filterQueryArray(key);
   }
 
