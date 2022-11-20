@@ -18,6 +18,7 @@ export function mergeQuery<T>(
   const fullOptions = makeDefaultOptions(options);
   const { filters: targetFilters, query: targetQuery } = filterQuery(target, {
     operators: fullOptions.operators,
+    filters: fullOptions.filters,
     service: fullOptions.service,
   });
 
@@ -34,6 +35,7 @@ export function mergeQuery<T>(
     query: sourceQuery,
   } = filterQuery(source, {
     operators: fullOptions.operators,
+    filters: fullOptions.filters,
     service: fullOptions.service,
   });
 
