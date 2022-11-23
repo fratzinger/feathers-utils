@@ -20,7 +20,7 @@ const defaultOptions: Required<HookSetDataOptions> = {
 };
 
 /**
- * hook to set properties on `context.data` (before-hook) or `context.result` (after-hook)
+ * hook to set properties on `context.result` (if existent) or `context.data` (otherwise)
  */
 export function setData<H extends HookContext = HookContext>(
   from: PropertyPath,

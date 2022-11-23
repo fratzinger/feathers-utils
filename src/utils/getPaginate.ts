@@ -17,7 +17,7 @@ export const getPaginate = <H extends HookContext = HookContext>(
   if (context.params.paginate === false) {
     return undefined;
   }
-  let options = context.service.options || {};
+  let options = context.service?.options || {};
 
   options = {
     ...options,

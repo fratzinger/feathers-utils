@@ -21,8 +21,7 @@ const makeOptions = (
 
 /**
  * hook to run a hook for each item in the context
- * uses `context.data` in a before hook
- * uses `context.result` in an after hook
+ * uses `context.result` if it is existent. otherwise uses context.data
  */
 export const runPerItem = <H extends HookContext = HookContext>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

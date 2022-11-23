@@ -34,10 +34,8 @@ export function filterQuery<T>(query: Query, _options?: FilterQueryOptions<T>) {
     if (
       service &&
       "filterQuery" in service &&
-      // @ts-expect-error service is of type 'never'
       typeof service.filterQuery === "function"
     ) {
-      // @ts-expect-error service has no filterQuery method
       return service.filterQuery({ query }, optionsForFilterQuery);
     } else {
       return plainFilterQuery(query, optionsForFilterQuery);

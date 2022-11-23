@@ -16,6 +16,7 @@ describe("util - isPaginated", function () {
       service: {
         options: serviceOptions,
       },
+      method: "find",
     } as any as HookContext);
 
     assert.deepStrictEqual(paginate, true);
@@ -49,6 +50,7 @@ describe("util - isPaginated", function () {
       service: {
         options: serviceOptions,
       },
+      method: "find",
     } as any as HookContext);
 
     assert.deepStrictEqual(paginate, true);

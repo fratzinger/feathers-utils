@@ -31,24 +31,12 @@ export const shouldSkip = <
   const { type } = context;
   if (skipHooks.includes(hookName)) {
     return true;
-  }
-  if (skipHooks.includes("all")) {
+  } else if (skipHooks.includes("all")) {
     return true;
-  }
-  if (type === "before") {
-    return (
-      skipHooks.includes(`before:${hookName}`) || skipHooks.includes("before")
-    );
-  }
-  if (type === "after") {
-    return (
-      skipHooks.includes(`after:${hookName}`) || skipHooks.includes("after")
-    );
-  }
-  if (type === "error") {
-    return (
-      skipHooks.includes(`error:${hookName}`) || skipHooks.includes("error")
-    );
+  } else if (skipHooks.includes(type)) {
+    return true;
+  } else if (skipHooks.includes(`${type}:${hookName}`)) {
+    return true;
   }
 
   return false;

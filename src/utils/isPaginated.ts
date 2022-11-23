@@ -7,7 +7,7 @@ import { getPaginate } from "./getPaginate";
 export const isPaginated = <H extends HookContext = HookContext>(
   context: H
 ): boolean => {
-  if (context.params.paginate === false) {
+  if (context.params.paginate === false || context.method !== "find") {
     return false;
   }
 

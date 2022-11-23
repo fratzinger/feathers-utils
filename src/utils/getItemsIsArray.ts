@@ -1,18 +1,18 @@
 import type { HookContext } from "@feathersjs/feathers";
 
-export interface GetItemsIsArrayOptions<T = any> {
+export interface GetItemsIsArrayResult<T = any> {
   items: T[];
   isArray: boolean;
 }
 
 /**
  * util to get items from context, return it as an array, no matter if it is an array or not
- * in a before hook, it uses `context.data`. in an after hook, it uses `context.result`
+ * uses `context.result` if existent. uses `context.data` otherwise
  */
 export const getItemsIsArray = <T = any, H extends HookContext = HookContext>(
   context: H
-): GetItemsIsArrayOptions<T> => {
-  let itemOrItems = context.type === "before" ? context.data : context.result;
+): GetItemsIsArrayResult<T> => {
+  let itemOrItems = context.result !== undefined ? context.result : context.data;
   itemOrItems =
     itemOrItems && context.method === "find"
       ? itemOrItems.data || itemOrItems
