@@ -7,6 +7,9 @@ export interface PushSetOptions {
   unique?: boolean;
 }
 
+/**
+ * util to push a value to an array at a given path in an object
+ */
 export const pushSet = (
   obj: Record<string, unknown>,
   path: string | Path,

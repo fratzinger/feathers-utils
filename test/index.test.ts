@@ -12,35 +12,41 @@ import {
   filterQuery,
   getItemsIsArray,
   shouldSkip,
+  // filters
+  filterArray,
+  filterObject,
   // mixins
   debounceMixin,
   DebouncedStore,
   // hooks
   checkMulti,
   setData,
-  runPerItem
-
+  runPerItem,
+  createRelated,
 } from "../src";
 
-describe("index.ts", function() {
-  it("exports all members", function() {
+describe("index.ts", function () {
+  it("exports all members", function () {
     const members = [
-      getPaginate, 
-      isMulti, 
-      isPaginated, 
-      mergeQuery, 
-      mergeArrays, 
+      getPaginate,
+      isMulti,
+      isPaginated,
+      mergeQuery,
+      mergeArrays,
       pushSet,
-      setResultEmpty, 
-      markHookForSkip, 
-      filterQuery, 
-      getItemsIsArray, 
-      shouldSkip, 
+      setResultEmpty,
+      markHookForSkip,
+      filterQuery,
+      filterArray,
+      filterObject,
+      getItemsIsArray,
+      shouldSkip,
       debounceMixin,
-      DebouncedStore, 
-      checkMulti, 
+      DebouncedStore,
+      checkMulti,
       setData,
-      runPerItem
+      runPerItem,
+      createRelated,
     ];
 
     members.forEach((member) => assert.ok(member));

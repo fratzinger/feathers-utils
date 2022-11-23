@@ -5,6 +5,9 @@ import type { Query } from "@feathersjs/feathers";
 const isPlainObject = (value: any) =>
   _.isObject(value) && value.constructor === {}.constructor;
 
+/**
+ * util to validate a query for operators
+ */
 export const validateQueryProperty = (
   query: any,
   operators: string[] = []

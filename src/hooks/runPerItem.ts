@@ -1,7 +1,6 @@
-import { shouldSkip } from "../utils/shouldSkip";
+import { shouldSkip, getItemsIsArray } from "../utils";
 
 import type { HookContext } from "@feathersjs/feathers";
-import { getItemsIsArray } from "../utils/getItemsIsArray";
 import type { Promisable } from "../typesInternal";
 
 export interface HookRunPerItemOptions {
@@ -20,6 +19,11 @@ const makeOptions = (
   );
 };
 
+/**
+ * hook to run a hook for each item in the context
+ * uses `context.data` in a before hook
+ * uses `context.result` in an after hook
+ */
 export const runPerItem = <H extends HookContext = HookContext>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   actionPerItem: (item: any, context: H) => Promisable<any>,

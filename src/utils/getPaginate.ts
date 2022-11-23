@@ -1,6 +1,12 @@
 import type { PaginationOptions } from "@feathersjs/adapter-commons";
 import type { HookContext } from "@feathersjs/feathers";
 
+/**
+ * util to get paginate options from context
+ * 1. it uses `context.params.paginate` if it exists
+ * 2. it uses `service.options.paginate` if it exists
+ * 3. it uses `context.params.adapter` if it exists
+ */
 export const getPaginate = <H extends HookContext = HookContext>(
   context: H
 ): PaginationOptions | undefined => {

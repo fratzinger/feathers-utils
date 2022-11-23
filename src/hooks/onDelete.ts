@@ -1,6 +1,6 @@
 import type { HookContext } from "@feathersjs/feathers";
 import { checkContext } from "feathers-hooks-common";
-import { getItemsIsArray } from "../utils/getItemsIsArray";
+import { getItemsIsArray, shouldSkip } from "../utils";
 
 export type OnDeleteAction = "cascade" | "set null";
 
@@ -11,6 +11,9 @@ export interface OnDeleteOptions {
   blocking?: boolean;
 }
 
+/**
+ * hook to manipulate related items on delete
+ */
 export function onDelete<
   S = Record<string, any>,
   H extends HookContext = HookContext
@@ -31,6 +34,10 @@ export function onDelete<
   }
 
   return async (context: H) => {
+    if (shouldSkip("onDelete", context)) {
+      return context;
+    }
+
     checkContext(context, "after", "remove", "onDelete");
 
     const { items } = getItemsIsArray(context);

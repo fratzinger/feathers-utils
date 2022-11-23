@@ -4,6 +4,9 @@ import type { HookContext } from "@feathersjs/feathers";
 import type { HookType } from "feathers-hooks-common";
 import type { MaybeArray } from "../typesInternal";
 
+/**
+ * util to mark a hook for skip, has to be used with `shouldSkip`
+ */
 export function markHookForSkip<H extends HookContext = HookContext>(
   hookName: string,
   type: "all" | MaybeArray<HookType>,

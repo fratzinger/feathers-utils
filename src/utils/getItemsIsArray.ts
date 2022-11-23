@@ -5,7 +5,10 @@ export interface GetItemsIsArrayOptions<T = any> {
   isArray: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/**
+ * util to get items from context, return it as an array, no matter if it is an array or not
+ * in a before hook, it uses `context.data`. in an after hook, it uses `context.result`
+ */
 export const getItemsIsArray = <T = any, H extends HookContext = HookContext>(
   context: H
 ): GetItemsIsArrayOptions<T> => {

@@ -5,11 +5,22 @@ import { GeneralError } from "@feathersjs/errors";
 
 import type { HookContext } from "@feathersjs/feathers";
 
-export const shouldSkip = <H extends HookContext = HookContext>(
+export type ShouldSkipOptions = {
+  notSkippable?: boolean;
+};
+
+/**
+ * util to detect if a hook should be skipped
+ */
+export const shouldSkip = <
+  H extends HookContext = HookContext,
+  O extends ShouldSkipOptions = ShouldSkipOptions
+>(
   hookName: string,
-  context: H
+  context: H,
+  options?: O
 ): boolean => {
-  if (!context.params || !context.params.skipHooks) {
+  if (!context.params || !context.params.skipHooks || options?.notSkippable) {
     return false;
   }
 

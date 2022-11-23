@@ -1,7 +1,7 @@
 import type { HookContext } from "@feathersjs/feathers";
 import { checkContext } from "feathers-hooks-common";
 import type { Promisable } from "../typesInternal";
-import { getItemsIsArray } from "../utils/getItemsIsArray";
+import { getItemsIsArray, shouldSkip } from "../utils";
 
 export interface CreateRelatedOptions<S = Record<string, any>> {
   service: keyof S;
@@ -10,6 +10,9 @@ export interface CreateRelatedOptions<S = Record<string, any>> {
   createItemsInDataArraySeparately?: boolean;
 }
 
+/**
+ * hook to create related items
+ */
 export function createRelated<
   S = Record<string, any>,
   H extends HookContext = HookContext
@@ -23,6 +26,10 @@ export function createRelated<
     throw "initialize hook 'createRelated' completely!";
   }
   return async (context: H) => {
+    if (shouldSkip("createRelated", context)) {
+      return context;
+    }
+
     checkContext(context, "after", undefined, "createRelated");
 
     const { items } = getItemsIsArray(context);

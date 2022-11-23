@@ -3,7 +3,7 @@ import _set from "lodash/set.js";
 import _has from "lodash/has.js";
 
 import { Forbidden } from "@feathersjs/errors";
-import { getItemsIsArray } from "../utils/getItemsIsArray";
+import { getItemsIsArray, shouldSkip } from "../utils";
 
 import type { HookContext } from "@feathersjs/feathers";
 import type { PropertyPath } from "lodash";
@@ -19,6 +19,9 @@ const defaultOptions: Required<HookSetDataOptions> = {
   overwrite: true,
 };
 
+/**
+ * hook to set properties on `context.data` (before-hook) or `context.result` (after-hook)
+ */
 export function setData<H extends HookContext = HookContext>(
   from: PropertyPath,
   to: PropertyPath,
@@ -30,6 +33,10 @@ export function setData<H extends HookContext = HookContext>(
     _options
   );
   return (context: H) => {
+    if (shouldSkip("setData", context)) {
+      return context;
+    }
+
     const { items } = getItemsIsArray(context);
 
     if (!_has(context, from)) {

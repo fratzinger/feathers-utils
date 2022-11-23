@@ -12,29 +12,33 @@ const mockApp = () => {
   const usersService = app.service("users");
   const todosService = app.service("todos");
 
-  return { 
+  return {
     app,
     todosService,
-    usersService
+    usersService,
   };
 };
 
-describe("hook - removeRelated", function() {
-  it("throws for undefined options", function() {
-    // @ts-expect-error - missing service
-    assert.throws(() => createRelated({
-      keyThere: "userId",
-      keyHere: "id"
-    }));
+describe("hook - removeRelated", function () {
+  it("throws for undefined options", function () {
+    assert.throws(() =>
+      // @ts-expect-error - missing service
+      createRelated({
+        keyThere: "userId",
+        keyHere: "id",
+      })
+    );
 
-    // @ts-expect-error - missing keyThere
-    assert.throws(() => createRelated({
-      service: "todos",
-      keyHere: "id"
-    }));
+    assert.throws(() =>
+      // @ts-expect-error - missing keyThere
+      createRelated({
+        service: "todos",
+        keyHere: "id",
+      })
+    );
   });
 
-  it("removes single item for single item", async function() {
+  it("removes single item for single item", async function () {
     const { app, usersService, todosService } = mockApp();
 
     usersService.hooks({
@@ -44,24 +48,24 @@ describe("hook - removeRelated", function() {
             service: "todos",
             keyThere: "userId",
             keyHere: "id",
-            blocking: true
-          })
-        ]
-      }
+            blocking: true,
+          }),
+        ],
+      },
     });
 
     const user = await usersService.create({
-      name: "John Doe"
+      name: "John Doe",
     });
 
     const todo = await todosService.create({
       title: "Buy milk",
-      userId: user.id
+      userId: user.id,
     });
 
     const todo2 = await todosService.create({
       title: "Buy eggs",
-      userId: 2
+      userId: 2,
     });
 
     await usersService.remove(user.id);
@@ -71,7 +75,7 @@ describe("hook - removeRelated", function() {
     assert.deepStrictEqual(todos, [{ id: 2, title: "Buy eggs", userId: 2 }]);
   });
 
-  it("removes multiple items for single item", async function() {
+  it("removes multiple items for single item", async function () {
     const { app, usersService, todosService } = mockApp();
 
     usersService.hooks({
@@ -81,29 +85,29 @@ describe("hook - removeRelated", function() {
             service: "todos",
             keyThere: "userId",
             keyHere: "id",
-            blocking: true
-          })
-        ]
-      }
+            blocking: true,
+          }),
+        ],
+      },
     });
 
     const user = await usersService.create({
-      name: "John Doe"
+      name: "John Doe",
     });
 
     const todo = await todosService.create({
       title: "Buy milk",
-      userId: user.id
+      userId: user.id,
     });
 
     const todo2 = await todosService.create({
       title: "Buy eggs",
-      userId: user.id
+      userId: user.id,
     });
 
     const todo3 = await todosService.create({
       title: "Buy bread",
-      userId: 3
+      userId: 3,
     });
 
     await usersService.remove(user.id);
@@ -113,7 +117,7 @@ describe("hook - removeRelated", function() {
     assert.deepStrictEqual(todos, [{ id: 3, title: "Buy bread", userId: 3 }]);
   });
 
-  it("removes single item for multiple items", async function() {
+  it("removes single item for multiple items", async function () {
     const { app, usersService, todosService } = mockApp();
 
     usersService.hooks({
@@ -123,31 +127,31 @@ describe("hook - removeRelated", function() {
             service: "todos",
             keyThere: "userId",
             keyHere: "id",
-            blocking: true
-          })
-        ]
-      }
+            blocking: true,
+          }),
+        ],
+      },
     });
 
     await usersService.create([
       { name: "John Doe" },
       { name: "Jane Doe" },
-      { name: "Jack Doe" }
+      { name: "Jack Doe" },
     ]);
 
     const todo = await todosService.create({
       title: "Buy milk",
-      userId: 1
+      userId: 1,
     });
 
     const todo2 = await todosService.create({
       title: "Buy eggs",
-      userId: 2
+      userId: 2,
     });
 
     const todo3 = await todosService.create({
       title: "Buy bread",
-      userId: 3
+      userId: 3,
     });
 
     await usersService.remove(1);
@@ -156,18 +160,18 @@ describe("hook - removeRelated", function() {
 
     assert.deepStrictEqual(users, [
       { id: 2, name: "Jane Doe" },
-      { id: 3, name: "Jack Doe" }
+      { id: 3, name: "Jack Doe" },
     ]);
 
     const todos = await todosService.find({ query: {} });
 
     assert.deepStrictEqual(todos, [
       { id: 2, title: "Buy eggs", userId: 2 },
-      { id: 3, title: "Buy bread", userId: 3 }
+      { id: 3, title: "Buy bread", userId: 3 },
     ]);
   });
 
-  it("removes multiple items for multiple items", async function() {
+  it("removes multiple items for multiple items", async function () {
     const { app, usersService, todosService } = mockApp();
 
     usersService.hooks({
@@ -177,31 +181,31 @@ describe("hook - removeRelated", function() {
             service: "todos",
             keyThere: "userId",
             keyHere: "id",
-            blocking: true
-          })
-        ]
-      }
+            blocking: true,
+          }),
+        ],
+      },
     });
 
     await usersService.create([
       { name: "John Doe" },
       { name: "Jane Doe" },
-      { name: "Jack Doe" }
+      { name: "Jack Doe" },
     ]);
 
     const todo = await todosService.create({
       title: "Buy milk",
-      userId: 1
+      userId: 1,
     });
 
     const todo2 = await todosService.create({
       title: "Buy eggs",
-      userId: 2
+      userId: 2,
     });
 
     const todo3 = await todosService.create({
       title: "Buy bread",
-      userId: 3
+      userId: 3,
     });
 
     await usersService.remove(null, { query: { id: { $in: [1, 2] } } });
@@ -215,7 +219,7 @@ describe("hook - removeRelated", function() {
     assert.deepStrictEqual(todos, [{ id: 3, title: "Buy bread", userId: 3 }]);
   });
 
-  it("does not remove items if not found", async function() {
+  it("does not remove items if not found", async function () {
     const { app, usersService, todosService } = mockApp();
 
     usersService.hooks({
@@ -225,31 +229,31 @@ describe("hook - removeRelated", function() {
             service: "todos",
             keyThere: "userId",
             keyHere: "id",
-            blocking: true
-          })
-        ]
-      }
+            blocking: true,
+          }),
+        ],
+      },
     });
 
     await usersService.create([
       { name: "John Doe" },
       { name: "Jane Doe" },
-      { name: "Jack Doe" }
+      { name: "Jack Doe" },
     ]);
 
     const todo = await todosService.create({
       title: "Buy milk",
-      userId: 2
+      userId: 2,
     });
 
     const todo2 = await todosService.create({
       title: "Buy eggs",
-      userId: 2
+      userId: 2,
     });
 
     const todo3 = await todosService.create({
       title: "Buy bread",
-      userId: 3
+      userId: 3,
     });
 
     await usersService.remove(1);
@@ -258,7 +262,7 @@ describe("hook - removeRelated", function() {
 
     assert.deepStrictEqual(users, [
       { id: 2, name: "Jane Doe" },
-      { id: 3, name: "Jack Doe" }
+      { id: 3, name: "Jack Doe" },
     ]);
 
     const todos = await todosService.find({ query: {} });
@@ -266,7 +270,7 @@ describe("hook - removeRelated", function() {
     assert.deepStrictEqual(todos, [
       { id: 1, title: "Buy milk", userId: 2 },
       { id: 2, title: "Buy eggs", userId: 2 },
-      { id: 3, title: "Buy bread", userId: 3 }
+      { id: 3, title: "Buy bread", userId: 3 },
     ]);
   });
 });
