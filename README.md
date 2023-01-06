@@ -19,7 +19,7 @@ npm i feathers-utils
 
 ### Hooks
 
-- `checkMulti`: throws if the request is **multi** data, but the service has `allowsMulti(method)` returns `false`
+- `checkMulti`: throws if the request is **multi** data, but the services `allowsMulti(method)` returns `false`
 - `createRelated`: simply create related items from a hook.
 - `onDelete`: simply remove/set null related items from a hook.
 - `removeRelated`: simple remove related items from a hook. Basically `cascade` at feathers level.

@@ -1,6 +1,6 @@
 import type { FilterQueryOptions } from "@feathersjs/adapter-commons";
 import { validateQueryProperty } from "../utils/validateQueryProperty";
-import _isObject from "lodash/isObject";
+import _isObject from "lodash/isObject.js";
 
 const filterQueryObject =
   (key: string) =>
