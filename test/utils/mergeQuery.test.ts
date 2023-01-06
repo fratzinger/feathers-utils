@@ -172,10 +172,6 @@ describe("util - mergeQuery", function () {
     for (const key in passingPairs) {
       const { target, source, options, expected } = passingPairs[key];
       it(`'${key}'`, function () {
-        if (key === "combine two $and queries") {
-          console.log("target", target);
-          console.log("source", source);
-        }
         const query = mergeQuery(
           target,
           source,

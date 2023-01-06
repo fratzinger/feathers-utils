@@ -132,46 +132,47 @@ describe("mixin: debounce-mixin", function () {
     });
   });
 
-  it("waits per id", function (done) {
-    const { usersService } = mockApp();
-    const callCounter = {
-      1: 0,
-      2: 0,
-    };
-    const times = 60;
-    usersService.debouncedStore.add(1, () => {
-      callCounter[1]++;
-      return usersService.create({ id: 1, test: true });
-    });
-    let counter = 0;
-    const started = performance.now();
-    const callTwo = () => {
-      if (counter > times) {
-        assert(performance.now() - started > 200, "enough time elapsed");
-        usersService
-          .find({ query: { $sort: { id: 1 } }, paginate: false })
-          .then((items) => {
-            assert.strictEqual(items.length, 1, "has just one item yet");
-            assert.strictEqual(items[0].id, 1, "id is one");
-            const timeElapsed = performance.now() - started;
-            assert(timeElapsed > 200, "enough time elapsed");
-            assert(timeElapsed < 1000, "less than maxWait");
-            done();
-          });
+  it("waits per id", () =>
+    new Promise((done) => {
+      const { usersService } = mockApp();
+      const callCounter = {
+        1: 0,
+        2: 0,
+      };
+      const times = 60;
+      usersService.debouncedStore.add(1, () => {
+        callCounter[1]++;
+        return usersService.create({ id: 1, test: true });
+      });
+      let counter = 0;
+      const started = performance.now();
+      const callTwo = () => {
+        if (counter > times) {
+          assert(performance.now() - started > 200, "enough time elapsed");
+          usersService
+            .find({ query: { $sort: { id: 1 } }, paginate: false })
+            .then((items) => {
+              assert.strictEqual(items.length, 1, "has just one item yet");
+              assert.strictEqual(items[0].id, 1, "id is one");
+              const timeElapsed = performance.now() - started;
+              assert(timeElapsed > 200, "enough time elapsed");
+              assert(timeElapsed < 1000, "less than maxWait");
+              done();
+            });
 
-        return;
-      }
-      setTimeout(() => {
-        usersService.debouncedStore.add(2, () => {
-          callCounter[2]++;
-          return usersService.create({ id: 2, test: true });
-        });
-        counter++;
-        callTwo();
-      }, 5);
-    };
-    callTwo();
-  });
+          return;
+        }
+        setTimeout(() => {
+          usersService.debouncedStore.add(2, () => {
+            callCounter[2]++;
+            return usersService.create({ id: 2, test: true });
+          });
+          counter++;
+          callTwo();
+        }, 5);
+      };
+      callTwo();
+    }));
 
   it("cancel works", async function () {
     const { usersService } = mockApp();
