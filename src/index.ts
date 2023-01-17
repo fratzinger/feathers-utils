@@ -7,7 +7,7 @@ import { runPerItem } from "./hooks/runPerItem";
 export const hooks = {
   checkMulti,
   setData,
-  runPerItem
+  runPerItem,
 };
 
 export { checkMulti };
@@ -20,7 +20,7 @@ import { debounceMixin, DebouncedStore } from "./mixins/debounce-mixin";
 
 export const mixins = {
   debounceMixin,
-  DebouncedStore
+  DebouncedStore,
 };
 
 export { debounceMixin };
@@ -41,5 +41,5 @@ export { getItemsIsArray } from "./utils/getItemsIsArray";
 export { onDelete } from "./hooks/onDelete";
 export { shouldSkip } from "./utils/shouldSkip";
 
-
 export * from "./types";
+export * from "./utility-types/utility-types";
