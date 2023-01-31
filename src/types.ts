@@ -120,7 +120,7 @@ export interface FilterQueryResult {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface GetItemsIsArrayOptions<T = any> {
+export interface GetItemsIsArrayResult<T = any> {
   items: T[]
   isArray: boolean
 }

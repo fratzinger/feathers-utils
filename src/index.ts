@@ -15,6 +15,8 @@ export { createRelated } from "./hooks/createRelated";
 export { setData };
 export { removeRelated } from "./hooks/removeRelated";
 export { runPerItem };
+export * from "./hooks/forEach";
+export * from "./hooks/parseFields";
 
 import { debounceMixin, DebouncedStore } from "./mixins/debounce-mixin";
 
