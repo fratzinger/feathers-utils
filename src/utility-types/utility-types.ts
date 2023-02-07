@@ -1,16 +1,12 @@
+type Single<T> = T extends Array<infer U> ? U : T;
+
 export type InferCreateData<S> = S extends {
   create: (data: infer D, params: any) => any;
 }
   ? D
   : never;
 
-export type InferCreateDataSingle<S> = S extends {
-  create: (data: infer D, params: any) => any;
-}
-  ? D extends Array<infer T>
-    ? T
-    : D
-  : never;
+export type InferCreateDataSingle<S> = Single<InferCreateData<S>>;
 
 export type InferUpdateData<S> = S extends {
   update: (id: any, data: infer D, params: any) => any;
@@ -36,19 +32,13 @@ export type InferFindResult<S> = S extends {
   ? Awaited<R>
   : never;
 
-export type InferCreateResult<S, D = any> = S extends {
-  create: (data: D, params: any) => infer R;
+export type InferCreateResult<S> = S extends {
+  create: (data: any, params: any) => infer R;
 }
   ? Awaited<R>
   : never;
 
-export type InferCreateResultSingle<S> = S extends {
-  create: (data: any, params: any) => infer R;
-}
-  ? Awaited<R> extends Array<infer T>
-    ? T
-    : Awaited<R>
-  : never;
+export type InferCreateResultSingle<S> = Single<InferCreateResult<S>>;
 
 export type InferUpdateResult<S> = S extends {
   update: (id: any, data: any, params: any) => infer R;
