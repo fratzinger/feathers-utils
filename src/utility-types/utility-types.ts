@@ -1,6 +1,7 @@
-import type { Application } from "@feathersjs/feathers";
+import type { Application, Id } from "@feathersjs/feathers";
 
 type Single<T> = T extends Array<infer U> ? U : T;
+type AsArray<T> = T extends any[] ? T : [T];
 
 export type InferCreateData<S> = S extends {
   create: (data: infer D, params: any) => any;
@@ -34,10 +35,14 @@ export type InferFindResult<S> = S extends {
   ? Awaited<R>
   : never;
 
-export type InferCreateResult<S> = S extends {
+export type InferCreateResult<S, D = unknown> = S extends {
   create: (data: any, params: any) => infer R;
 }
-  ? Awaited<R>
+  ? D extends unknown
+    ? Awaited<R>
+    : D extends any[]
+      ? Awaited<AsArray<R>>
+      : Awaited<Single<R>>
   : never;
 
 export type InferCreateResultSingle<S> = Single<InferCreateResult<S>>;
@@ -48,16 +53,24 @@ export type InferUpdateResult<S> = S extends {
   ? Awaited<R>
   : never;
 
-export type InferPatchResult<S, Id = any> = S extends {
+export type InferPatchResult<S, IdOrNullable = any> = S extends {
   patch: (id: Id, data: any, params: any) => infer R;
 }
-  ? Awaited<R>
+  ? IdOrNullable extends Id
+    ? Awaited<Single<R>>
+    : IdOrNullable extends null
+      ? Awaited<AsArray<R>>
+      : Awaited<R>
   : never;
 
-export type InferRemoveResult<S, Id = any> = S extends {
-  remove: (id: Id, params: any) => infer R;
+export type InferRemoveResult<S, IdOrNullable = any> = S extends {
+  remove: (id: IdOrNullable, params: any) => infer R;
 }
-  ? Awaited<R>
+  ? IdOrNullable extends Id
+    ? Awaited<Single<R>>
+    : IdOrNullable extends null
+      ? Awaited<AsArray<R>>
+      : Awaited<R>
   : never;
 
 export type GetService<App extends Application, Path extends string> = App["services"][Path];
@@ -74,6 +87,29 @@ export type InferUpdateDataFromPath<App extends Application, Path extends string
 export type InferPatchDataFromPath<App extends Application, Path extends string> = InferPatchData<GetService<App, Path>>
 
 export type InferUpdateResultFromPath<App extends Application, Path extends string> = InferUpdateResult<GetService<App, Path>>;
-export type InferPatchResultFromPath<App extends Application, Path extends string, Id = any> = InferPatchResult<GetService<App, Path>, Id>;
+export type InferPatchResultFromPath<App extends Application, Path extends string, IdOrNullable = any> = InferPatchResult<GetService<App, Path>, IdOrNullable>;
 
-export type InferRemoveResultFromPath<App extends Application, Path extends string, Id = any> = InferRemoveResult<GetService<App, Path>, Id>;
+export type InferRemoveResultFromPath<App extends Application, Path extends string, IdOrNullable = any> = InferRemoveResult<GetService<App, Path>, IdOrNullable>;
+
+export type InferDataFromPath<App extends Application, Path extends string, Method extends "create" | "update" | "patch"> = Method extends "create"
+  ? InferCreateDataFromPath<App, Path>
+  : Method extends "update"
+    ? InferUpdateDataFromPath<App, Path>
+    : Method extends "patch"
+      ? InferPatchDataFromPath<App, Path>
+      : never;
+
+export type InferResultFromPath<App extends Application, Path extends string, Method extends "get" | "find" | "create" | "update" | "patch" | "remove"> = Method extends "get"
+  ? InferGetResultFromPath<App, Path>
+  : Method extends "find"
+    ? InferFindResultFromPath<App, Path>
+    : Method extends "create"
+      ? InferCreateResultFromPath<App, Path>
+      : Method extends "update"
+        ? InferUpdateResultFromPath<App, Path>
+        : Method extends "patch"
+          ? InferPatchResultFromPath<App, Path>
+          : Method extends "remove"
+            ? InferRemoveResultFromPath<App, Path>
+            : never;
+            
