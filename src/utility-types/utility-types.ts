@@ -80,7 +80,8 @@ export type InferFindResultFromPath<App extends Application, Path extends string
 
 export type InferCreateDataFromPath<App extends Application, Path extends string> = InferCreateData<GetService<App, Path>>
 export type InferCreateDataSingleFromPath<App extends Application, Path extends string> = InferCreateDataSingle<GetService<App, Path>>;
-export type InferCreateResultFromPath<App extends Application, Path extends string> = InferCreateResult<GetService<App, Path>>;
+
+export type InferCreateResultFromPath<App extends Application, Path extends string, D = unknown> = InferCreateResult<GetService<App, Path>, D>;
 export type InferCreateResultSingleFromPath<App extends Application, Path extends string> = InferCreateResultSingle<GetService<App, Path>>;
 
 export type InferUpdateDataFromPath<App extends Application, Path extends string> = InferUpdateData<GetService<App, Path>>
