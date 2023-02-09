@@ -1,3 +1,5 @@
+import type { Application } from "@feathersjs/feathers";
+
 type Single<T> = T extends Array<infer U> ? U : T;
 
 export type InferCreateData<S> = S extends {
@@ -57,3 +59,21 @@ export type InferRemoveResult<S, Id = any> = S extends {
 }
   ? Awaited<R>
   : never;
+
+export type GetService<App extends Application, Path extends string> = App["services"][Path];
+
+export type InferGetResultFromPath<App extends Application, Path extends string> = InferGetResult<GetService<App, Path>>;
+export type InferFindResultFromPath<App extends Application, Path extends string> = InferFindResult<GetService<App, Path>>;
+
+export type InferCreateDataFromPath<App extends Application, Path extends string> = InferCreateData<GetService<App, Path>>
+export type InferCreateDataSingleFromPath<App extends Application, Path extends string> = InferCreateDataSingle<GetService<App, Path>>;
+export type InferCreateResultFromPath<App extends Application, Path extends string> = InferCreateResult<GetService<App, Path>>;
+export type InferCreateResultSingleFromPath<App extends Application, Path extends string> = InferCreateResultSingle<GetService<App, Path>>;
+
+export type InferUpdateDataFromPath<App extends Application, Path extends string> = InferUpdateData<GetService<App, Path>>
+export type InferPatchDataFromPath<App extends Application, Path extends string> = InferPatchData<GetService<App, Path>>
+
+export type InferUpdateResultFromPath<App extends Application, Path extends string> = InferUpdateResult<GetService<App, Path>>;
+export type InferPatchResultFromPath<App extends Application, Path extends string, Id = any> = InferPatchResult<GetService<App, Path>, Id>;
+
+export type InferRemoveResultFromPath<App extends Application, Path extends string, Id = any> = InferRemoveResult<GetService<App, Path>, Id>;
