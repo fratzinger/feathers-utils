@@ -39,9 +39,9 @@ export type InferCreateResult<S, D = unknown> = S extends {
   create: (data: any, params: any) => infer R;
 }
   ? D extends any[]
-    ? Awaited<AsArray<R>>
+    ? AsArray<Awaited<R>>
     : D extends InferCreateDataSingle<S>
-      ? Awaited<Single<R>>
+      ? Single<Awaited<R>>
       : Awaited<R>
   : never;
 
@@ -57,9 +57,9 @@ export type InferPatchResult<S, IdOrNullable = any> = S extends {
   patch: (id: Id, data: any, params: any) => infer R;
 }
   ? IdOrNullable extends Id
-    ? Awaited<Single<R>>
+    ? Single<Awaited<R>>
     : IdOrNullable extends null
-      ? Awaited<AsArray<R>>
+      ? AsArray<Awaited<R>>
       : Awaited<R>
   : never;
 
@@ -67,9 +67,9 @@ export type InferRemoveResult<S, IdOrNullable = any> = S extends {
   remove: (id: IdOrNullable, params: any) => infer R;
 }
   ? IdOrNullable extends Id
-    ? Awaited<Single<R>>
+    ? Single<Awaited<R>>
     : IdOrNullable extends null
-      ? Awaited<AsArray<R>>
+      ? AsArray<Awaited<R>>
       : Awaited<R>
   : never;
 
