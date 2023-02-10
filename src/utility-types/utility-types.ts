@@ -38,11 +38,11 @@ export type InferFindResult<S> = S extends {
 export type InferCreateResult<S, D = unknown> = S extends {
   create: (data: any, params: any) => infer R;
 }
-  ? D extends unknown
-    ? Awaited<R>
-    : D extends any[]
-      ? Awaited<AsArray<R>>
-      : Awaited<Single<R>>
+  ? D extends any[]
+    ? Awaited<AsArray<R>>
+    : D extends InferCreateDataSingle<S>
+      ? Awaited<Single<R>>
+      : Awaited<R>
   : never;
 
 export type InferCreateResultSingle<S> = Single<InferCreateResult<S>>;
