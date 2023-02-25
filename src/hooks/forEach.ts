@@ -1,6 +1,6 @@
 import { shouldSkip } from "../utils/shouldSkip";
 
-import type { ReturnAsyncHook, Promisable } from "../types";
+import type { ReturnAsyncHook, Promisable } from "../typesInternal";
 import type { HookContext } from "@feathersjs/feathers";
 import type { GetItemsIsArrayOptions } from "../utils/getItemsIsArray";
 import { getItemsIsArray } from "../utils/getItemsIsArray";
