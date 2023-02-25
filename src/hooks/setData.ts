@@ -3,28 +3,39 @@ import _set from "lodash/set.js";
 import _has from "lodash/has.js";
 
 import { Forbidden } from "@feathersjs/errors";
-import { getItemsIsArray } from "../utils/getItemsIsArray";
+import { getItemsIsArray, shouldSkip } from "../utils";
 
 import type { HookContext } from "@feathersjs/feathers";
 import type { PropertyPath } from "lodash";
+import type { PredicateWithContext } from "../types";
 
-import type {
-  HookSetDataOptions, 
-  ReturnSyncHook 
-} from "../types";
+export interface HookSetDataOptions {
+  allowUndefined?: boolean;
+  overwrite?: boolean | PredicateWithContext;
+}
 
 const defaultOptions: Required<HookSetDataOptions> = {
   allowUndefined: false,
-  overwrite: true
+  overwrite: true,
 };
 
-export function setData(
-  from: PropertyPath, 
-  to: PropertyPath, 
+/**
+ * hook to set properties on `context.result` (if existent) or `context.data` (otherwise)
+ */
+export function setData<H extends HookContext = HookContext>(
+  from: PropertyPath,
+  to: PropertyPath,
   _options?: HookSetDataOptions
-): ReturnSyncHook {
-  const options: Required<HookSetDataOptions> = Object.assign({}, defaultOptions, _options);
-  return (context: HookContext): HookContext => {
+) {
+  const options: Required<HookSetDataOptions> = Object.assign(
+    {},
+    defaultOptions,
+    _options
+  );
+  return (context: H) => {
+    if (shouldSkip("setData", context)) {
+      return context;
+    }
 
     const { items } = getItemsIsArray(context);
 
@@ -33,7 +44,10 @@ export function setData(
         return context;
       }
 
-      if (!options.overwrite && items.every((item: Record<string, unknown>) => _has(item, to))) {
+      if (
+        !options.overwrite &&
+        items.every((item: Record<string, unknown>) => _has(item, to))
+      ) {
         return context;
       }
 
@@ -50,7 +64,9 @@ export function setData(
         overwrite = options.overwrite;
       }
 
-      if (!overwrite && _has(item, to)) { return; }
+      if (!overwrite && _has(item, to)) {
+        return;
+      }
 
       _set(item, to, val);
     });

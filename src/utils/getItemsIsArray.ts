@@ -1,13 +1,17 @@
 import type { HookContext } from "@feathersjs/feathers";
-import type { GetItemsIsArrayResult } from "..";
 
 export type GetItemsIsArrayOptions = {
   from: "data" | "result" | "automatic"
 }
 
+export interface GetItemsIsArrayResult<T = any> {
+  items: T[]
+  isArray: boolean
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getItemsIsArray = <T = any>(
-  context: HookContext,
+export const getItemsIsArray = <T = any, H extends HookContext = HookContext>(
+  context: H,
   options?: GetItemsIsArrayOptions
 ): GetItemsIsArrayResult<T> => {
   const {
@@ -31,11 +35,7 @@ export const getItemsIsArray = <T = any>(
   
   const isArray = Array.isArray(itemOrItems);
   return {
-    items: (isArray) 
-      ? itemOrItems 
-      : (itemOrItems != null) 
-        ? [itemOrItems] 
-        : [],
-    isArray
+    items: isArray ? itemOrItems : itemOrItems != null ? [itemOrItems] : [],
+    isArray,
   };
 };

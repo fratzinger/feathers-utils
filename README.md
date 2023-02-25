@@ -8,6 +8,8 @@
 [![npm](https://img.shields.io/npm/dm/feathers-utils)](https://www.npmjs.com/package/feathers-utils)
 [![GitHub license](https://img.shields.io/github/license/fratzinger/feathers-utils)](https://github.com/fratzinger/feathers-utils/blob/main/LICENSE.md)
 
+> NOTE: This is the version for Feathers v5. For Feathers v4 use [feathers-utils v1](https://github.com/fratzinger/feathers-utils/tree/crow)
+
 
 ## Installation
 
@@ -19,7 +21,7 @@ npm i feathers-utils
 
 ### Hooks
 
-- `checkMulti`: throws if the request is **multi** data, but the service has `allowsMulti(method)` returns `false`
+- `checkMulti`: throws if the request is **multi** data, but the services `allowsMulti(method)` returns `false`
 - `createRelated`: simply create related items from a hook.
 - `onDelete`: simply remove/set null related items from a hook.
 - `removeRelated`: simple remove related items from a hook. Basically `cascade` at feathers level.
@@ -32,7 +34,6 @@ npm i feathers-utils
 
 ### Utils
 
-- `addHook`: add hooks to specific services
 - `filterQuery`
 - `getItemsIsArray(context)`: returns `{ items: any[], isArray: boolean }`
 - `getPaginate`

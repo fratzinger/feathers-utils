@@ -1,11 +1,16 @@
 import type { HookContext } from "@feathersjs/feathers";
-import { isMulti } from "..";
+import { isMulti } from "./isMulti";
 import { isPaginated } from "./isPaginated";
 
-export const setResultEmpty = (
-  context: HookContext
-): HookContext => {
-  if (context.result) { return context; }
+/**
+ * util to set `context.result` to an empty array or object, depending on the hook type
+ */
+export const setResultEmpty = <H extends HookContext = HookContext>(
+  context: H
+) => {
+  if (context.result) {
+    return context;
+  }
 
   const multi = isMulti(context);
 
@@ -15,7 +20,7 @@ export const setResultEmpty = (
         total: 0,
         skip: 0,
         limit: 0,
-        data: []
+        data: [],
       };
     } else {
       context.result = [];

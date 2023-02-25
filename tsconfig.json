@@ -9,8 +9,9 @@
     "strict": true,
     "downlevelIteration": true,
     "sourceMap": false,
-    "declaration": true
+    "declaration": true,
+    "types": ["vitest/globals"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "test/**/*"],
   "exclude": ["node_modules", "**/*.test.js"]
 }

@@ -1,18 +1,28 @@
-import type { HookContext, PaginationOptions } from "@feathersjs/feathers";
+import type { PaginationOptions } from "@feathersjs/adapter-commons";
+import type { HookContext } from "@feathersjs/feathers";
 
-export const getPaginate = (
-  context: HookContext
+/**
+ * util to get paginate options from context
+ * 1. it uses `context.params.paginate` if it exists
+ * 2. it uses `service.options.paginate` if it exists
+ * 3. it uses `context.params.adapter` if it exists
+ */
+export const getPaginate = <H extends HookContext = HookContext>(
+  context: H
 ): PaginationOptions | undefined => {
   if (Object.prototype.hasOwnProperty.call(context.params, "paginate")) {
-    return context.params.paginate as PaginationOptions || undefined;
+    return (context.params.paginate as PaginationOptions) || undefined;
   }
-  if (context.params.paginate === false) { return undefined; }
-  let options = context.service.options || {};
-  
+
+  if (context.params.paginate === false) {
+    return undefined;
+  }
+  let options = context.service?.options || {};
+
   options = {
     ...options,
-    ...context.params.adapter
+    ...context.params.adapter,
   };
-  
+
   return options.paginate || undefined;
 };

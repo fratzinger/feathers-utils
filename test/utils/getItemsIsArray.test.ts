@@ -2,147 +2,147 @@ import type { HookContext } from "@feathersjs/feathers";
 import assert from "assert";
 import { getItemsIsArray } from "../../src";
 
-describe("util - getItemsIsArray", function() {
-  describe("before", function() {
-    it("find:before", async function() {
+describe("util - getItemsIsArray", function () {
+  describe("before", function () {
+    it("find:before", async function () {
       const context = {
         type: "before",
         method: "find",
         params: {
-          query: {}
-        }
+          query: {},
+        },
       } as any as HookContext;
-        
+
       const { items, isArray } = getItemsIsArray(context);
       assert.deepStrictEqual(items, []);
       assert.deepStrictEqual(isArray, false);
     });
-        
-    it("get:before", async function() {
+
+    it("get:before", async function () {
       const context = {
         type: "before",
         method: "get",
         id: 1,
         params: {
-          query: {}
-        }
+          query: {},
+        },
       } as any as HookContext;
-        
+
       const { items, isArray } = getItemsIsArray(context);
       assert.deepStrictEqual(items, []);
       assert.deepStrictEqual(isArray, false);
     });
-        
-    it("create:before single", async function() {
+
+    it("create:before single", async function () {
       const context = {
         type: "before",
         method: "create",
         data: { test: true },
         params: {
-          query: {}
-        }
+          query: {},
+        },
       } as any as HookContext;
-        
+
       const { items, isArray } = getItemsIsArray(context);
       assert.deepStrictEqual(items, [{ test: true }]);
       assert.deepStrictEqual(isArray, false);
     });
-        
-    it("create:before multi", async function() {
+
+    it("create:before multi", async function () {
       const context = {
         type: "before",
         method: "create",
         data: [{ test: true }, { test: true }],
         params: {
-          query: {}
-        }
+          query: {},
+        },
       } as any as HookContext;
-        
+
       const { items, isArray } = getItemsIsArray(context);
       assert.deepStrictEqual(items, [{ test: true }, { test: true }]);
       assert.deepStrictEqual(isArray, true);
     });
-        
-    it("update:before single", async function() {
+
+    it("update:before single", async function () {
       const context = {
         type: "before",
         method: "update",
         id: 1,
         data: { test: true },
         params: {
-          query: {}
-        }
+          query: {},
+        },
       } as any as HookContext;
-        
+
       const { items, isArray } = getItemsIsArray(context);
       assert.deepStrictEqual(items, [{ test: true }]);
       assert.deepStrictEqual(isArray, false);
     });
-        
-    it("patch:before single", async function() {
+
+    it("patch:before single", async function () {
       const context = {
         type: "before",
         method: "patch",
         id: 1,
         data: { test: true },
         params: {
-          query: {}
-        }
+          query: {},
+        },
       } as any as HookContext;
-        
+
       const { items, isArray } = getItemsIsArray(context);
       assert.deepStrictEqual(items, [{ test: true }]);
       assert.deepStrictEqual(isArray, false);
     });
-        
-    it("patch:before multi", async function() {
+
+    it("patch:before multi", async function () {
       const context = {
         type: "before",
         method: "patch",
         id: null,
         data: { test: true },
         params: {
-          query: {}
-        }
+          query: {},
+        },
       } as any as HookContext;
-        
+
       const { items, isArray } = getItemsIsArray(context);
       assert.deepStrictEqual(items, [{ test: true }]);
       assert.deepStrictEqual(isArray, false);
     });
-        
-    it("remove:before single", async function() {
+
+    it("remove:before single", async function () {
       const context = {
         type: "before",
         method: "remove",
         id: 1,
         params: {
-          query: {}
-        }
+          query: {},
+        },
       } as any as HookContext;
-        
+
       const { items, isArray } = getItemsIsArray(context);
       assert.deepStrictEqual(items, []);
       assert.deepStrictEqual(isArray, false);
     });
-        
-    it("remove:before multi", async function() {
+
+    it("remove:before multi", async function () {
       const context = {
         type: "before",
         method: "remove",
         id: null,
         params: {
-          query: {}
-        }
+          query: {},
+        },
       } as any as HookContext;
-        
+
       const { items, isArray } = getItemsIsArray(context);
       assert.deepStrictEqual(items, []);
       assert.deepStrictEqual(isArray, false);
     });
   });
 
-  describe("after", function() {
+  describe("after", function () {
     it("find:after paginate:true", function () {
       const context = {
         type: "after",
@@ -151,13 +151,13 @@ describe("util - getItemsIsArray", function() {
           total: 1,
           skip: 0,
           limit: 10,
-          data: [{ test: true }]
+          data: [{ test: true }],
         },
         params: {
-          query: {}
-        }
+          query: {},
+        },
       } as any as HookContext;
-              
+
       const { items, isArray } = getItemsIsArray(context);
       assert.deepStrictEqual(items, [{ test: true }]);
       assert.deepStrictEqual(isArray, true);
@@ -169,10 +169,10 @@ describe("util - getItemsIsArray", function() {
         method: "find",
         result: [{ test: true }],
         params: {
-          query: {}
-        }
+          query: {},
+        },
       } as any as HookContext;
-                
+
       const { items, isArray } = getItemsIsArray(context);
       assert.deepStrictEqual(items, [{ test: true }]);
       assert.deepStrictEqual(isArray, true);
@@ -185,10 +185,10 @@ describe("util - getItemsIsArray", function() {
         id: 1,
         result: { test: true },
         params: {
-          query: {}
-        }
+          query: {},
+        },
       } as any as HookContext;
-                  
+
       const { items, isArray } = getItemsIsArray(context);
       assert.deepStrictEqual(items, [{ test: true }]);
       assert.deepStrictEqual(isArray, false);
@@ -202,10 +202,10 @@ describe("util - getItemsIsArray", function() {
         data: { test: "yes" },
         result: { test: true },
         params: {
-          query: {}
-        }
+          query: {},
+        },
       } as any as HookContext;
-                  
+
       const { items, isArray } = getItemsIsArray(context);
       assert.deepStrictEqual(items, [{ test: true }]);
       assert.deepStrictEqual(isArray, false);
@@ -219,10 +219,10 @@ describe("util - getItemsIsArray", function() {
         data: { test: "yes" },
         result: { test: true },
         params: {
-          query: {}
-        }
+          query: {},
+        },
       } as any as HookContext;
-                  
+
       const { items, isArray } = getItemsIsArray(context);
       assert.deepStrictEqual(items, [{ test: true }]);
       assert.deepStrictEqual(isArray, false);
@@ -236,10 +236,10 @@ describe("util - getItemsIsArray", function() {
         data: { test: "yes" },
         result: [{ test: true }, { test: true }],
         params: {
-          query: {}
-        }
+          query: {},
+        },
       } as any as HookContext;
-                  
+
       const { items, isArray } = getItemsIsArray(context);
       assert.deepStrictEqual(items, [{ test: true }, { test: true }]);
       assert.deepStrictEqual(isArray, true);
@@ -253,10 +253,10 @@ describe("util - getItemsIsArray", function() {
         data: { test: "yes" },
         result: { test: true },
         params: {
-          query: {}
-        }
+          query: {},
+        },
       } as any as HookContext;
-                  
+
       const { items, isArray } = getItemsIsArray(context);
       assert.deepStrictEqual(items, [{ test: true }]);
       assert.deepStrictEqual(isArray, false);
@@ -270,10 +270,10 @@ describe("util - getItemsIsArray", function() {
         data: { test: "yes" },
         result: [{ test: true }, { test: true }],
         params: {
-          query: {}
-        }
+          query: {},
+        },
       } as any as HookContext;
-                  
+
       const { items, isArray } = getItemsIsArray(context);
       assert.deepStrictEqual(items, [{ test: true }, { test: true }]);
       assert.deepStrictEqual(isArray, true);

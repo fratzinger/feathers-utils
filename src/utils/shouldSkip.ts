@@ -5,11 +5,22 @@ import { GeneralError } from "@feathersjs/errors";
 
 import type { HookContext } from "@feathersjs/feathers";
 
-export const shouldSkip = (
-  hookName: string, 
-  context: HookContext
+export type ShouldSkipOptions = {
+  notSkippable?: boolean;
+};
+
+/**
+ * util to detect if a hook should be skipped
+ */
+export const shouldSkip = <
+  H extends HookContext = HookContext,
+  O extends ShouldSkipOptions = ShouldSkipOptions
+>(
+  hookName: string,
+  context: H,
+  options?: O
 ): boolean => {
-  if (!context.params || !context.params.skipHooks) {
+  if (!context.params || !context.params.skipHooks || options?.notSkippable) {
     return false;
   }
 
@@ -20,24 +31,12 @@ export const shouldSkip = (
   const { type } = context;
   if (skipHooks.includes(hookName)) {
     return true;
-  }
-  if (skipHooks.includes("all")) {
+  } else if (skipHooks.includes("all")) {
     return true;
-  }
-  if (type === "before") {
-    return (
-      skipHooks.includes(`before:${hookName}`) || skipHooks.includes("before")
-    );
-  }
-  if (type === "after") {
-    return (
-      skipHooks.includes(`after:${hookName}`) || skipHooks.includes("after")
-    );
-  }
-  if (type === "error") {
-    return (
-      skipHooks.includes(`error:${hookName}`) || skipHooks.includes("error")
-    );
+  } else if (skipHooks.includes(type)) {
+    return true;
+  } else if (skipHooks.includes(`${type}:${hookName}`)) {
+    return true;
   }
 
   return false;

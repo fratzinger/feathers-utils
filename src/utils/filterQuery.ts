@@ -1,34 +1,45 @@
-import { 
-  filterQuery as plainFilterQuery
-} from "@feathersjs/adapter-commons";
+import { filterQuery as plainFilterQuery } from "@feathersjs/adapter-commons";
 
 import type {
-  FilterQueryOptions,
-  FilterQueryResult,
-  PlainFilterQueryOptions
-} from "../types";
+  FilterQueryOptions as PlainFilterQueryOptions,
+  AdapterBase,
+} from "@feathersjs/adapter-commons";
 
 import type { Query } from "@feathersjs/feathers";
 
-export function filterQuery<T>(query: Query, options?: FilterQueryOptions<T>): FilterQueryResult {
+export interface FilterQueryOptions<T> {
+  service?: AdapterBase<T>;
+  operators?: PlainFilterQueryOptions["operators"];
+  filters?: PlainFilterQueryOptions["filters"];
+}
+
+export function filterQuery<T>(query: Query, _options?: FilterQueryOptions<T>) {
   query = query || {};
-  options = options || {};
-  if (options?.service) {
-    const { service } = options;
-    const operators = options.operators 
+  _options = _options || {};
+  const { service, ...options } = _options;
+  if (service) {
+    const operators = options.operators
       ? options.operators
-      : service.options?.whitelist;
+      : service.options?.operators;
     const filters = options.filters
       ? options.filters
       : service.options?.filters;
-    const optionsForFilterQuery: PlainFilterQueryOptions = {}; 
-    if (operators) { optionsForFilterQuery.operators = operators; }
-    if (filters) { optionsForFilterQuery.filters = filters; }
-    if (typeof service?.filterQuery === "function") {
+    const optionsForFilterQuery: PlainFilterQueryOptions = {};
+    if (operators) {
+      optionsForFilterQuery.operators = operators;
+    }
+    if (filters) {
+      optionsForFilterQuery.filters = filters;
+    }
+    if (
+      service &&
+      "filterQuery" in service &&
+      typeof service.filterQuery === "function"
+    ) {
       return service.filterQuery({ query }, optionsForFilterQuery);
     } else {
-      return plainFilterQuery(query, optionsForFilterQuery) as FilterQueryResult;
+      return plainFilterQuery(query, optionsForFilterQuery);
     }
   }
-  return plainFilterQuery(query, options) as FilterQueryResult;
+  return plainFilterQuery(query, options);
 }

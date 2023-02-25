@@ -2,71 +2,71 @@ import type { HookContext } from "@feathersjs/feathers";
 import assert from "assert";
 import { getPaginate } from "../../src";
 
-describe("util - getPaginate", function() {
-  it("returns service.options.paginate", function() {
+describe("util - getPaginate", function () {
+  it("returns service.options.paginate", function () {
     const serviceOptions = {
       paginate: {
         default: 10,
-        max: 50
-      }
+        max: 50,
+      },
     };
 
     const paginate = getPaginate({
       params: {},
       service: {
-        options: serviceOptions
-      }
+        options: serviceOptions,
+      },
     } as any as HookContext);
 
     assert.deepStrictEqual(paginate, { default: 10, max: 50 });
   });
 
-  it("returns undefined for params.paginate: false", function() {
+  it("returns undefined for params.paginate: false", function () {
     const serviceOptions = {
       paginate: {
         default: 10,
-        max: 50
-      }
+        max: 50,
+      },
     };
 
     const paginate = getPaginate({
       params: { paginate: false },
       service: {
-        options: serviceOptions
-      }
+        options: serviceOptions,
+      },
     } as any as HookContext);
 
     assert.deepStrictEqual(paginate, undefined);
   });
 
-  it("returns context.adapter.paginate over service.options.paginate", function() {
+  it("returns context.adapter.paginate over service.options.paginate", function () {
     const serviceOptions = {
       paginate: {
         default: 10,
-        max: 50
-      }
+        max: 50,
+      },
     };
 
     const paginate = getPaginate({
       params: { adapter: { paginate: { default: 20, max: 100 } } },
       service: {
-        options: serviceOptions
-      }
+        options: serviceOptions,
+      },
     } as any as HookContext);
 
     assert.deepStrictEqual(paginate, { default: 20, max: 100 });
   });
 
-  it("returns undefined for no paginate", function() {
+  it("returns undefined for no paginate", function () {
     const serviceOptions = {
-      paginate: false
+      paginate: false,
     };
 
     const paginate = getPaginate({
       params: {},
       service: {
-        options: serviceOptions
-      }
+        options: serviceOptions,
+      },
     } as any as HookContext);
 
     assert.deepStrictEqual(paginate, undefined);

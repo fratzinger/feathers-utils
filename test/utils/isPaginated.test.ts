@@ -2,68 +2,70 @@ import type { HookContext } from "@feathersjs/feathers";
 import assert from "assert";
 import { isPaginated } from "../../src";
 
-describe("util - isPaginated", function() {
-  it("returns true for service.options.paginate", function() {
+describe("util - isPaginated", function () {
+  it("returns true for service.options.paginate", function () {
     const serviceOptions = {
       paginate: {
         default: 10,
-        max: 50
-      }
+        max: 50,
+      },
     };
 
     const paginate = isPaginated({
       params: {},
       service: {
-        options: serviceOptions
-      }
+        options: serviceOptions,
+      },
+      method: "find",
     } as any as HookContext);
 
     assert.deepStrictEqual(paginate, true);
   });
 
-  it("returns false for params.paginate: false", function() {
+  it("returns false for params.paginate: false", function () {
     const serviceOptions = {
       paginate: {
         default: 10,
-        max: 50
-      }
+        max: 50,
+      },
     };
 
     const paginate = isPaginated({
       params: { paginate: false },
       service: {
-        options: serviceOptions
-      }
+        options: serviceOptions,
+      },
     } as any as HookContext);
 
     assert.deepStrictEqual(paginate, false);
   });
 
-  it("returns true for context.adapter.paginate", function() {
+  it("returns true for context.adapter.paginate", function () {
     const serviceOptions = {
-      paginate: false
+      paginate: false,
     };
 
     const paginate = isPaginated({
       params: { adapter: { paginate: { default: 20, max: 100 } } },
       service: {
-        options: serviceOptions
-      }
+        options: serviceOptions,
+      },
+      method: "find",
     } as any as HookContext);
 
     assert.deepStrictEqual(paginate, true);
   });
 
-  it("returns false for no paginate", function() {
+  it("returns false for no paginate", function () {
     const serviceOptions = {
-      paginate: false
+      paginate: false,
     };
 
     const paginate = isPaginated({
       params: {},
       service: {
-        options: serviceOptions
-      }
+        options: serviceOptions,
+      },
     } as any as HookContext);
 
     assert.deepStrictEqual(paginate, false);
