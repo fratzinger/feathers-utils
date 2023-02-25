@@ -8,6 +8,8 @@
 [![npm](https://img.shields.io/npm/dm/feathers-utils)](https://www.npmjs.com/package/feathers-utils)
 [![GitHub license](https://img.shields.io/github/license/fratzinger/feathers-utils)](https://github.com/fratzinger/feathers-utils/blob/main/LICENSE.md)
 
+> NOTE: This is the version for Feathers v5. For Feathers v4 use [feathers-utils v1](https://github.com/fratzinger/feathers-utils/tree/crow)
+
 
 ## Installation
 
