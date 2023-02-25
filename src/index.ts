@@ -5,3 +5,4 @@ export * from "./utils";
 export * from "./filters";
 
 export * from "./types";
+export * from "./utility-types";

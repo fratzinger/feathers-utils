@@ -1,22 +1,38 @@
 import type { HookContext } from "@feathersjs/feathers";
 
-export interface GetItemsIsArrayResult<T = any> {
-  items: T[];
-  isArray: boolean;
+export type GetItemsIsArrayOptions = {
+  from: "data" | "result" | "automatic"
 }
 
-/**
- * util to get items from context, return it as an array, no matter if it is an array or not
- * uses `context.result` if existent. uses `context.data` otherwise
- */
+export interface GetItemsIsArrayResult<T = any> {
+  items: T[]
+  isArray: boolean
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getItemsIsArray = <T = any, H extends HookContext = HookContext>(
-  context: H
+  context: H,
+  options?: GetItemsIsArrayOptions
 ): GetItemsIsArrayResult<T> => {
-  let itemOrItems = context.result !== undefined ? context.result : context.data;
-  itemOrItems =
-    itemOrItems && context.method === "find"
-      ? itemOrItems.data || itemOrItems
+  const {
+    from = "automatic"
+  } = options || {};
+
+  let itemOrItems;
+
+  if (from === "automatic") {
+    itemOrItems = context.type === "before" 
+      ? context.data 
+      : context.result;
+    itemOrItems = itemOrItems && context.method === "find" 
+      ? (itemOrItems.data || itemOrItems) 
       : itemOrItems;
+  } else if (from === "data") {
+    itemOrItems = context.data;
+  } else if (from === "result") {
+    itemOrItems = context.result;
+  }
+  
   const isArray = Array.isArray(itemOrItems);
   return {
     items: isArray ? itemOrItems : itemOrItems != null ? [itemOrItems] : [],
