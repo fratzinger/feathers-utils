@@ -11,12 +11,10 @@ const makeOptions = (
   options?: HookRunPerItemOptions
 ): Required<HookRunPerItemOptions> => {
   options = options || {};
-  return Object.assign(
-    {
-      wait: true,
-    },
-    options
-  );
+  return {
+    wait: true,
+    ...options,
+  };
 };
 
 /**

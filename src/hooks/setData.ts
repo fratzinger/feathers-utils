@@ -27,11 +27,10 @@ export function setData<H extends HookContext = HookContext>(
   to: PropertyPath,
   _options?: HookSetDataOptions
 ) {
-  const options: Required<HookSetDataOptions> = Object.assign(
-    {},
-    defaultOptions,
-    _options
-  );
+  const options: Required<HookSetDataOptions> = {
+    ...defaultOptions,
+    ..._options,
+  };
   return (context: H) => {
     if (shouldSkip("setData", context)) {
       return context;

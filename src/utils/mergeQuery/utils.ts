@@ -2,20 +2,15 @@ import { Forbidden } from "@feathersjs/errors";
 import _get from "lodash/get.js";
 import _has from "lodash/has.js";
 import _isEmpty from "lodash/isEmpty.js";
-import _isEqual from "lodash/isEqual.js";
 
 import _set from "lodash/set.js";
 import _uniqWith from "lodash/uniqWith.js";
 import type { Path } from "../../typesInternal";
 import { mergeArrays } from "./mergeArrays";
 import type { Handle, MergeQueryOptions } from "./types";
-
-export const hasOwnProperty = (
-  obj: Record<string, unknown>,
-  key: string
-): boolean => {
-  return Object.prototype.hasOwnProperty.call(obj, key);
-};
+import { deepEqual as _isEqual } from "fast-equals";
+import type { Query } from "@feathersjs/feathers";
+import { hasOwnProperty } from "../internal.utils";
 
 export function handleArray<T>(
   target: Record<string, unknown>,
@@ -265,19 +260,12 @@ export function handleCircular<T>(
 export function makeDefaultOptions<T>(
   options?: Partial<MergeQueryOptions<T>>
 ): MergeQueryOptions<T> {
-  options = options || ({} as MergeQueryOptions<T>);
-  options.defaultHandle = options.defaultHandle || "combine";
-  options.useLogicalConjunction = Object.prototype.hasOwnProperty.call(
-    options,
-    "useLogicalConjunction"
-  )
-    ? options.useLogicalConjunction
-    : false;
-  options.actionOnEmptyIntersect =
-    options.actionOnEmptyIntersect ||
-    (() => {
-      throw new Forbidden("You're not allowed to make this request");
-    });
+  options ??= {} as MergeQueryOptions<T>;
+  options.defaultHandle ??= "combine";
+  options.useLogicalConjunction ??= false;
+  options.actionOnEmptyIntersect ??= () => {
+    throw new Forbidden("You're not allowed to make this request");
+  };
   options.handle = options.handle || {};
   if (options.defaultHandle === "intersect") {
     options.handle.$select = options.handle.$select || "intersectOrFull";
@@ -286,15 +274,17 @@ export function makeDefaultOptions<T>(
 }
 
 export function moveProperty(
-  source: Record<string, any>,
-  target: Record<string, any>,
-  key: string
+  from: Record<string, any>,
+  to: Record<string, any>,
+  ...keys: string[]
 ): void {
-  if (!Object.prototype.hasOwnProperty.call(source, key)) {
-    return;
-  }
-  target[key] = source[key];
-  delete source[key];
+  keys.forEach((key) => {
+    if (!hasOwnProperty(from, key)) {
+      return;
+    }
+    to[key] = from[key];
+    delete from[key];
+  });
 }
 
 export function getParentProp(target: Record<string, unknown>, path: Path) {
@@ -338,5 +328,68 @@ export function arrayWithoutDuplicates<T>(target: T[]): T[] {
   if (!target || !Array.isArray(target)) {
     return target;
   }
+
   return _uniqWith(target, _isEqual);
+}
+
+/**
+ * Checks if one query is a superset of the target query
+ * @param target The target query
+ * @param source The source query
+ * @returns The query that is the superset of the other query, returns undefined otherwise
+ */
+export function isQueryMoreExplicitThanQuery(
+  target: Query,
+  source: Query
+): Query | undefined {
+  if (!target || !source) {
+    return;
+  }
+
+  const targetKeys = Object.keys(target);
+  const sourceKeys = Object.keys(source);
+
+  // sourceQuery: {}; targetQuery: { something }
+  if (!sourceKeys.length) {
+    return target;
+  }
+
+  // sourceQuery: { something }; targetQuery: {}
+  if (!targetKeys.length) {
+    return source;
+  }
+
+  if (targetKeys.every((key) => _isEqual(target[key], source[key]))) {
+    // every property of target is exactly in source
+    return source;
+  }
+
+  if (sourceKeys.every((key) => _isEqual(target[key], source[key]))) {
+    // every property of source is exactly in target
+    return target;
+  }
+
+  return;
+}
+
+export function areQueriesOverlapping(target: Query, source: Query): boolean {
+  if (!target || !source) {
+    return false;
+  }
+
+  const targetKeys = Object.keys(target);
+  const sourceKeys = Object.keys(source);
+
+  if (!sourceKeys.length || !targetKeys.length) {
+    return false;
+  }
+
+  if (
+    targetKeys.some((x) => sourceKeys.includes(x)) ||
+    sourceKeys.some((x) => targetKeys.includes(x))
+  ) {
+    return true;
+  }
+
+  return false;
 }

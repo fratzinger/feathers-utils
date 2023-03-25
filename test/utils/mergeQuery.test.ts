@@ -2,12 +2,102 @@ import assert from "assert";
 import { filterArray, mergeQuery } from "../../src";
 import { feathers } from "@feathersjs/feathers";
 import { MemoryService } from "@feathersjs/memory";
+import { expect } from "vitest";
+import {
+  areQueriesOverlapping,
+  isQueryMoreExplicitThanQuery,
+} from "../../src/utils/mergeQuery/utils";
 
 describe("util - mergeQuery", function () {
   describe("general", function () {
     it("$limit: -1", function () {
       const query = mergeQuery({ $limit: -1 }, { id: 1 });
       assert.deepStrictEqual(query, { $limit: -1, id: 1 });
+    });
+  });
+
+  describe("areQueriesOverlapping", function () {
+    it("empty", function () {
+      const query = areQueriesOverlapping({}, {});
+
+      expect(query).toBe(false);
+    });
+
+    it("share same properties", function () {
+      const query = areQueriesOverlapping({ id: 1 }, { id: 1 });
+
+      expect(query).toBe(true);
+    });
+
+    it("share same properties with different values", function () {
+      const query = areQueriesOverlapping({ id: 1 }, { id: 2 });
+
+      expect(query).toBe(true);
+    });
+
+    it("share some properties", function () {
+      const query = areQueriesOverlapping(
+        { id: 1, test1: true, test2: true },
+        { id: 2, test3: true, test4: true }
+      );
+
+      expect(query).toBe(true);
+    });
+
+    it("do not share properties", function () {
+      const query = areQueriesOverlapping({ id: 1 }, { test: true });
+
+      expect(query).toBe(false);
+    });
+  });
+
+  describe("isQueryMoreExplicitThanQuery", function () {
+    it("empty", function () {
+      const query = isQueryMoreExplicitThanQuery({}, {});
+
+      expect(query).toStrictEqual({});
+    });
+
+    it("query1 is empty", function () {
+      const query = isQueryMoreExplicitThanQuery({}, { id: 1 });
+
+      expect(query).toStrictEqual({ id: 1 });
+    });
+
+    it("query2 is empty", function () {
+      const query = isQueryMoreExplicitThanQuery({ id: 1 }, {});
+
+      expect(query).toStrictEqual({ id: 1 });
+    });
+
+    it("query1 is superset of query2", function () {
+      const query = isQueryMoreExplicitThanQuery(
+        { id: 1, test: true },
+        { id: 1 }
+      );
+
+      expect(query).toStrictEqual({ id: 1, test: true });
+    });
+
+    it("query2 is superset of query1", function () {
+      const query = isQueryMoreExplicitThanQuery(
+        { id: 1 },
+        { id: 1, test: true }
+      );
+
+      expect(query).toStrictEqual({ id: 1, test: true });
+    });
+
+    it("queries do not overlap", function () {
+      const query = isQueryMoreExplicitThanQuery({ id: 1 }, { test: true });
+
+      expect(query).toBeUndefined();
+    });
+
+    it("queries overlap but differ", function () {
+      const query = isQueryMoreExplicitThanQuery({ id: 1 }, { id: 2 });
+
+      expect(query).toBeUndefined();
     });
   });
 
@@ -64,7 +154,7 @@ describe("util - mergeQuery", function () {
           source,
           Object.assign({ service }, options)
         );
-        assert.deepStrictEqual(query, expected, "works as expected");
+        assert.deepStrictEqual(query, expected, `'${key}' works as expected`);
       });
     }
   });
@@ -177,7 +267,7 @@ describe("util - mergeQuery", function () {
           source,
           Object.assign({ service }, options)
         );
-        assert.deepStrictEqual(query, expected, "works as expected");
+        assert.deepStrictEqual(query, expected, `'${key}' works as expected`);
       });
     }
 
@@ -240,7 +330,7 @@ describe("util - mergeQuery", function () {
             source,
             Object.assign({ service }, options)
           );
-          assert.deepStrictEqual(query, expected, "works as expected");
+          assert.deepStrictEqual(query, expected, `'${key}' works as expected`);
         });
       }
     });
@@ -353,7 +443,7 @@ describe("util - mergeQuery", function () {
           source,
           Object.assign({ service }, options)
         );
-        assert.deepStrictEqual(query, expected, "works as expected");
+        assert.deepStrictEqual(query, expected, `'${key}' works as expected`);
       });
     }
 
@@ -407,6 +497,24 @@ describe("util - mergeQuery", function () {
           options: { defaultHandle: "intersect", useLogicalConjunction: true },
           expected: { $and: [{ id: 1 }, { id: 2 }], id: 3 },
         },
+        "merge queries without $and": {
+          target: { id: 1 },
+          source: { userId: 2 },
+          options: { defaultHandle: "intersect", useLogicalConjunction: true },
+          expected: { id: 1, userId: 2 },
+        },
+        "skip merge if source is in target": {
+          target: { id: 1, userId: 2 },
+          source: { userId: 2 },
+          options: { defaultHandle: "intersect", useLogicalConjunction: true },
+          expected: { id: 1, userId: 2 },
+        },
+        "skip merge if target is in source": {
+          target: { userId: 2 },
+          source: { id: 1, userId: 2 },
+          options: { defaultHandle: "intersect", useLogicalConjunction: true },
+          expected: { id: 1, userId: 2 },
+        },
       };
       for (const key in passingPairs) {
         const { target, source, options, expected } = passingPairs[key];
@@ -416,7 +524,7 @@ describe("util - mergeQuery", function () {
             source,
             Object.assign({ service }, options)
           );
-          assert.deepStrictEqual(query, expected, "works as expected");
+          assert.deepStrictEqual(query, expected, `'${key}' works as expected`);
         });
       }
     });
