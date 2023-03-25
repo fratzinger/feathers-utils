@@ -12,13 +12,10 @@ export type ShouldSkipOptions = {
 /**
  * util to detect if a hook should be skipped
  */
-export const shouldSkip = <
-  H extends HookContext = HookContext,
-  O extends ShouldSkipOptions = ShouldSkipOptions
->(
+export const shouldSkip = <H extends HookContext = HookContext>(
   hookName: string,
   context: H,
-  options?: O
+  options?: ShouldSkipOptions
 ): boolean => {
   if (!context.params || !context.params.skipHooks || options?.notSkippable) {
     return false;
