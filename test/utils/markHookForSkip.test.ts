@@ -2,6 +2,7 @@ import assert from "assert";
 import { feathers } from "@feathersjs/feathers";
 import { MemoryService } from "@feathersjs/memory";
 import { shouldSkip, markHookForSkip } from "../../src";
+import { hasOwnProperty } from "../../src/utils/internal.utils";
 
 describe("util - markHookForSkip", function () {
   it("returns hook object", function () {
@@ -107,7 +108,7 @@ describe("util - markHookForSkip", function () {
     const promises = Object.keys(methods).map(async (method) => {
       await service[method](...methods[method]);
       assert.ok(
-        !Object.prototype.hasOwnProperty.call(ranInto, method),
+        !hasOwnProperty(ranInto, method),
         `'${method}': did not run into hook`
       );
       return true;
@@ -217,7 +218,7 @@ describe("util - markHookForSkip", function () {
     const promises = Object.keys(methods).map(async (method) => {
       await service[method](...methods[method]);
       assert.ok(
-        !Object.prototype.hasOwnProperty.call(ranInto, method),
+        !hasOwnProperty(ranInto, method),
         `'${method}': did not run into hook`
       );
       return true;
@@ -390,11 +391,11 @@ describe("util - markHookForSkip", function () {
     const promises = Object.keys(methods).map(async (method) => {
       await service[method](...methods[method]);
       assert.ok(
-        !Object.prototype.hasOwnProperty.call(ranIntoBefore, method),
+        !hasOwnProperty(ranIntoBefore, method),
         `'${method}': did not run into before hook`
       );
       assert.ok(
-        !Object.prototype.hasOwnProperty.call(ranIntoAfter, method),
+        !hasOwnProperty(ranIntoAfter, method),
         `'${method}': did not run into after hook`
       );
       return true;
