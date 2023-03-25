@@ -2,13 +2,13 @@ import type { Path } from "../../typesInternal";
 import type { Handle, ActionOnEmptyIntersect } from "./types";
 
 export function mergeArrays<T>(
-  targetArr: T[],
-  sourceArr: T[],
+  targetArr: T[] | undefined,
+  sourceArr: T[] | undefined,
   handle: Handle,
   prependKey?: Path,
   actionOnEmptyIntersect?: ActionOnEmptyIntersect
 ): T[] | undefined {
-  if (!sourceArr && !targetArr) {
+  if (!sourceArr || !targetArr) {
     return;
   }
   if (handle === "target") {
