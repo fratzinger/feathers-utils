@@ -8,7 +8,7 @@ export function mergeArrays<T>(
   prependKey?: Path,
   actionOnEmptyIntersect?: ActionOnEmptyIntersect
 ): T[] | undefined {
-  if (!sourceArr || !targetArr) {
+  if (!sourceArr && !targetArr) {
     return;
   }
   if (handle === "target") {
@@ -25,10 +25,10 @@ export function mergeArrays<T>(
     const arr = targetArr.concat(sourceArr);
     return [...new Set(arr)];
   } else if (handle === "intersect" || handle === "intersectOrFull") {
-    const targetIsArray = !targetArr || !Array.isArray(targetArr);
-    const sourceIsArray = !sourceArr || !Array.isArray(sourceArr);
+    const targetIsNotArray = !targetArr || !Array.isArray(targetArr);
+    const sourceIsNotArray = !sourceArr || !Array.isArray(sourceArr);
 
-    if ((targetIsArray || sourceIsArray) && handle === "intersect") {
+    if ((targetIsNotArray || sourceIsNotArray) && handle === "intersect") {
       if (actionOnEmptyIntersect) {
         actionOnEmptyIntersect(
           targetArr as unknown,
@@ -39,12 +39,12 @@ export function mergeArrays<T>(
       return;
     }
 
-    if (handle === "intersectOrFull") {
-      const val = !targetIsArray ? targetArr : sourceArr;
+    if (targetIsNotArray || sourceIsNotArray) {
+      const val = !targetIsNotArray ? targetArr : sourceArr;
       return val;
     }
 
-    return targetArr.filter((val) => sourceArr.includes(val));
+    return targetArr!.filter((val) => sourceArr!.includes(val));
   }
   return undefined;
 }

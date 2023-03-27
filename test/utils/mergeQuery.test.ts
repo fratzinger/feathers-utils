@@ -8,6 +8,8 @@ import {
   isQueryMoreExplicitThanQuery,
 } from "../../src/utils/mergeQuery/utils";
 
+import { mergeArrays } from "../../src/utils/mergeQuery/mergeArrays";
+
 describe("util - mergeQuery", function () {
   describe("general", function () {
     it("$limit: -1", function () {
@@ -98,6 +100,72 @@ describe("util - mergeQuery", function () {
       const query = isQueryMoreExplicitThanQuery({ id: 1 }, { id: 2 });
 
       expect(query).toBeUndefined();
+    });
+  });
+
+  describe("mergeArrays", function () {
+    describe("target", function () {
+      it("returns target", function () {
+        const arr = mergeArrays([1], [2], "target");
+
+        expect(arr).toStrictEqual([1]);
+      });
+
+      it("returns target even if undefined", function () {
+        const arr = mergeArrays(undefined, [1], "target");
+
+        expect(arr).toBeUndefined();
+      });
+    });
+
+    describe("source", function () {
+      it("returns source", function () {
+        const arr = mergeArrays([1], [2], "source");
+
+        expect(arr).toStrictEqual([2]);
+      });
+
+      it("returns source even if undefined", function () {
+        const arr = mergeArrays([1], undefined, "source");
+
+        expect(arr).toBeUndefined();
+      });
+    });
+
+    describe("combine", function () {
+      it("returns combined array", function () {
+        const arr = mergeArrays([1, 2], [2, 3], "combine");
+
+        expect(arr).toStrictEqual([1, 2, 3]);
+      });
+
+      it("returns one array if combine", function () {
+        const arr1 = mergeArrays([1, 2], undefined, "combine");
+
+        expect(arr1).toStrictEqual([1, 2]);
+
+        const arr2 = mergeArrays(undefined, [1, 2], "combine");
+
+        expect(arr2).toStrictEqual([1, 2]);
+      });
+    });
+
+    describe("intersect", function () {
+      it("returns intersected array", function () {
+        const arr = mergeArrays([1, 2], [2, 3], "intersect");
+
+        expect(arr).toStrictEqual([2]);
+      });
+
+      it("returns undefined if one is undefined", function () {
+        const arr1 = mergeArrays([1, 2], undefined, "intersect");
+
+        expect(arr1).toBeUndefined();
+
+        const arr2 = mergeArrays(undefined, [1, 2], "intersect");
+
+        expect(arr2).toBeUndefined();
+      });
     });
   });
 
