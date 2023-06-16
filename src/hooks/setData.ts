@@ -39,7 +39,9 @@ export function setData<H extends HookContext = HookContext>(
 
     const { items } = getItemsIsArray(context);
 
-    if (!_has(context, from)) {
+    const contextJson = toJSON(context);
+
+    if (!_has(contextJson, from)) {
       if (!context.params?.provider || options.allowUndefined === true) {
         return context;
       }
@@ -54,7 +56,7 @@ export function setData<H extends HookContext = HookContext>(
       throw new Forbidden(`Expected field ${from.toString()} not available`);
     }
 
-    const val = _get(toJSON(context), from);
+    const val = _get(contextJson, from);
 
     items.forEach((item: Record<string, unknown>) => {
       let overwrite: boolean;
