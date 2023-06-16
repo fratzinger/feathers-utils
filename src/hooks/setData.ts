@@ -8,6 +8,7 @@ import { getItemsIsArray, shouldSkip } from "../utils";
 import type { HookContext } from "@feathersjs/feathers";
 import type { PropertyPath } from "lodash";
 import type { PredicateWithContext } from "../types";
+import { toJSON } from "../utils/toJSON";
 
 export interface HookSetDataOptions {
   allowUndefined?: boolean;
@@ -53,7 +54,7 @@ export function setData<H extends HookContext = HookContext>(
       throw new Forbidden(`Expected field ${from.toString()} not available`);
     }
 
-    const val = _get(context, from);
+    const val = _get(toJSON(context), from);
 
     items.forEach((item: Record<string, unknown>) => {
       let overwrite: boolean;
