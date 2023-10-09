@@ -15,7 +15,7 @@ export interface CreateRelatedOptions<S = Record<string, any>> {
  */
 export function createRelated<
   S = Record<string, any>,
-  H extends HookContext = HookContext
+  H extends HookContext = HookContext,
 >({
   service,
   multi = true,
@@ -51,8 +51,8 @@ export function createRelated<
     } else {
       await Promise.all(
         dataToCreate.map(async (item) =>
-          context.app.service(service as string).create(item)
-        )
+          context.app.service(service as string).create(item),
+        ),
       );
     }
 

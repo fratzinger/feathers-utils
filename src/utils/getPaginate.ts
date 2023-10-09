@@ -9,7 +9,7 @@ import { hasOwnProperty } from "./internal.utils";
  * 3. it uses `context.params.adapter` if it exists
  */
 export const getPaginate = <H extends HookContext = HookContext>(
-  context: H
+  context: H,
 ): PaginationOptions | undefined => {
   if (hasOwnProperty(context.params, "paginate")) {
     return (context.params.paginate as PaginationOptions) || undefined;

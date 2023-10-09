@@ -12,7 +12,7 @@ export const setQueryKeySafely = (
   key: string,
   value: any,
   operator = "$eq",
-  options?: SetQueryKeySafelyOptions
+  options?: SetQueryKeySafelyOptions,
 ) => {
   const { mutate = false } = options || {};
 
@@ -38,6 +38,12 @@ export const setQueryKeySafely = (
     return params;
   }
 
+  console.log(
+    "params.query[key]",
+    params.query[key],
+    isPlainObject(params.query[key]),
+  );
+
   if (isPlainObject(params.query[key]) && !(operator in params.query[key])) {
     params.query[key][operator] = value;
   } else {
@@ -50,7 +56,7 @@ export const setQueryKeySafely = (
             [key]: {
               [operator]: value,
             },
-          }
+          },
     );
   }
 

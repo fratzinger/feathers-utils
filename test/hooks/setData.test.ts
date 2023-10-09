@@ -28,7 +28,7 @@ describe("hook - setData", function () {
         assert.strictEqual(
           result[dataOrResult].userId,
           1,
-          `'${type}/${method}': ${dataOrResult} has 'userId:1'`
+          `'${type}/${method}': ${dataOrResult} has 'userId:1'`,
         );
       });
     });
@@ -59,7 +59,7 @@ describe("hook - setData", function () {
         assert.strictEqual(
           result[dataOrResult].userId,
           1,
-          `'${type}/${method}': ${dataOrResult} has 'userId:1'`
+          `'${type}/${method}': ${dataOrResult} has 'userId:1'`,
         );
       });
     });
@@ -91,7 +91,7 @@ describe("hook - setData", function () {
           assert.strictEqual(
             item.userId,
             1,
-            `'${type}/${method}': ${dataOrResult} has 'userId:1'`
+            `'${type}/${method}': ${dataOrResult} has 'userId:1'`,
           );
         });
       });
@@ -124,7 +124,7 @@ describe("hook - setData", function () {
           assert.strictEqual(
             item.userId,
             1,
-            `'${type}/${method}': ${dataOrResult} has 'userId:1'`
+            `'${type}/${method}': ${dataOrResult} has 'userId:1'`,
           );
         });
       });
@@ -153,7 +153,7 @@ describe("hook - setData", function () {
         assert.strictEqual(
           result[dataOrResult].userId,
           2,
-          `'${type}/${method}': ${dataOrResult} has 'userId:2'`
+          `'${type}/${method}': ${dataOrResult} has 'userId:2'`,
         );
       });
     });
@@ -181,7 +181,7 @@ describe("hook - setData", function () {
           //@ts-ignore
           () => setData("params.user.id", "userId")(context),
           (err: any) => err.name === "Forbidden",
-          `'${type}/${method}': throws 'Forbidden' error`
+          `'${type}/${method}': throws 'Forbidden' error`,
         );
       });
     });
@@ -206,9 +206,9 @@ describe("hook - setData", function () {
           //@ts-ignore
           () =>
             setData("params.user.id", "userId", { allowUndefined: true })(
-              context
+              context,
             ),
-          `'${type}/${method}': passes`
+          `'${type}/${method}': passes`,
         );
       });
     });
@@ -236,7 +236,7 @@ describe("hook - setData", function () {
           //@ts-ignore
           () =>
             setData("params.user.id", "userId", { overwrite: false })(context),
-          `'${type}/${method}': passes`
+          `'${type}/${method}': passes`,
         );
       });
     });
@@ -270,7 +270,7 @@ describe("hook - setData", function () {
           assert.strictEqual(
             result[dataOrResult].userId,
             1,
-            `'${type}/${method}': ${dataOrResult} has 'userId:1'`
+            `'${type}/${method}': ${dataOrResult} has 'userId:1'`,
           );
         });
       });
@@ -303,7 +303,7 @@ describe("hook - setData", function () {
           assert.strictEqual(
             result[dataOrResult].userId,
             2,
-            `'${type}/${method}': ${dataOrResult} has 'userId:2'`
+            `'${type}/${method}': ${dataOrResult} has 'userId:2'`,
           );
         });
       });
@@ -337,7 +337,7 @@ describe("hook - setData", function () {
             assert.strictEqual(
               item.userId,
               1,
-              `${type}/${method}': ${dataOrResult} has 'userId:1'`
+              `${type}/${method}': ${dataOrResult} has 'userId:1'`,
             );
           });
         });
@@ -372,7 +372,7 @@ describe("hook - setData", function () {
             assert.strictEqual(
               item.userId,
               i,
-              `${type}/${method}': ${dataOrResult} has 'userId:${i}`
+              `${type}/${method}': ${dataOrResult} has 'userId:${i}`,
             );
           });
         });
@@ -409,7 +409,7 @@ describe("hook - setData", function () {
             assert.strictEqual(
               item.userId,
               1,
-              `'${type}/${method}': ${dataOrResult} has 'userId:1'`
+              `'${type}/${method}': ${dataOrResult} has 'userId:1'`,
             );
           });
         });
@@ -443,7 +443,7 @@ describe("hook - setData", function () {
           assert.strictEqual(
             result[dataOrResult].userId,
             2,
-            `'${type}/${method}': ${dataOrResult} has 'userId:2'`
+            `'${type}/${method}': ${dataOrResult} has 'userId:2'`,
           );
         });
       });
@@ -477,13 +477,13 @@ describe("hook - setData", function () {
             assert.strictEqual(
               result[dataOrResult].userId,
               1,
-              `'${type}/${method}': ${dataOrResult} has 'userId:1'`
+              `'${type}/${method}': ${dataOrResult} has 'userId:1'`,
             );
           } else {
             assert.strictEqual(
               result[dataOrResult].userId,
               2,
-              `'${type}/${method}': ${dataOrResult} has 'userId:2'`
+              `'${type}/${method}': ${dataOrResult} has 'userId:2'`,
             );
           }
         });
@@ -518,7 +518,7 @@ describe("hook - setData", function () {
             assert.strictEqual(
               item.userId,
               i,
-              `${type}/${method}': ${dataOrResult} has 'userId:${i}`
+              `${type}/${method}': ${dataOrResult} has 'userId:${i}`,
             );
           });
         });

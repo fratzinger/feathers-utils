@@ -12,7 +12,7 @@ export type FirstLast = "first" | "last";
 export type ActionOnEmptyIntersect = (
   target: unknown,
   source: unknown,
-  prependKey: Path
+  prependKey: Path,
 ) => void;
 
 export interface MergeQueryOptions<T> extends FilterQueryOptions<T> {

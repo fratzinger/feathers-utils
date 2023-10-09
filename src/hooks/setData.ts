@@ -26,7 +26,7 @@ const defaultOptions: Required<HookSetDataOptions> = {
 export function setData<H extends HookContext = HookContext>(
   from: PropertyPath,
   to: PropertyPath,
-  _options?: HookSetDataOptions
+  _options?: HookSetDataOptions,
 ) {
   const options: Required<HookSetDataOptions> = {
     ...defaultOptions,

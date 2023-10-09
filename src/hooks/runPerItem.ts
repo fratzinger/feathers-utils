@@ -8,7 +8,7 @@ export interface HookRunPerItemOptions {
 }
 
 const makeOptions = (
-  options?: HookRunPerItemOptions
+  options?: HookRunPerItemOptions,
 ): Required<HookRunPerItemOptions> => {
   options = options || {};
   return {
@@ -24,7 +24,7 @@ const makeOptions = (
 export const runPerItem = <H extends HookContext = HookContext>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   actionPerItem: (item: any, context: H) => Promisable<any>,
-  _options?: HookRunPerItemOptions
+  _options?: HookRunPerItemOptions,
 ) => {
   const options = makeOptions(_options);
   return async (context: H) => {

@@ -37,14 +37,14 @@ describe("hook - createRelated", function () {
           title: "First issue",
           userId: item.id,
         }),
-      })
+      }),
     );
 
     assert.throws(() =>
       // @ts-expect-error - missing data
       createRelated({
         service: "todos",
-      })
+      }),
     );
   });
 

@@ -109,7 +109,7 @@ describe("util - markHookForSkip", function () {
       await service[method](...methods[method]);
       assert.ok(
         !hasOwnProperty(ranInto, method),
-        `'${method}': did not run into hook`
+        `'${method}': did not run into hook`,
       );
       return true;
     });
@@ -117,7 +117,7 @@ describe("util - markHookForSkip", function () {
     const results = await Promise.all(promises);
     assert.ok(
       results.every((x) => x === true),
-      "all ok"
+      "all ok",
     );
   });
 
@@ -219,7 +219,7 @@ describe("util - markHookForSkip", function () {
       await service[method](...methods[method]);
       assert.ok(
         !hasOwnProperty(ranInto, method),
-        `'${method}': did not run into hook`
+        `'${method}': did not run into hook`,
       );
       return true;
     });
@@ -227,7 +227,7 @@ describe("util - markHookForSkip", function () {
     const results = await Promise.all(promises);
     assert.ok(
       results.every((x) => x === true),
-      "all ok"
+      "all ok",
     );
   });
 
@@ -392,11 +392,11 @@ describe("util - markHookForSkip", function () {
       await service[method](...methods[method]);
       assert.ok(
         !hasOwnProperty(ranIntoBefore, method),
-        `'${method}': did not run into before hook`
+        `'${method}': did not run into before hook`,
       );
       assert.ok(
         !hasOwnProperty(ranIntoAfter, method),
-        `'${method}': did not run into after hook`
+        `'${method}': did not run into after hook`,
       );
       return true;
     });
@@ -404,7 +404,7 @@ describe("util - markHookForSkip", function () {
     const results = await Promise.all(promises);
     assert.ok(
       results.every((x) => x === true),
-      "all ok"
+      "all ok",
     );
   });
 });

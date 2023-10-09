@@ -26,7 +26,7 @@ describe("hook - removeRelated", function () {
       createRelated({
         keyThere: "userId",
         keyHere: "id",
-      })
+      }),
     );
 
     assert.throws(() =>
@@ -34,7 +34,7 @@ describe("hook - removeRelated", function () {
       createRelated({
         service: "todos",
         keyHere: "id",
-      })
+      }),
     );
   });
 

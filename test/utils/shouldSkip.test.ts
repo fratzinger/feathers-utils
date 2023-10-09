@@ -11,9 +11,9 @@ describe("util - shouldSkip", function () {
           assert.strictEqual(
             shouldSkip("all", context),
             false,
-            `'${type}:${method}': returns false`
+            `'${type}:${method}': returns false`,
           );
-        }
+        },
       );
     });
   });
@@ -30,9 +30,9 @@ describe("util - shouldSkip", function () {
           assert.strictEqual(
             shouldSkip("test", context),
             true,
-            `'${type}:${method}': returns true`
+            `'${type}:${method}': returns true`,
           );
-        }
+        },
       );
     });
   });
@@ -49,9 +49,9 @@ describe("util - shouldSkip", function () {
           assert.strictEqual(
             shouldSkip("test", context),
             true,
-            `'${type}:${method}': returns true`
+            `'${type}:${method}': returns true`,
           );
-        }
+        },
       );
     });
   });
@@ -68,9 +68,9 @@ describe("util - shouldSkip", function () {
           assert.strictEqual(
             shouldSkip("test", context),
             true,
-            `'${type}:${method}': returns true`
+            `'${type}:${method}': returns true`,
           );
-        }
+        },
       );
     });
   });
@@ -87,9 +87,9 @@ describe("util - shouldSkip", function () {
           assert.strictEqual(
             shouldSkip("test", context),
             true,
-            `'${type}:${method}': returns true`
+            `'${type}:${method}': returns true`,
           );
-        }
+        },
       );
     });
   });
@@ -113,9 +113,9 @@ describe("util - shouldSkip", function () {
           assert.strictEqual(
             shouldSkip("test1", context),
             false,
-            `'${type}:${method}': returns true`
+            `'${type}:${method}': returns true`,
           );
-        }
+        },
       );
     });
   });

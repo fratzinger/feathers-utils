@@ -3,13 +3,13 @@ import { DebouncedStore, makeDefaultOptions } from "./DebouncedStore";
 import type { DebouncedStoreOptions, InitDebounceMixinOptions } from "./types";
 
 export function debounceMixin(
-  options?: Partial<InitDebounceMixinOptions>
+  options?: Partial<InitDebounceMixinOptions>,
 ): (app: Application) => void {
   return (app: Application): void => {
     options = options || {};
     const defaultOptions = Object.assign(
       makeDefaultOptions(),
-      options?.default
+      options?.default,
     );
 
     app.mixins.push((service: any, path) => {
@@ -18,7 +18,7 @@ export function debounceMixin(
       // if service already has registered something on `debouncedStore`
       if (service.debouncedStore) {
         console.warn(
-          `[feathers-utils] service: '${path}' already has a property 'debouncedStore'. Mixin will skip creating a new debouncedStore`
+          `[feathers-utils] service: '${path}' already has a property 'debouncedStore'. Mixin will skip creating a new debouncedStore`,
         );
         return;
       }
@@ -26,7 +26,7 @@ export function debounceMixin(
       const serviceOptions = Object.assign({}, defaultOptions, options?.[path]);
       service.debouncedStore = new DebouncedStore(
         app,
-        serviceOptions as DebouncedStoreOptions
+        serviceOptions as DebouncedStoreOptions,
       );
     });
   };

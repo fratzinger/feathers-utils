@@ -14,7 +14,7 @@ const mockApp = () => {
         maxWait: 1000,
       },
       blacklist: ["authentication"],
-    })
+    }),
   );
   app.use("users", new MemoryService());
   app.use("tasks", new MemoryService());
@@ -23,13 +23,13 @@ const mockApp = () => {
   app.use("authentication", new MemoryService());
 
   const usersService: DebouncedService<MemoryService> = app.service(
-    "users"
+    "users",
   ) as any;
   const tasksService: DebouncedService<MemoryService> = app.service(
-    "tasks"
+    "tasks",
   ) as any;
   const postsService: DebouncedService<MemoryService> = app.service(
-    "posts"
+    "posts",
   ) as any;
   const authenticationService = app.service("authentication");
 
@@ -52,7 +52,7 @@ describe("mixin: debounce-mixin", function () {
       assert.strictEqual(
         typeof service.debouncedStore.add,
         "function",
-        "service has 'add' function"
+        "service has 'add' function",
       );
     });
 
@@ -60,7 +60,7 @@ describe("mixin: debounce-mixin", function () {
       // @ts-expect-error - wrong type
       authenticationService.debouncedStore,
       undefined,
-      "authentication has no debounced Store"
+      "authentication has no debounced Store",
     );
   });
 
@@ -81,14 +81,14 @@ describe("mixin: debounce-mixin", function () {
     assert.deepStrictEqual(
       usersService.debouncedStore._queueById,
       {},
-      "queue is empty"
+      "queue is empty",
     );
 
     assert.deepStrictEqual(
       // @ts-ignore access to private property
       usersService.debouncedStore._isRunningById,
       {},
-      "nothing is running"
+      "nothing is running",
     );
   });
 

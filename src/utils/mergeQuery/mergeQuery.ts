@@ -23,7 +23,7 @@ import { hasOwnProperty } from "../internal.utils";
 export function mergeQuery<T = any>(
   target: Query,
   source: Query,
-  _options?: Partial<MergeQueryOptions<T>>
+  _options?: Partial<MergeQueryOptions<T>>,
 ): Query {
   const options = makeDefaultOptions(_options);
   const { filters: targetFilters, query: targetQuery } = filterQuery(target, {

@@ -16,7 +16,7 @@ export function handleArray<T>(
   target: Record<string, unknown>,
   source: Record<string, unknown>,
   key: Path,
-  options: MergeQueryOptions<T>
+  options: MergeQueryOptions<T>,
 ): void {
   const targetVal = _get(target, key);
   const sourceVal = _get(source, key);
@@ -26,14 +26,14 @@ export function handleArray<T>(
   const handle: Handle = _get(
     options,
     ["handle", ...key],
-    options.defaultHandle
+    options.defaultHandle,
   );
   const arr = mergeArrays(
     targetVal,
     sourceVal,
     handle,
     key,
-    options.actionOnEmptyIntersect
+    options.actionOnEmptyIntersect,
   );
   _set(target, key, arr);
 }
@@ -42,7 +42,7 @@ export function handleCircular<T>(
   target: Record<string, unknown>,
   source: Record<string, unknown>,
   prependKey: Path,
-  options: MergeQueryOptions<T>
+  options: MergeQueryOptions<T>,
 ): void {
   if (target?.$or) {
     target.$or = cleanOr(target.$or as Record<string, unknown>[]);
@@ -173,7 +173,7 @@ export function handleCircular<T>(
     if (key === "$or") {
       if (defaultHandle === "combine") {
         const newVals = sourceVal.filter(
-          (x: unknown) => !targetVal.some((y: unknown) => _isEqual(x, y))
+          (x: unknown) => !targetVal.some((y: unknown) => _isEqual(x, y)),
         );
         targetVal.push(...newVals);
       } else if (defaultHandle === "intersect") {
@@ -212,7 +212,7 @@ export function handleCircular<T>(
         return;
       } else if (defaultHandle === "intersect") {
         const newVals = sourceVal.filter(
-          (x: unknown) => !targetVal.some((y: unknown) => _isEqual(x, y))
+          (x: unknown) => !targetVal.some((y: unknown) => _isEqual(x, y)),
         );
         targetVal.push(...newVals);
         return;
@@ -225,7 +225,7 @@ export function handleCircular<T>(
         return;
       } else if (defaultHandle === "intersect") {
         const $in = targetVal.filter((x: unknown) =>
-          sourceVal.some((y: unknown) => _isEqual(x, y))
+          sourceVal.some((y: unknown) => _isEqual(x, y)),
         );
         if ($in.length === 0) {
           actionOnEmptyIntersect(target, source, prependKey);
@@ -258,7 +258,7 @@ export function handleCircular<T>(
 }
 
 export function makeDefaultOptions<T>(
-  options?: Partial<MergeQueryOptions<T>>
+  options?: Partial<MergeQueryOptions<T>>,
 ): MergeQueryOptions<T> {
   options ??= {} as MergeQueryOptions<T>;
   options.defaultHandle ??= "combine";
@@ -296,7 +296,7 @@ export function getParentProp(target: Record<string, unknown>, path: Path) {
 }
 
 export function cleanOr(
-  target: Record<string, unknown>[]
+  target: Record<string, unknown>[],
 ): Record<string, unknown>[] | undefined {
   if (!target || !Array.isArray(target) || target.length <= 0) {
     return target;
@@ -310,7 +310,7 @@ export function cleanOr(
 }
 
 export function cleanAnd(
-  target: Record<string, unknown>[]
+  target: Record<string, unknown>[],
 ): Record<string, unknown>[] | undefined {
   if (!target || !Array.isArray(target) || target.length <= 0) {
     return target;
@@ -340,7 +340,7 @@ export function arrayWithoutDuplicates<T>(target: T[]): T[] {
  */
 export function isQueryMoreExplicitThanQuery(
   target: Query,
-  source: Query
+  source: Query,
 ): Query | undefined {
   if (!target || !source) {
     return;

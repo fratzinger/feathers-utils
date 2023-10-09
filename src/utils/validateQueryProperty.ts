@@ -10,7 +10,7 @@ const isPlainObject = (value: any) =>
  */
 export const validateQueryProperty = (
   query: any,
-  operators: string[] = []
+  operators: string[] = [],
 ): Query => {
   if (!isPlainObject(query)) {
     return query;
