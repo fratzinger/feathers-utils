@@ -10,3 +10,4 @@ export * from "./setResultEmpty";
 export * from "./shouldSkip";
 export * from "./validateQueryProperty";
 export * from "./toJSON";
+export * from "./setQueryKeySafely";
