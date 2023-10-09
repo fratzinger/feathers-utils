@@ -20,7 +20,7 @@ describe("util - isMulti", function () {
         assert.strictEqual(
           isMulti(context),
           true,
-          `'${type}:${method}': returns true`
+          `'${type}:${method}': returns true`,
         );
       });
     });
@@ -44,7 +44,7 @@ describe("util - isMulti", function () {
         assert.strictEqual(
           isMulti(context),
           false,
-          `'${type}:${method}': returns false`
+          `'${type}:${method}': returns false`,
         );
       });
     });

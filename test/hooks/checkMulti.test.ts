@@ -9,7 +9,7 @@ describe("hook - checkMulti", function () {
         service: {},
         type,
         method,
-      } as HookContext);
+      }) as HookContext;
     ["before", "after"].forEach((type) => {
       ["find", "get", "create", "update", "patch", "remove"].forEach(
         (method) => {
@@ -17,9 +17,9 @@ describe("hook - checkMulti", function () {
           //@ts-ignore
           assert.doesNotThrow(
             () => checkMulti()(context),
-            `'${type}:${method}': does not throw`
+            `'${type}:${method}': does not throw`,
           );
-        }
+        },
       );
     });
   });
@@ -49,9 +49,9 @@ describe("hook - checkMulti", function () {
           //@ts-ignore
           assert.doesNotThrow(
             () => checkMulti()(context),
-            `'${type}:${method}': does not throw`
+            `'${type}:${method}': does not throw`,
           );
-        }
+        },
       );
     });
   });
@@ -64,14 +64,14 @@ describe("hook - checkMulti", function () {
         },
         type,
         method,
-      } as HookContext);
+      }) as HookContext;
     ["before", "after"].forEach((type) => {
       ["find", "get", "update"].forEach((method) => {
         const context = makeContext(type, method);
         //@ts-ignore
         assert.doesNotThrow(
           () => checkMulti()(context),
-          `'${type}:${method}': does not throw`
+          `'${type}:${method}': does not throw`,
         );
       });
     });
@@ -105,7 +105,7 @@ describe("hook - checkMulti", function () {
         //@ts-ignore
         assert.doesNotThrow(
           () => checkMulti()(context),
-          `'${type}:${method}': does not throw`
+          `'${type}:${method}': does not throw`,
         );
       });
     });
@@ -135,7 +135,7 @@ describe("hook - checkMulti", function () {
         //@ts-ignore
         assert.throws(
           () => checkMulti()(context),
-          `'${type}:${method}': throws`
+          `'${type}:${method}': throws`,
         );
       });
     });
@@ -169,7 +169,7 @@ describe("hook - checkMulti", function () {
         //@ts-ignore
         assert.doesNotThrow(
           () => checkMulti()(context),
-          `'${type}:${method}': throws`
+          `'${type}:${method}': throws`,
         );
       });
     });

@@ -16,7 +16,7 @@ export interface OnDeleteOptions {
  */
 export function onDelete<
   S = Record<string, any>,
-  H extends HookContext = HookContext
+  H extends HookContext = HookContext,
 >(
   service: keyof S,
   {
@@ -24,7 +24,7 @@ export function onDelete<
     keyHere = "id",
     onDelete = "cascade",
     blocking = true,
-  }: OnDeleteOptions
+  }: OnDeleteOptions,
 ) {
   if (!service || !keyThere) {
     throw "initialize hook 'removeRelated' completely!";

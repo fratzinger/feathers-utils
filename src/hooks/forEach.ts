@@ -6,25 +6,27 @@ import type { GetItemsIsArrayOptions } from "../utils/getItemsIsArray";
 import { getItemsIsArray } from "../utils/getItemsIsArray";
 
 export interface HookForEachOptions {
-  wait?: "sequential" | "parallel" | false
-  items?: GetItemsIsArrayOptions["from"]
+  wait?: "sequential" | "parallel" | false;
+  items?: GetItemsIsArrayOptions["from"];
 }
 
 export const forEach = (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  actionPerItem: (item: any, context: HookContext) => Promisable<any>, 
-  _options?: HookForEachOptions
+  actionPerItem: (item: any, context: HookContext) => Promisable<any>,
+  _options?: HookForEachOptions,
 ): ReturnAsyncHook => {
   const options: Required<HookForEachOptions> = {
     wait: "parallel",
     items: "automatic",
-    ..._options
+    ..._options,
   };
 
   return async (context: HookContext): Promise<HookContext> => {
-    if (shouldSkip("runForItems", context)) { return context; }
+    if (shouldSkip("runForItems", context)) {
+      return context;
+    }
 
-    const { items } =  getItemsIsArray(context, { from: options.items });
+    const { items } = getItemsIsArray(context, { from: options.items });
 
     const promises: Promise<any>[] = [];
 

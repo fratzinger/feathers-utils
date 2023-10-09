@@ -6,7 +6,7 @@ const filterQueryArray =
   (arr: any, { operators }: FilterQueryOptions) => {
     if (arr && !Array.isArray(arr)) {
       throw new Error(
-        `Invalid query parameter '${key}'. It has to be an array`
+        `Invalid query parameter '${key}'. It has to be an array`,
       );
     }
 

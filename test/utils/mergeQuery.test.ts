@@ -40,7 +40,7 @@ describe("util - mergeQuery", function () {
     it("share some properties", function () {
       const query = areQueriesOverlapping(
         { id: 1, test1: true, test2: true },
-        { id: 2, test3: true, test4: true }
+        { id: 2, test3: true, test4: true },
       );
 
       expect(query).toBe(true);
@@ -75,7 +75,7 @@ describe("util - mergeQuery", function () {
     it("query1 is superset of query2", function () {
       const query = isQueryMoreExplicitThanQuery(
         { id: 1, test: true },
-        { id: 1 }
+        { id: 1 },
       );
 
       expect(query).toStrictEqual({ id: 1, test: true });
@@ -84,7 +84,7 @@ describe("util - mergeQuery", function () {
     it("query2 is superset of query1", function () {
       const query = isQueryMoreExplicitThanQuery(
         { id: 1 },
-        { id: 1, test: true }
+        { id: 1, test: true },
       );
 
       expect(query).toStrictEqual({ id: 1, test: true });
@@ -179,7 +179,7 @@ describe("util - mergeQuery", function () {
         filters: {
           ...filterArray("$and"),
         },
-      })
+      }),
     );
     const service = app.service("/service");
     const passingPairs = {
@@ -220,7 +220,7 @@ describe("util - mergeQuery", function () {
         const query = mergeQuery(
           target,
           source,
-          Object.assign({ service }, options)
+          Object.assign({ service }, options),
         );
         assert.deepStrictEqual(query, expected, `'${key}' works as expected`);
       });
@@ -237,7 +237,7 @@ describe("util - mergeQuery", function () {
         filters: {
           ...filterArray("$and"),
         },
-      })
+      }),
     );
     const service = app.service("/service");
     const passingPairs = {
@@ -333,7 +333,7 @@ describe("util - mergeQuery", function () {
         const query = mergeQuery(
           target,
           source,
-          Object.assign({ service }, options)
+          Object.assign({ service }, options),
         );
         assert.deepStrictEqual(query, expected, `'${key}' works as expected`);
       });
@@ -349,7 +349,7 @@ describe("util - mergeQuery", function () {
           filters: {
             ...filterArray("$and"),
           },
-        })
+        }),
       );
       const service = app.service("/service");
       const passingPairs = {
@@ -396,7 +396,7 @@ describe("util - mergeQuery", function () {
           const query = mergeQuery(
             target,
             source,
-            Object.assign({ service }, options)
+            Object.assign({ service }, options),
           );
           assert.deepStrictEqual(query, expected, `'${key}' works as expected`);
         });
@@ -414,7 +414,7 @@ describe("util - mergeQuery", function () {
         filters: {
           ...filterArray("$and"),
         },
-      })
+      }),
     );
     const service = app.service("/service");
     const passingPairs = {
@@ -509,7 +509,7 @@ describe("util - mergeQuery", function () {
         const query = mergeQuery(
           target,
           source,
-          Object.assign({ service }, options)
+          Object.assign({ service }, options),
         );
         assert.deepStrictEqual(query, expected, `'${key}' works as expected`);
       });
@@ -525,7 +525,7 @@ describe("util - mergeQuery", function () {
           filters: {
             ...filterArray("$and"),
           },
-        })
+        }),
       );
       const service = app.service("/service");
       const passingPairs = {
@@ -590,7 +590,7 @@ describe("util - mergeQuery", function () {
           const query = mergeQuery(
             target,
             source,
-            Object.assign({ service }, options)
+            Object.assign({ service }, options),
           );
           assert.deepStrictEqual(query, expected, `'${key}' works as expected`);
         });
@@ -629,7 +629,7 @@ describe("util - mergeQuery", function () {
             mergeQuery(target, source, options);
           },
           (err: any) => err.name === "Forbidden",
-          "throws as expected"
+          "throws as expected",
         );
       });
     }

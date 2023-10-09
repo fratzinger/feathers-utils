@@ -6,7 +6,7 @@ export function mergeArrays<T>(
   sourceArr: T[] | undefined,
   handle: Handle,
   prependKey?: Path,
-  actionOnEmptyIntersect?: ActionOnEmptyIntersect
+  actionOnEmptyIntersect?: ActionOnEmptyIntersect,
 ): T[] | undefined {
   if (!sourceArr && !targetArr) {
     return;
@@ -33,7 +33,7 @@ export function mergeArrays<T>(
         actionOnEmptyIntersect(
           targetArr as unknown,
           sourceArr,
-          prependKey || []
+          prependKey || [],
         );
       }
       return;

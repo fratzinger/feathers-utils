@@ -56,7 +56,7 @@ export class DebouncedStore {
   private debounceById(
     func: (id: Id, action: DebouncedFunctionApp) => Promise<void>,
     wait: number,
-    options?: Partial<DebouncedStoreOptions>
+    options?: Partial<DebouncedStoreOptions>,
   ) {
     return (id: Id, action: (app?: Application) => void | Promise<void>) => {
       if (typeof this._queueById[id] === "function") {
@@ -68,7 +68,7 @@ export class DebouncedStore {
           this.unbounced(id, action);
         },
         wait,
-        { ...options, leading: false }
+        { ...options, leading: false },
       ); // leading required for return promise
       return this._queueById[id](id, action);
     };

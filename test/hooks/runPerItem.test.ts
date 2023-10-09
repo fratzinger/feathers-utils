@@ -66,7 +66,7 @@ describe("hook - runPerItem", function () {
       {
         name: "John Doe",
       },
-      { skipHooks: ["runForItems"] }
+      { skipHooks: ["runForItems"] },
     );
 
     const todos = await todosService.find({ query: {} });

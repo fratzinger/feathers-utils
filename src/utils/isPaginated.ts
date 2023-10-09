@@ -5,7 +5,7 @@ import { getPaginate } from "./getPaginate";
  * util to check if a hook is a paginated hook using `getPaginate`
  */
 export const isPaginated = <H extends HookContext = HookContext>(
-  context: H
+  context: H,
 ): boolean => {
   if (context.params.paginate === false || context.method !== "find") {
     return false;

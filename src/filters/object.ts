@@ -7,7 +7,7 @@ const filterQueryObject =
   (obj: any, { operators }: FilterQueryOptions) => {
     if (obj && !_isObject(obj)) {
       throw new Error(
-        `Invalid query parameter: '${key}'. It has to be an object`
+        `Invalid query parameter: '${key}'. It has to be an object`,
       );
     }
 

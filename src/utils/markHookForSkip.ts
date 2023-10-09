@@ -10,7 +10,7 @@ import type { MaybeArray } from "../typesInternal";
 export function markHookForSkip<H extends HookContext = HookContext>(
   hookName: string,
   type: "all" | MaybeArray<HookType>,
-  context?: H
+  context?: H,
 ) {
   // @ts-expect-error context is not of type 'H'
   context = context || {};

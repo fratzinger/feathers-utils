@@ -41,7 +41,7 @@ describe("util - setResultEmpty", function () {
             assert.deepStrictEqual(
               context.result,
               123,
-              `result is not changed. '${type}:${method}': '${service}' - '${params}'`
+              `result is not changed. '${type}:${method}': '${service}' - '${params}'`,
             );
           });
         });
@@ -67,7 +67,7 @@ describe("util - setResultEmpty", function () {
         assert.deepStrictEqual(
           result,
           { total: 0, skip: 0, limit: 0, data: [] },
-          `'${i}': result is paginated empty`
+          `'${i}': result is paginated empty`,
         );
       });
     });

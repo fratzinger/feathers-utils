@@ -14,7 +14,7 @@ export const pushSet = (
   obj: Record<string, unknown>,
   path: string | Path,
   val: unknown,
-  options?: PushSetOptions
+  options?: PushSetOptions,
 ): unknown[] => {
   options = options || {};
   let arr = _get(obj, path);

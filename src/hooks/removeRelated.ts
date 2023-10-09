@@ -14,7 +14,7 @@ export interface RemoveRelatedOptions<S = Record<string, any>> {
  */
 export function removeRelated<
   S = Record<string, any>,
-  H extends HookContext = HookContext
+  H extends HookContext = HookContext,
 >({
   service,
   keyThere,
