@@ -38,12 +38,6 @@ export const setQueryKeySafely = (
     return params;
   }
 
-  console.log(
-    "params.query[key]",
-    params.query[key],
-    isPlainObject(params.query[key])
-  );
-
   if (isPlainObject(params.query[key]) && !(operator in params.query[key])) {
     params.query[key][operator] = value;
   } else {
