@@ -23,7 +23,9 @@ npm i feathers-utils
 
 - `checkMulti`: throws if the request is **multi** data, but the services `allowsMulti(method)` returns `false`
 - `createRelated`: simply create related items from a hook.
+- `forEach`
 - `onDelete`: simply remove/set null related items from a hook.
+- `parseFields`
 - `removeRelated`: simple remove related items from a hook. Basically `cascade` at feathers level.
 - `runPerItem`: run a function for every item. Meant for `multi:true`.
 - `setData`: map properties from `context` to `data`. Something like `userId: context.params.user.id`
@@ -43,5 +45,6 @@ npm i feathers-utils
 - `mergeQuery`: deeply merges queries
 - `mergeArrays`: merges arrays with intersection options
 - `pushSet`: if existing array: *push*, else *set*
+- `setQueryKeySafely`
 - `setResultEmpty`
 - `shouldSkip`: checks `context.params.skipHooks` for `'all' | '${hookName}' | '${type}:${hookName}'` - also see `markHookForSkip`

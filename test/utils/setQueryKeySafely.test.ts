@@ -2,7 +2,7 @@ import { setQueryKeySafely } from "../../src";
 import assert from "assert";
 
 describe("util - setQueryKeySafely", function () {
-  it("does not mutate", function () {
+  it("does not mutate by default", function () {
     const params = {
       query: {
         test: true,
@@ -22,6 +22,45 @@ describe("util - setQueryKeySafely", function () {
         $and: [{ test: false }],
       },
     });
+  });
+
+  it("does not mutate explicitely", function () {
+    const params = {
+      query: {
+        test: true,
+      },
+    };
+
+    const result = setQueryKeySafely(params, "test", false, "$eq", {
+      mutate: false,
+    });
+
+    assert.deepStrictEqual(params, {
+      query: {
+        test: true,
+      },
+    });
+
+    assert.deepStrictEqual(result, {
+      query: {
+        test: true,
+        $and: [{ test: false }],
+      },
+    });
+  });
+
+  it("does mutate explicitely", function () {
+    const params = {
+      query: {
+        test: true,
+      },
+    };
+
+    const result = setQueryKeySafely(params, "test", false, "$eq", {
+      mutate: true,
+    });
+
+    assert.equal(params, result);
   });
 
   it("adds a $eq filter for non existent key", function () {

@@ -1,11 +1,9 @@
+import { isPlainObject } from "./internal.utils";
 import type { Params } from "@feathersjs/feathers";
 
-type SetQueryKeySafelyOptions = {
+export type SetQueryKeySafelyOptions = {
   mutate?: boolean;
 };
-
-const isPlainObject = (value) =>
-  value && [undefined, Object].includes(value.constructor);
 
 export const setQueryKeySafely = (
   params: Params,
