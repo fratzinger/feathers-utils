@@ -5,13 +5,13 @@ export type SetQueryKeySafelyOptions = {
   mutate?: boolean;
 };
 
-export const setQueryKeySafely = (
-  params: Params,
+export const setQueryKeySafely = <P extends Params = Params>(
+  params: P,
   key: string,
   value: any,
   operator = "$eq",
   options?: SetQueryKeySafelyOptions,
-) => {
+): P => {
   const { mutate = false } = options || {};
 
   // TODO: mutate params
@@ -35,12 +35,6 @@ export const setQueryKeySafely = (
 
     return params;
   }
-
-  console.log(
-    "params.query[key]",
-    params.query[key],
-    isPlainObject(params.query[key]),
-  );
 
   if (isPlainObject(params.query[key]) && !(operator in params.query[key])) {
     params.query[key][operator] = value;
