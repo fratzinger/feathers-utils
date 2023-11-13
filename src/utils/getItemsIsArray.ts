@@ -1,7 +1,9 @@
 import type { HookContext } from "@feathersjs/feathers";
 
+export type GetItemsIsArrayFrom = "data" | "result" | "automatic";
+
 export type GetItemsIsArrayOptions = {
-  from: "data" | "result" | "automatic";
+  from?: GetItemsIsArrayFrom;
 };
 
 export interface GetItemsIsArrayResult<T = any> {
@@ -20,14 +22,17 @@ export const getItemsIsArray = <T = any, H extends HookContext = HookContext>(
 
   if (from === "automatic") {
     itemOrItems = context.type === "before" ? context.data : context.result;
-    itemOrItems =
-      itemOrItems && context.method === "find"
-        ? itemOrItems.data || itemOrItems
-        : itemOrItems;
   } else if (from === "data") {
     itemOrItems = context.data;
   } else if (from === "result") {
     itemOrItems = context.result;
+  }
+
+  if ((from === "automatic" || from === "result") && context.type === "after") {
+    itemOrItems =
+      itemOrItems && context.method === "find"
+        ? itemOrItems.data || itemOrItems
+        : itemOrItems;
   }
 
   const isArray = Array.isArray(itemOrItems);
