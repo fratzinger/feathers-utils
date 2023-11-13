@@ -41,8 +41,8 @@ export type InferCreateResult<S, D = unknown> = S extends {
   ? D extends any[]
     ? AsArray<Awaited<R>>
     : D extends InferCreateDataSingle<S>
-    ? Single<Awaited<R>>
-    : Awaited<R>
+      ? Single<Awaited<R>>
+      : Awaited<R>
   : never;
 
 export type InferCreateResultSingle<S> = Single<InferCreateResult<S>>;
@@ -59,8 +59,8 @@ export type InferPatchResult<S, IdOrNullable = any> = S extends {
   ? IdOrNullable extends Id
     ? Single<Awaited<R>>
     : IdOrNullable extends null
-    ? AsArray<Awaited<R>>
-    : Awaited<R>
+      ? AsArray<Awaited<R>>
+      : Awaited<R>
   : never;
 
 export type InferRemoveResult<S, IdOrNullable = any> = S extends {
@@ -69,8 +69,8 @@ export type InferRemoveResult<S, IdOrNullable = any> = S extends {
   ? IdOrNullable extends Id
     ? Single<Awaited<R>>
     : IdOrNullable extends null
-    ? AsArray<Awaited<R>>
-    : Awaited<R>
+      ? AsArray<Awaited<R>>
+      : Awaited<R>
   : never;
 
 export type GetService<
@@ -138,10 +138,10 @@ export type InferDataFromPath<
 > = Method extends "create"
   ? InferCreateDataFromPath<App, Path>
   : Method extends "update"
-  ? InferUpdateDataFromPath<App, Path>
-  : Method extends "patch"
-  ? InferPatchDataFromPath<App, Path>
-  : never;
+    ? InferUpdateDataFromPath<App, Path>
+    : Method extends "patch"
+      ? InferPatchDataFromPath<App, Path>
+      : never;
 
 export type InferResultFromPath<
   App extends Application,
@@ -150,13 +150,13 @@ export type InferResultFromPath<
 > = Method extends "get"
   ? InferGetResultFromPath<App, Path>
   : Method extends "find"
-  ? InferFindResultFromPath<App, Path>
-  : Method extends "create"
-  ? InferCreateResultFromPath<App, Path>
-  : Method extends "update"
-  ? InferUpdateResultFromPath<App, Path>
-  : Method extends "patch"
-  ? InferPatchResultFromPath<App, Path>
-  : Method extends "remove"
-  ? InferRemoveResultFromPath<App, Path>
-  : never;
+    ? InferFindResultFromPath<App, Path>
+    : Method extends "create"
+      ? InferCreateResultFromPath<App, Path>
+      : Method extends "update"
+        ? InferUpdateResultFromPath<App, Path>
+        : Method extends "patch"
+          ? InferPatchResultFromPath<App, Path>
+          : Method extends "remove"
+            ? InferRemoveResultFromPath<App, Path>
+            : never;
