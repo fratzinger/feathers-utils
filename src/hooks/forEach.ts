@@ -14,14 +14,14 @@ export const forEach = <H extends HookContext = HookContext, T = any>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   actionPerItem: (item: T, context: H) => Promisable<any>,
   _options?: HookForEachOptions,
-): ReturnAsyncHook => {
+): ReturnAsyncHook<H> => {
   const options: Required<HookForEachOptions> = {
     wait: "parallel",
     items: "automatic",
     ..._options,
   };
 
-  return async (context: HookContext): Promise<HookContext> => {
+  return async (context: H): Promise<H> => {
     if (shouldSkip("runForItems", context)) {
       return context;
     }
