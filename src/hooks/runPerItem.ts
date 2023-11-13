@@ -34,7 +34,7 @@ export const runPerItem = <H extends HookContext = HookContext, T = any>(
 
     const { items } = getItemsIsArray(context);
 
-    const promises = items.map(async (item: unknown) => {
+    const promises = items.map(async (item: T) => {
       await actionPerItem(item, context);
     });
 
