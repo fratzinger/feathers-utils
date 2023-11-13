@@ -15,5 +15,10 @@ export type ServiceMethodName =
   | "update"
   | "patch"
   | "remove";
-export type ReturnSyncHook = (context: HookContext) => HookContext;
-export type ReturnAsyncHook = (context: HookContext) => Promise<HookContext>;
+
+export type ReturnSyncHook<H extends HookContext = HookContext> = (
+  context: H,
+) => H;
+export type ReturnAsyncHook<H extends HookContext = HookContext> = (
+  context: H,
+) => Promise<H>;

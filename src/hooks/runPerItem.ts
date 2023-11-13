@@ -21,9 +21,9 @@ const makeOptions = (
  * hook to run a hook for each item in the context
  * uses `context.result` if it is existent. otherwise uses context.data
  */
-export const runPerItem = <H extends HookContext = HookContext>(
+export const runPerItem = <H extends HookContext = HookContext, T = any>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  actionPerItem: (item: any, context: H) => Promisable<any>,
+  actionPerItem: (item: T, context: H) => Promisable<any>,
   _options?: HookRunPerItemOptions,
 ) => {
   const options = makeOptions(_options);
@@ -34,7 +34,7 @@ export const runPerItem = <H extends HookContext = HookContext>(
 
     const { items } = getItemsIsArray(context);
 
-    const promises = items.map(async (item: unknown) => {
+    const promises = items.map(async (item: T) => {
       await actionPerItem(item, context);
     });
 
