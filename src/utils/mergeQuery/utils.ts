@@ -38,7 +38,7 @@ export function handleArray(
   _set(target, key, arr);
 }
 
-export function handleCircular<T>(
+export function handleCircular(
   target: Record<string, unknown>,
   source: Record<string, unknown>,
   prependKey: Path,
