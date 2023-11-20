@@ -12,11 +12,11 @@ import { deepEqual as _isEqual } from "fast-equals";
 import type { Query } from "@feathersjs/feathers";
 import { hasOwnProperty } from "../internal.utils";
 
-export function handleArray<T>(
+export function handleArray(
   target: Record<string, unknown>,
   source: Record<string, unknown>,
   key: Path,
-  options: MergeQueryOptions<T>,
+  options: MergeQueryOptions,
 ): void {
   const targetVal = _get(target, key);
   const sourceVal = _get(source, key);
@@ -42,7 +42,7 @@ export function handleCircular<T>(
   target: Record<string, unknown>,
   source: Record<string, unknown>,
   prependKey: Path,
-  options: MergeQueryOptions<T>,
+  options: MergeQueryOptions,
 ): void {
   if (target?.$or) {
     target.$or = cleanOr(target.$or as Record<string, unknown>[]);
@@ -257,10 +257,10 @@ export function handleCircular<T>(
   }
 }
 
-export function makeDefaultOptions<T>(
-  options?: Partial<MergeQueryOptions<T>>,
-): MergeQueryOptions<T> {
-  options ??= {} as MergeQueryOptions<T>;
+export function makeDefaultOptions(
+  options?: Partial<MergeQueryOptions>,
+): MergeQueryOptions {
+  options ??= {} as MergeQueryOptions;
   options.defaultHandle ??= "combine";
   options.useLogicalConjunction ??= false;
   options.actionOnEmptyIntersect ??= () => {
@@ -270,7 +270,7 @@ export function makeDefaultOptions<T>(
   if (options.defaultHandle === "intersect") {
     options.handle.$select = options.handle.$select || "intersectOrFull";
   }
-  return options as MergeQueryOptions<T>;
+  return options as MergeQueryOptions;
 }
 
 export function moveProperty(

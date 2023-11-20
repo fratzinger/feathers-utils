@@ -19,10 +19,10 @@ import { hasOwnProperty } from "../internal.utils";
  * @param _options
  * @returns Query
  */
-export function mergeQuery<T = any>(
+export function mergeQuery(
   target: Query,
   source: Query,
-  _options?: Partial<MergeQueryOptions<T>>,
+  _options?: Partial<MergeQueryOptions>,
 ): Query {
   const options = makeDefaultOptions(_options);
 

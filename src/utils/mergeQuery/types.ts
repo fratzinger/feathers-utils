@@ -1,5 +1,4 @@
 import type { Path } from "../../typesInternal";
-import type { FilterQueryOptions } from "../filterQuery";
 
 export type Handle =
   | "target"
@@ -15,7 +14,7 @@ export type ActionOnEmptyIntersect = (
   prependKey: Path,
 ) => void;
 
-export interface MergeQueryOptions<T> extends FilterQueryOptions<T> {
+export interface MergeQueryOptions {
   defaultHandle: Handle;
   actionOnEmptyIntersect: ActionOnEmptyIntersect;
   useLogicalConjunction: boolean;
