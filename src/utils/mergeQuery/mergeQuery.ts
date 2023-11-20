@@ -7,7 +7,6 @@ import {
   handleCircular,
   isQueryMoreExplicitThanQuery,
   makeDefaultOptions,
-  moveProperty,
 } from "./utils";
 import type { MergeQueryOptions } from "./types";
 import { filterQuery } from "../filterQuery";
