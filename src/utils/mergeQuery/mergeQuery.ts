@@ -26,52 +26,13 @@ export function mergeQuery<T = any>(
   _options?: Partial<MergeQueryOptions<T>>,
 ): Query {
   const options = makeDefaultOptions(_options);
-  const { filters: targetFilters, query: targetQuery } = filterQuery(target, {
-    operators: options.operators,
-    filters: options.filters,
-    service: options.service,
-  });
 
-  moveProperty(targetFilters, targetQuery, "$or", "$and");
+  const { query: targetQuery, ...targetFilters } = filterQuery(target);
 
-  if ("$limit" in target) {
-    targetFilters.$limit = target.$limit;
-  }
-
-  let {
-    // eslint-disable-next-line prefer-const
-    filters: sourceFilters,
-    query: sourceQuery,
-  } = filterQuery(source, {
-    operators: options.operators,
-    filters: options.filters,
-    service: options.service,
-  });
-
-  moveProperty(sourceFilters, sourceQuery, "$or", "$and");
-
-  if (source.$limit) {
-    sourceFilters.$limit = source.$limit;
-  }
+  // eslint-disable-next-line prefer-const
+  let { query: sourceQuery, ...sourceFilters } = filterQuery(source);
 
   //#region filters
-
-  if (
-    target &&
-    !hasOwnProperty(target, "$limit") &&
-    hasOwnProperty(targetFilters, "$limit")
-  ) {
-    delete targetFilters.$limit;
-  }
-
-  if (
-    source &&
-    !hasOwnProperty(source, "$limit") &&
-    hasOwnProperty(sourceFilters, "$limit")
-  ) {
-    delete sourceFilters.$limit;
-  }
-
   handleArray(targetFilters, sourceFilters, ["$select"], options);
   // remaining filters
   delete sourceFilters["$select"];
