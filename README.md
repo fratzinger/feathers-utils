@@ -36,6 +36,7 @@ npm i feathers-utils
 
 ### Utils
 
+- `defineHooks`
 - `filterQuery`
 - `getItemsIsArray(context)`: returns `{ items: any[], isArray: boolean }`
 - `getPaginate`
