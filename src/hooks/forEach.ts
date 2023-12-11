@@ -16,7 +16,8 @@ type ActionPerItem<T, H, R> = (
   options: {
     context: H;
     i: number;
-  } & (R extends never ? {} : { fromAll: R }),
+    // eslint-disable-next-line @typescript-eslint/ban-types
+  } & (undefined extends R ? {} : { fromAll: R }),
 ) => Promisable<any>;
 
 export const forEach = <H extends HookContext = HookContext, T = any, R = any>(
