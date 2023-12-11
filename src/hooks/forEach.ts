@@ -5,42 +5,63 @@ import type { HookContext } from "@feathersjs/feathers";
 import type { GetItemsIsArrayOptions } from "../utils/getItemsIsArray";
 import { getItemsIsArray } from "../utils/getItemsIsArray";
 
-export interface HookForEachOptions {
+export type HookForEachOptions<T = any, H = HookContext, R = never> = {
   wait?: "sequential" | "parallel" | false;
   items?: GetItemsIsArrayOptions["from"];
-}
+  forAll?: (items: T[], context: H) => Promisable<R>;
+};
 
-export const forEach = <H extends HookContext = HookContext, T = any>(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  actionPerItem: (item: T, context: H) => Promisable<any>,
-  _options?: HookForEachOptions,
+type ActionPerItem<T, H, R> = (
+  item: T,
+  options: {
+    context: H;
+    i: number;
+    fromAll: R;
+  },
+) => Promisable<any>;
+
+export const forEach = <
+  H extends HookContext = HookContext,
+  T = any,
+  R = never,
+>(
+  actionPerItem: ActionPerItem<T, H, R>,
+  options?: HookForEachOptions<T, H, R>,
 ): ReturnAsyncHook<H> => {
-  const options: Required<HookForEachOptions> = {
-    wait: "parallel",
-    items: "automatic",
-    ..._options,
-  };
+  const { wait = "parallel", items: from = "automatic" } = options || {};
 
   return async (context: H): Promise<H> => {
-    if (shouldSkip("runForItems", context)) {
+    if (shouldSkip("forEach", context)) {
       return context;
     }
 
-    const { items } = getItemsIsArray(context, { from: options.items });
+    const { items } = getItemsIsArray(context, { from });
+
+    const forAll = options?.forAll
+      ? await options.forAll(items, context)
+      : ({} as R);
 
     const promises: Promise<any>[] = [];
 
-    for (const item of items) {
-      const promise = actionPerItem(item, context);
+    let i = 0;
 
-      if (options.wait === "sequential") {
+    for (const item of items) {
+      const promise = actionPerItem(item, {
+        context,
+        i,
+        fromAll: forAll,
+      });
+
+      if (wait === "sequential") {
         await promise;
       } else {
         promises.push(promise);
       }
+
+      i++;
     }
 
-    if (options.wait === "parallel") {
+    if (wait === "parallel") {
       await Promise.all(promises);
     }
 

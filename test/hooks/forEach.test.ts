@@ -1,5 +1,5 @@
 import assert from "assert";
-import feathers from "@feathersjs/feathers";
+import { feathers } from "@feathersjs/feathers";
 import { MemoryService } from "@feathersjs/memory";
 import { forEach } from "../../src";
 
@@ -26,7 +26,7 @@ describe("hook - forEach", function () {
     usersService.hooks({
       after: {
         create: [
-          forEach((item, context) => {
+          forEach((item) => {
             return todosService.create({
               title: "First issue",
               userId: item.id,
@@ -51,7 +51,7 @@ describe("hook - forEach", function () {
     usersService.hooks({
       after: {
         create: [
-          forEach((item, context) => {
+          forEach((item) => {
             return todosService.create({
               title: "First issue",
               userId: item.id,
@@ -65,7 +65,7 @@ describe("hook - forEach", function () {
       {
         name: "John Doe",
       },
-      { skipHooks: ["runForItems"] },
+      { skipHooks: ["forEach"] } as any,
     );
 
     const todos = await todosService.find({ query: {} });
@@ -79,7 +79,42 @@ describe("hook - forEach", function () {
     usersService.hooks({
       after: {
         create: [
-          forEach((item, context) => {
+          forEach(
+            (item, { fromAll }) => {
+              expect(fromAll).toStrictEqual("test");
+              return todosService.create({
+                title: "First issue",
+                userId: item.id,
+              });
+            },
+            {
+              forAll: async () => "test" as const,
+            },
+          ),
+        ],
+      },
+    });
+
+    const user = await usersService.create([
+      { name: "John Doe" },
+      { name: "Jane Doe" },
+    ]);
+
+    const todos = await todosService.find({ query: {} });
+
+    assert.deepStrictEqual(todos, [
+      { id: 1, title: "First issue", userId: 1 },
+      { id: 2, title: "First issue", userId: 2 },
+    ]);
+  });
+
+  it("runs with forAll", async function () {
+    const { app, usersService, todosService } = mockApp();
+
+    usersService.hooks({
+      after: {
+        create: [
+          forEach((item) => {
             return todosService.create({
               title: "First issue",
               userId: item.id,
