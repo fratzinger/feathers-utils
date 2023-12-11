@@ -12,3 +12,4 @@ export * from "./setResultEmpty";
 export * from "./shouldSkip";
 export * from "./toJSON";
 export * from "./validateQueryProperty";
+export * from "./optimizeBatchPatch";
