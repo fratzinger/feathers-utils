@@ -79,18 +79,12 @@ describe("hook - forEach", function () {
     usersService.hooks({
       after: {
         create: [
-          forEach(
-            (item, { fromAll }) => {
-              expect(fromAll).toStrictEqual("test");
-              return todosService.create({
-                title: "First issue",
-                userId: item.id,
-              });
-            },
-            {
-              forAll: async () => "test" as const,
-            },
-          ),
+          forEach((item) => {
+            return todosService.create({
+              title: "First issue",
+              userId: item.id,
+            });
+          }),
         ],
       },
     });
@@ -114,12 +108,18 @@ describe("hook - forEach", function () {
     usersService.hooks({
       after: {
         create: [
-          forEach((item) => {
-            return todosService.create({
-              title: "First issue",
-              userId: item.id,
-            });
-          }),
+          forEach(
+            (item, { fromAll }) => {
+              expect(fromAll).toStrictEqual("test");
+              return todosService.create({
+                title: "First issue",
+                userId: item.id,
+              });
+            },
+            {
+              forAll: async () => "test" as const,
+            },
+          ),
         ],
       },
     });

@@ -5,7 +5,7 @@ import type { HookContext } from "@feathersjs/feathers";
 import type { GetItemsIsArrayOptions } from "../utils/getItemsIsArray";
 import { getItemsIsArray } from "../utils/getItemsIsArray";
 
-export type HookForEachOptions<T = any, H = HookContext, R = never> = {
+export type HookForEachOptions<T = any, H = HookContext, R = any> = {
   wait?: "sequential" | "parallel" | false;
   items?: GetItemsIsArrayOptions["from"];
   forAll?: (items: T[], context: H) => Promisable<R>;
@@ -16,15 +16,10 @@ type ActionPerItem<T, H, R> = (
   options: {
     context: H;
     i: number;
-    fromAll: R;
-  },
+  } & (R extends never ? {} : { fromAll: R }),
 ) => Promisable<any>;
 
-export const forEach = <
-  H extends HookContext = HookContext,
-  T = any,
-  R = never,
->(
+export const forEach = <H extends HookContext = HookContext, T = any, R = any>(
   actionPerItem: ActionPerItem<T, H, R>,
   options?: HookForEachOptions<T, H, R>,
 ): ReturnAsyncHook<H> => {
@@ -49,8 +44,8 @@ export const forEach = <
       const promise = actionPerItem(item, {
         context,
         i,
-        fromAll: forAll,
-      });
+        ...(forAll ? { fromAll: forAll } : {}),
+      } as any);
 
       if (wait === "sequential") {
         await promise;
