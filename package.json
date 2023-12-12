@@ -1,6 +1,6 @@
 {
   "name": "feathers-utils",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "description": "Some utils for projects using '@feathersjs/feathers'",
   "author": "fratzinger",
   "repository": {
