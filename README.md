@@ -25,6 +25,8 @@ npm i feathers-utils
 - `createRelated`: simply create related items from a hook.
 - `forEach`
 - `onDelete`: simply remove/set null related items from a hook.
+- `paramsForServer`
+- `paramsFromClient`
 - `parseFields`
 - `removeRelated`: simple remove related items from a hook. Basically `cascade` at feathers level.
 - `runPerItem`: run a function for every item. Meant for `multi:true`.
