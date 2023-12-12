@@ -73,6 +73,36 @@ describe("hook - forEach", function () {
     assert.deepStrictEqual(todos, []);
   });
 
+  it("can skip hook with skip option", async function () {
+    const { app, usersService, todosService } = mockApp();
+
+    usersService.hooks({
+      after: {
+        create: [
+          forEach(
+            (item) => {
+              return todosService.create({
+                title: "First issue",
+                userId: item.id,
+              });
+            },
+            {
+              skip: (context) => true,
+            },
+          ),
+        ],
+      },
+    });
+
+    const user = await usersService.create({
+      name: "John Doe",
+    });
+
+    const todos = await todosService.find({ query: {} });
+
+    assert.deepStrictEqual(todos, []);
+  });
+
   it("runs for multiple items", async function () {
     const { app, usersService, todosService } = mockApp();
 

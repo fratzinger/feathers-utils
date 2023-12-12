@@ -9,6 +9,7 @@ export type HookForEachOptions<T = any, H = HookContext, R = any> = {
   wait?: "sequential" | "parallel" | false;
   items?: GetItemsIsArrayOptions["from"];
   forAll?: (items: T[], context: H) => Promisable<R>;
+  skip?: (context: H) => Promisable<boolean>;
 };
 
 type ActionPerItem<T, H, R> = (
@@ -28,6 +29,10 @@ export const forEach = <H extends HookContext = HookContext, T = any, R = any>(
 
   return async (context: H): Promise<H> => {
     if (shouldSkip("forEach", context)) {
+      return context;
+    }
+
+    if (options?.skip && (await options.skip(context))) {
       return context;
     }
 
