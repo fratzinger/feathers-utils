@@ -44,7 +44,7 @@ if (import.meta.vitest) {
       service: {
         options: serviceOptions,
       },
-    } as any as HookContext);
+    } as HookContext);
 
     assert.deepStrictEqual(paginate, { default: 10, max: 50 });
   });
@@ -62,7 +62,7 @@ if (import.meta.vitest) {
       service: {
         options: serviceOptions,
       },
-    } as any as HookContext);
+    } as HookContext);
 
     assert.deepStrictEqual(paginate, undefined);
   });
@@ -80,7 +80,7 @@ if (import.meta.vitest) {
       service: {
         options: serviceOptions,
       },
-    } as any as HookContext);
+    } as HookContext);
 
     assert.deepStrictEqual(paginate, { default: 20, max: 100 });
   });
@@ -95,7 +95,7 @@ if (import.meta.vitest) {
       service: {
         options: serviceOptions,
       },
-    } as any as HookContext);
+    } as HookContext);
 
     assert.deepStrictEqual(paginate, undefined);
   });

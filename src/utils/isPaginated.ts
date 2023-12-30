@@ -33,7 +33,7 @@ if (import.meta.vitest) {
         options: serviceOptions,
       },
       method: "find",
-    } as any as HookContext);
+    } as HookContext);
 
     assert.deepStrictEqual(paginate, true);
   });
@@ -51,7 +51,7 @@ if (import.meta.vitest) {
       service: {
         options: serviceOptions,
       },
-    } as any as HookContext);
+    } as HookContext);
 
     assert.deepStrictEqual(paginate, false);
   });
@@ -67,7 +67,7 @@ if (import.meta.vitest) {
         options: serviceOptions,
       },
       method: "find",
-    } as any as HookContext);
+    } as HookContext);
 
     assert.deepStrictEqual(paginate, true);
   });
@@ -82,7 +82,7 @@ if (import.meta.vitest) {
       service: {
         options: serviceOptions,
       },
-    } as any as HookContext);
+    } as HookContext);
 
     assert.deepStrictEqual(paginate, false);
   });

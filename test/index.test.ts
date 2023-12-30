@@ -69,6 +69,7 @@ describe("index.ts", function () {
     };
 
     Object.keys(members).forEach((key: string) =>
+      // eslint-disable-next-line import/namespace
       expect(src[key as any]).toBeDefined(),
     );
   });
