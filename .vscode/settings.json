@@ -3,7 +3,8 @@
     "search.exclude": {
       "**/node_modules": true,
       "**/public": true,
-      "**/package-lock.json": true
+      "**/package-lock.json": true,
+      "dist/**": true
     },
     "workbench.colorCustomizations": {
       "activityBar.background": "#525252",

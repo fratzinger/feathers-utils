@@ -21,12 +21,12 @@ const mockApp = () => {
 
 describe("hook - runPerItem", function () {
   it("runs for one item", async function () {
-    const { app, usersService, todosService } = mockApp();
+    const { usersService, todosService } = mockApp();
 
     usersService.hooks({
       after: {
         create: [
-          runPerItem((item, context) => {
+          runPerItem((item) => {
             return todosService.create({
               title: "First issue",
               userId: item.id,
@@ -36,7 +36,7 @@ describe("hook - runPerItem", function () {
       },
     });
 
-    const user = await usersService.create({
+    await usersService.create({
       name: "John Doe",
     });
 
@@ -46,7 +46,7 @@ describe("hook - runPerItem", function () {
   });
 
   it("can skip hook", async function () {
-    const { app, usersService, todosService } = mockApp();
+    const { usersService, todosService } = mockApp();
 
     usersService.hooks({
       after: {
@@ -62,7 +62,7 @@ describe("hook - runPerItem", function () {
     });
 
     // @ts-expect-error - params don't support skipHooks
-    const user = await usersService.create(
+    await usersService.create(
       {
         name: "John Doe",
       },
@@ -75,12 +75,12 @@ describe("hook - runPerItem", function () {
   });
 
   it("runs for multiple items", async function () {
-    const { app, usersService, todosService } = mockApp();
+    const { usersService, todosService } = mockApp();
 
     usersService.hooks({
       after: {
         create: [
-          runPerItem((item, context) => {
+          runPerItem((item) => {
             return todosService.create({
               title: "First issue",
               userId: item.id,
@@ -90,10 +90,7 @@ describe("hook - runPerItem", function () {
       },
     });
 
-    const user = await usersService.create([
-      { name: "John Doe" },
-      { name: "Jane Doe" },
-    ]);
+    await usersService.create([{ name: "John Doe" }, { name: "Jane Doe" }]);
 
     const todos = await todosService.find({ query: {} });
 

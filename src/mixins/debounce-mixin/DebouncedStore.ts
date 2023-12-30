@@ -3,15 +3,7 @@ import _debounce from "lodash/debounce.js";
 import type { DebouncedFunc } from "lodash";
 import type { Application, Id } from "@feathersjs/feathers";
 import type { DebouncedFunctionApp, DebouncedStoreOptions } from "./types";
-
-export const makeDefaultOptions = (): DebouncedStoreOptions => {
-  return {
-    leading: false,
-    maxWait: undefined,
-    trailing: true,
-    wait: 100,
-  };
-};
+import { makeDefaultOptions } from "./utils";
 
 export type DebouncedService<T = any> = T & {
   debouncedStore: DebouncedStore;

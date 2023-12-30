@@ -1,17 +1,17 @@
-import { isPlainObject } from "./internal.utils";
+import { isPlainObject } from "./_utils.internal";
 import type { Params } from "@feathersjs/feathers";
 
 export type SetQueryKeySafelyOptions = {
   mutate?: boolean;
 };
 
-export const setQueryKeySafely = <P extends Params = Params>(
-  params: P,
+export const setQueryKeySafely = (
+  params: Params,
   key: string,
   value: any,
   operator = "$eq",
   options?: SetQueryKeySafelyOptions,
-): P => {
+): Params => {
   const { mutate = false } = options || {};
 
   // TODO: mutate params
@@ -54,3 +54,168 @@ export const setQueryKeySafely = <P extends Params = Params>(
 
   return params;
 };
+
+if (import.meta.vitest) {
+  const { it, assert } = import.meta.vitest;
+
+  it("does not mutate by default", function () {
+    const params: Params = {
+      query: {
+        test: true,
+      },
+    };
+
+    const result = setQueryKeySafely(params, "test", false);
+    assert.deepStrictEqual(params, {
+      query: {
+        test: true,
+      },
+    });
+
+    assert.deepStrictEqual(result, {
+      query: {
+        test: true,
+        $and: [{ test: false }],
+      },
+    });
+  });
+
+  it("does not mutate explicitely", function () {
+    const params: Params = {
+      query: {
+        test: true,
+      },
+    };
+
+    const result = setQueryKeySafely(params, "test", false, "$eq", {
+      mutate: false,
+    });
+
+    assert.deepStrictEqual(params, {
+      query: {
+        test: true,
+      },
+    });
+
+    assert.deepStrictEqual(result, {
+      query: {
+        test: true,
+        $and: [{ test: false }],
+      },
+    });
+  });
+
+  it("does mutate explicitely", function () {
+    const params: Params = {
+      query: {
+        test: true,
+      },
+    };
+
+    const result = setQueryKeySafely(params, "test", false, "$eq", {
+      mutate: true,
+    });
+
+    assert.equal(params, result);
+  });
+
+  it("adds a $eq filter for non existent key", function () {
+    const params: Params = {
+      query: {},
+    };
+
+    const result = setQueryKeySafely(params, "test", true);
+    assert.deepStrictEqual(result, {
+      query: {
+        test: true,
+      },
+    });
+  });
+
+  it("adds a $ne filter for non existent key", function () {
+    const params = {
+      query: {},
+    };
+
+    const result = setQueryKeySafely(params, "test", true, "$ne");
+    assert.deepStrictEqual(result, {
+      query: {
+        test: {
+          $ne: true,
+        },
+      },
+    });
+  });
+
+  it("adds a $eq filter for existing key", function () {
+    const params: Params = {
+      query: {
+        test: true,
+      },
+    };
+
+    const result = setQueryKeySafely(params, "test", false);
+    assert.deepStrictEqual(result, {
+      query: {
+        test: true,
+        $and: [{ test: false }],
+      },
+    });
+  });
+
+  it("adds a $in filter for existing key with value", function () {
+    const params: Params = {
+      query: {
+        test: true,
+      },
+    };
+
+    const result = setQueryKeySafely(params, "test", [true], "$in");
+    assert.deepStrictEqual(result, {
+      query: {
+        test: true,
+        $and: [{ test: { $in: [true] } }],
+      },
+    });
+  });
+
+  it("adds a $in filter for existing key with object", function () {
+    const params: Params = {
+      query: {
+        test: {
+          $eq: true,
+        },
+      },
+    };
+
+    const result = setQueryKeySafely(params, "test", [true], "$in");
+    assert.deepStrictEqual(result, {
+      query: {
+        test: {
+          $eq: true,
+          $in: [true],
+        },
+      },
+    });
+  });
+
+  it("adds a $in filter for existing $in", function () {
+    const params: Params = {
+      query: {
+        test: {
+          $in: [true],
+        },
+      },
+    };
+
+    const result = setQueryKeySafely(params, "test", [false], "$in");
+    assert.deepStrictEqual(result, {
+      query: {
+        test: {
+          $in: [true],
+        },
+        $and: [{ test: { $in: [false] } }],
+      },
+    });
+  });
+}

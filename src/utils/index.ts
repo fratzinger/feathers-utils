@@ -13,3 +13,5 @@ export * from "./shouldSkip";
 export * from "./toJSON";
 export * from "./validateQueryProperty";
 export * from "./optimizeBatchPatch";
+export * from "./flattenQuery";
+export * from "./deflattenQuery";

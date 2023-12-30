@@ -1,11 +1,11 @@
 import type { FilterQueryOptions } from "@feathersjs/adapter-commons";
 import { validateQueryProperty } from "../utils/validateQueryProperty";
-import _isObject from "lodash/isObject.js";
+import { isObject } from "../utils/_utils.internal";
 
 const filterQueryObject =
   (key: string) =>
   (obj: any, { operators }: FilterQueryOptions) => {
-    if (obj && !_isObject(obj)) {
+    if (obj && !isObject(obj)) {
       throw new Error(
         `Invalid query parameter: '${key}'. It has to be an object`,
       );

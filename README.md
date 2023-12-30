@@ -40,6 +40,8 @@ npm i feathers-utils
 
 - `defineHooks`
 - `filterQuery`
+- `flattenQuery`
+- `deflattenQuery`
 - `getItemsIsArray(context)`: returns `{ items: any[], isArray: boolean }`
 - `getPaginate`
 - `isMulti(context) => Boolean`: returns true, if `find`, `create/patch/remove`: multi
