@@ -1,7 +1,6 @@
 import { Forbidden } from "@feathersjs/errors";
 import _get from "lodash/get.js";
 import _has from "lodash/has.js";
-import _isEmpty from "lodash/isEmpty.js";
 
 import _set from "lodash/set.js";
 import _uniqWith from "lodash/uniqWith.js";
@@ -10,7 +9,7 @@ import { mergeArrays } from "./mergeArrays";
 import type { Handle, MergeQueryOptions } from "./types";
 import { deepEqual as _isEqual } from "fast-equals";
 import type { Query } from "@feathersjs/feathers";
-import { hasOwnProperty } from "../internal.utils";
+import { hasOwnProperty, isEmpty } from "../_utils.internal";
 
 export function handleArray(
   target: Record<string, unknown>,
@@ -302,7 +301,7 @@ export function cleanOr(
     return target;
   }
 
-  if (target.some((x) => _isEmpty(x))) {
+  if (target.some((x) => isEmpty(x))) {
     return undefined;
   } else {
     return arrayWithoutDuplicates(target);
@@ -316,10 +315,10 @@ export function cleanAnd(
     return target;
   }
 
-  if (target.every((x) => _isEmpty(x))) {
+  if (target.every((x) => isEmpty(x))) {
     return undefined;
   } else {
-    target = target.filter((x) => !_isEmpty(x));
+    target = target.filter((x) => !isEmpty(x));
     return arrayWithoutDuplicates(target);
   }
 }
@@ -392,4 +391,93 @@ export function areQueriesOverlapping(target: Query, source: Query): boolean {
   }
 
   return false;
+}
+
+if (import.meta.vitest) {
+  const { describe, it, expect } = import.meta.vitest;
+
+  describe("areQueriesOverlapping", function () {
+    it("empty", function () {
+      const query = areQueriesOverlapping({}, {});
+
+      expect(query).toBe(false);
+    });
+
+    it("share same properties", function () {
+      const query = areQueriesOverlapping({ id: 1 }, { id: 1 });
+
+      expect(query).toBe(true);
+    });
+
+    it("share same properties with different values", function () {
+      const query = areQueriesOverlapping({ id: 1 }, { id: 2 });
+
+      expect(query).toBe(true);
+    });
+
+    it("share some properties", function () {
+      const query = areQueriesOverlapping(
+        { id: 1, test1: true, test2: true },
+        { id: 2, test3: true, test4: true },
+      );
+
+      expect(query).toBe(true);
+    });
+
+    it("do not share properties", function () {
+      const query = areQueriesOverlapping({ id: 1 }, { test: true });
+
+      expect(query).toBe(false);
+    });
+  });
+
+  describe("isQueryMoreExplicitThanQuery", function () {
+    it("empty", function () {
+      const query = isQueryMoreExplicitThanQuery({}, {});
+
+      expect(query).toStrictEqual({});
+    });
+
+    it("query1 is empty", function () {
+      const query = isQueryMoreExplicitThanQuery({}, { id: 1 });
+
+      expect(query).toStrictEqual({ id: 1 });
+    });
+
+    it("query2 is empty", function () {
+      const query = isQueryMoreExplicitThanQuery({ id: 1 }, {});
+
+      expect(query).toStrictEqual({ id: 1 });
+    });
+
+    it("query1 is superset of query2", function () {
+      const query = isQueryMoreExplicitThanQuery(
+        { id: 1, test: true },
+        { id: 1 },
+      );
+
+      expect(query).toStrictEqual({ id: 1, test: true });
+    });
+
+    it("query2 is superset of query1", function () {
+      const query = isQueryMoreExplicitThanQuery(
+        { id: 1 },
+        { id: 1, test: true },
+      );
+
+      expect(query).toStrictEqual({ id: 1, test: true });
+    });
+
+    it("queries do not overlap", function () {
+      const query = isQueryMoreExplicitThanQuery({ id: 1 }, { test: true });
+
+      expect(query).toBeUndefined();
+    });
+
+    it("queries overlap but differ", function () {
+      const query = isQueryMoreExplicitThanQuery({ id: 1 }, { id: 2 });
+
+      expect(query).toBeUndefined();
+    });
+  });
 }

@@ -6,7 +6,6 @@ export type Handle =
   | "combine"
   | "intersect"
   | "intersectOrFull";
-export type FirstLast = "first" | "last";
 
 export type ActionOnEmptyIntersect = (
   target: unknown,

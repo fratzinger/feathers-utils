@@ -1,9 +1,6 @@
-import { _ } from "@feathersjs/commons";
 import { BadRequest } from "@feathersjs/errors";
 import type { Query } from "@feathersjs/feathers";
-
-const isPlainObject = (value: any) =>
-  _.isObject(value) && value.constructor === {}.constructor;
+import { isObject } from "./_utils.internal";
 
 /**
  * util to validate a query for operators
@@ -12,7 +9,7 @@ export const validateQueryProperty = (
   query: any,
   operators: string[] = [],
 ): Query => {
-  if (!isPlainObject(query)) {
+  if (!isObject(query)) {
     return query;
   }
 
@@ -23,7 +20,7 @@ export const validateQueryProperty = (
 
     const value = query[key];
 
-    if (isPlainObject(value)) {
+    if (isObject(value)) {
       query[key] = validateQueryProperty(value, operators);
     }
   }

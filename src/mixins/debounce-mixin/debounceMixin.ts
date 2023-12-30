@@ -1,6 +1,7 @@
 import type { Application } from "@feathersjs/feathers/lib";
-import { DebouncedStore, makeDefaultOptions } from "./DebouncedStore";
+import { DebouncedStore } from "./DebouncedStore";
 import type { DebouncedStoreOptions, InitDebounceMixinOptions } from "./types";
+import { makeDefaultOptions } from "./utils";
 
 export function debounceMixin(
   options?: Partial<InitDebounceMixinOptions>,
