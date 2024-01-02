@@ -22,3 +22,5 @@ export type ReturnSyncHook<H extends HookContext = HookContext> = (
 export type ReturnAsyncHook<H extends HookContext = HookContext> = (
   context: H,
 ) => Promise<H>;
+
+export type KeyOf<T> = Extract<keyof T, string>;
