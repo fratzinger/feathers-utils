@@ -12,6 +12,7 @@
   },
   "homepage": "https://github.com/fratzinger/feathers-utils",
   "license": "MIT",
+  "packageManager": "pnpm@9.12.1",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
