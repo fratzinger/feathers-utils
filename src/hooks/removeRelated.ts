@@ -11,6 +11,8 @@ export interface RemoveRelatedOptions<S = Record<string, any>> {
 
 /**
  * hook to remove related items
+ *
+ * @deprecated use 'onDelete' instead
  */
 export function removeRelated<
   S = Record<string, any>,

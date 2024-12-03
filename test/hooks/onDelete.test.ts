@@ -8,36 +8,21 @@ const mockApp = () => {
 
   app.use("users", new MemoryService({ startId: 1, multi: true }));
   app.use("todos", new MemoryService({ startId: 1, multi: true }));
+  app.use("tasks", new MemoryService({ startId: 1, multi: true }));
 
   const usersService = app.service("users");
   const todosService = app.service("todos");
+  const tasksService = app.service("tasks");
 
   return {
     app,
     todosService,
     usersService,
+    tasksService,
   };
 };
 
 describe("hook - onDelete", function () {
-  it("throws for undefined options", function () {
-    assert.throws(() =>
-      // @ts-expect-error - missing service
-      createRelated({
-        keyThere: "userId",
-        keyHere: "id",
-      }),
-    );
-
-    assert.throws(() =>
-      // @ts-expect-error - missing keyThere
-      createRelated({
-        service: "todos",
-        keyHere: "id",
-      }),
-    );
-  });
-
   describe("cascade", function () {
     it("removes single item for single item", async function () {
       const { app, usersService, todosService } = mockApp();
@@ -45,7 +30,8 @@ describe("hook - onDelete", function () {
       usersService.hooks({
         after: {
           remove: [
-            onDelete("todos", {
+            onDelete({
+              service: "todos",
               keyThere: "userId",
               keyHere: "id",
               onDelete: "cascade",
@@ -82,7 +68,8 @@ describe("hook - onDelete", function () {
       usersService.hooks({
         after: {
           remove: [
-            onDelete("todos", {
+            onDelete({
+              service: "todos",
               keyThere: "userId",
               keyHere: "id",
               onDelete: "cascade",
@@ -124,7 +111,8 @@ describe("hook - onDelete", function () {
       usersService.hooks({
         after: {
           remove: [
-            onDelete("todos", {
+            onDelete({
+              service: "todos",
               keyThere: "userId",
               keyHere: "id",
               onDelete: "cascade",
@@ -178,7 +166,8 @@ describe("hook - onDelete", function () {
       usersService.hooks({
         after: {
           remove: [
-            onDelete("todos", {
+            onDelete({
+              service: "todos",
               keyThere: "userId",
               keyHere: "id",
               onDelete: "cascade",
@@ -226,7 +215,8 @@ describe("hook - onDelete", function () {
       usersService.hooks({
         after: {
           remove: [
-            onDelete("todos", {
+            onDelete({
+              service: "todos",
               keyThere: "userId",
               keyHere: "id",
               onDelete: "cascade",
@@ -274,6 +264,67 @@ describe("hook - onDelete", function () {
         { id: 3, title: "Buy bread", userId: 3 },
       ]);
     });
+
+    it("can pass an array", async function () {
+      const { app, usersService, todosService, tasksService } = mockApp();
+
+      usersService.hooks({
+        after: {
+          remove: [
+            onDelete([
+              {
+                service: "todos",
+                keyThere: "userId",
+                keyHere: "id",
+                onDelete: "cascade",
+                blocking: true,
+              },
+              {
+                service: "tasks",
+                keyThere: "userId",
+                keyHere: "id",
+                onDelete: "cascade",
+                blocking: true,
+              },
+            ]),
+          ],
+        },
+      });
+
+      const user = await usersService.create({
+        name: "John Doe",
+      });
+
+      const todo = await todosService.create({
+        title: "Buy milk",
+        userId: user.id,
+      });
+
+      const todo2 = await todosService.create({
+        title: "Buy eggs",
+        userId: 2,
+      });
+
+      const task = await tasksService.create({
+        title: "Buy milk task",
+        userId: user.id,
+      });
+
+      const task2 = await tasksService.create({
+        title: "Buy eggs task",
+        userId: 2,
+      });
+
+      await usersService.remove(user.id);
+
+      const todos = await todosService.find({ query: {} });
+      assert.deepStrictEqual(todos, [{ id: 2, title: "Buy eggs", userId: 2 }]);
+
+      const tasks = await tasksService.find({ query: {} });
+      assert.deepStrictEqual(tasks, [
+        { id: 2, title: "Buy eggs task", userId: 2 },
+      ]);
+    });
   });
 
   describe("set null", function () {
@@ -283,7 +334,8 @@ describe("hook - onDelete", function () {
       usersService.hooks({
         after: {
           remove: [
-            onDelete("todos", {
+            onDelete({
+              service: "todos",
               keyThere: "userId",
               keyHere: "id",
               onDelete: "set null",
@@ -323,7 +375,8 @@ describe("hook - onDelete", function () {
       usersService.hooks({
         after: {
           remove: [
-            onDelete("todos", {
+            onDelete({
+              service: "todos",
               keyThere: "userId",
               keyHere: "id",
               onDelete: "set null",
@@ -369,7 +422,8 @@ describe("hook - onDelete", function () {
       usersService.hooks({
         after: {
           remove: [
-            onDelete("todos", {
+            onDelete({
+              service: "todos",
               keyThere: "userId",
               keyHere: "id",
               onDelete: "set null",
@@ -424,7 +478,8 @@ describe("hook - onDelete", function () {
       usersService.hooks({
         after: {
           remove: [
-            onDelete("todos", {
+            onDelete({
+              service: "todos",
               keyThere: "userId",
               keyHere: "id",
               onDelete: "set null",
@@ -476,7 +531,8 @@ describe("hook - onDelete", function () {
       usersService.hooks({
         after: {
           remove: [
-            onDelete("todos", {
+            onDelete({
+              service: "todos",
               keyThere: "userId",
               keyHere: "id",
               onDelete: "cascade",
