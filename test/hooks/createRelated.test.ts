@@ -29,25 +29,6 @@ const mockApp = (_options?: MockAppOptions) => {
 };
 
 describe("hook - createRelated", function () {
-  it("throws for undefined options", function () {
-    assert.throws(() =>
-      // @ts-expect-error - missing service
-      createRelated({
-        data: (item, context) => ({
-          title: "First issue",
-          userId: item.id,
-        }),
-      }),
-    );
-
-    assert.throws(() =>
-      // @ts-expect-error - missing data
-      createRelated({
-        service: "todos",
-      }),
-    );
-  });
-
   it("creates single item for single item", async function () {
     const { app, todosService } = mockApp();
 
@@ -183,6 +164,48 @@ describe("hook - createRelated", function () {
               },
             ],
           }),
+        ],
+      },
+    });
+
+    const user = await app.service("users").create({
+      name: "John Doe",
+    });
+
+    const todos = await todosService.find({ query: {} });
+
+    assert.deepStrictEqual(todos, [
+      { id: 1, title: 1, userId: 1 },
+      { id: 2, title: 2, userId: 1 },
+    ]);
+  });
+
+  it("can pass an array", async function () {
+    const { app, todosService } = mockApp();
+
+    app.service("users").hooks({
+      after: {
+        create: [
+          createRelated([
+            {
+              service: "todos",
+              data: (item, context) => [
+                {
+                  title: 1,
+                  userId: item.id,
+                },
+              ],
+            },
+            {
+              service: "todos",
+              data: (item, context) => [
+                {
+                  title: 2,
+                  userId: item.id,
+                },
+              ],
+            },
+          ]),
         ],
       },
     });

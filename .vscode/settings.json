@@ -4,6 +4,7 @@
       "**/node_modules": true,
       "**/public": true,
       "**/package-lock.json": true,
+      "**/pnpm-lock.yaml": true,
       "dist/**": true
     },
     "workbench.colorCustomizations": {
