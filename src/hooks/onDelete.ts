@@ -1,7 +1,7 @@
 import type { HookContext } from "@feathersjs/feathers";
 import { checkContext } from "feathers-hooks-common";
 import { getItemsIsArray, shouldSkip } from "../utils";
-import type { MaybeArray } from "src/typesInternal";
+import type { KeyOf, MaybeArray } from "../typesInternal";
 
 export type OnDeleteAction = "cascade" | "set null";
 
@@ -19,7 +19,7 @@ export interface OnDeleteOptions<Path extends string = string> {
 export function onDelete<
   S = Record<string, any>,
   H extends HookContext = HookContext,
->(options: MaybeArray<OnDeleteOptions<keyof S>>) {
+>(options: MaybeArray<OnDeleteOptions<KeyOf<S>>>) {
   return async (context: H) => {
     if (shouldSkip("onDelete", context)) {
       return context;
