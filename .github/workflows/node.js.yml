@@ -3,7 +3,7 @@
 
 name: Node.js CI
 
-on: push
+on: [push, pull_request]
 
 jobs:
   test:
@@ -14,15 +14,15 @@ jobs:
         node-version: [18.x, 20.x, 22.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-        steps:
-          - uses: actions/checkout@v4
-          - uses: pnpm/action-setup@v4
-          - name: Use Node.js ${{ matrix.node-version }}
-            uses: actions/setup-node@v4
-            with:
-              node-version: ${{ matrix.node-version }}
-          - run: pnpm i
-          - run: pnpm lint && pnpm test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: pnpm i
+      - run: pnpm lint && pnpm test
 
   coverage:
     needs: [test]
