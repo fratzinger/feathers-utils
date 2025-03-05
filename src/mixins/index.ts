@@ -1,1 +1,1 @@
-export * from "./debounce-mixin";
+export * from './debounce-mixin/index.js'

@@ -1,16 +1,16 @@
-import type { Id, Params } from "@feathersjs/feathers";
-import { deepEqual } from "fast-equals";
-import type { KeyOf } from "../typesInternal";
+import type { Id, Params } from '@feathersjs/feathers'
+import { deepEqual } from 'fast-equals'
+import type { KeyOf } from '../typesInternal.js'
 
 export type OptimizeBatchPatchOptions<IdKey extends string> = {
   /** the key of the id property */
-  id?: IdKey;
-};
+  id?: IdKey
+}
 
 export type OptimizeBatchPatchResultItem<
   T = Record<string, unknown>,
   P = Params,
-> = [Id, T, P | undefined];
+> = [Id | null, T, P | undefined]
 
 export function optimizeBatchPatch<
   T extends Record<string, any>,
@@ -21,23 +21,23 @@ export function optimizeBatchPatch<
   items: T[],
   options?: OptimizeBatchPatchOptions<IdKey>,
 ): OptimizeBatchPatchResultItem<R, P>[] {
-  const map: { ids: Id[]; data: R }[] = [];
+  const map: { ids: Id[]; data: R }[] = []
 
-  const idKey = options?.id ?? "id";
+  const idKey = options?.id ?? 'id'
 
   for (const _data of items) {
-    const data = _data as unknown as R;
-    const id = _data[idKey];
-    delete data[idKey as any];
+    const data = _data as unknown as R
+    const id = _data[idKey]
+    delete (data as any)[idKey as any]
 
     const index = map.findIndex((item) => {
-      return deepEqual(item.data, data);
-    });
+      return deepEqual(item.data, data)
+    })
 
     if (index === -1) {
-      map.push({ ids: [id], data });
+      map.push({ ids: [id], data })
     } else {
-      map[index].ids.push(id);
+      map[index].ids.push(id)
     }
   }
 
@@ -52,47 +52,47 @@ export function optimizeBatchPatch<
               [idKey]: { $in: ids },
             },
           },
-        ] as OptimizeBatchPatchResultItem<R, P>);
-  });
+        ] as OptimizeBatchPatchResultItem<R, P>)
+  })
 }
 
 if (import.meta.vitest) {
-  const { it, expect } = import.meta.vitest;
-  it("optimizeBatchPatch", () => {
+  const { it, expect } = import.meta.vitest
+  it('optimizeBatchPatch', () => {
     expect(
       optimizeBatchPatch(
         [
-          { id: "1", name: "John" },
-          { id: "2", name: "Jane" },
-          { id: "3", name: "John" },
-          { id: "4", name: "Jane" },
-          { id: 5, name: "Jack" },
+          { id: '1', name: 'John' },
+          { id: '2', name: 'Jane' },
+          { id: '3', name: 'John' },
+          { id: '4', name: 'Jane' },
+          { id: 5, name: 'Jack' },
         ],
-        { id: "id" },
+        { id: 'id' },
       ),
     ).toEqual([
-      [null, { name: "John" }, { query: { id: { $in: ["1", "3"] } } }],
-      [null, { name: "Jane" }, { query: { id: { $in: ["2", "4"] } } }],
-      [5, { name: "Jack" }, undefined],
-    ]);
-  });
+      [null, { name: 'John' }, { query: { id: { $in: ['1', '3'] } } }],
+      [null, { name: 'Jane' }, { query: { id: { $in: ['2', '4'] } } }],
+      [5, { name: 'Jack' }, undefined],
+    ])
+  })
 
-  it("optimizeBatchPatch with _id", () => {
+  it('optimizeBatchPatch with _id', () => {
     expect(
       optimizeBatchPatch(
         [
-          { _id: "1", name: "John" },
-          { _id: "2", name: "Jane" },
-          { _id: "3", name: "John" },
-          { _id: "4", name: "Jane" },
-          { _id: 5, name: "Jack" },
+          { _id: '1', name: 'John' },
+          { _id: '2', name: 'Jane' },
+          { _id: '3', name: 'John' },
+          { _id: '4', name: 'Jane' },
+          { _id: 5, name: 'Jack' },
         ],
-        { id: "_id" },
+        { id: '_id' },
       ),
     ).toEqual([
-      [null, { name: "John" }, { query: { _id: { $in: ["1", "3"] } } }],
-      [null, { name: "Jane" }, { query: { _id: { $in: ["2", "4"] } } }],
-      [5, { name: "Jack" }, undefined],
-    ]);
-  });
+      [null, { name: 'John' }, { query: { _id: { $in: ['1', '3'] } } }],
+      [null, { name: 'Jane' }, { query: { _id: { $in: ['2', '4'] } } }],
+      [5, { name: 'Jack' }, undefined],
+    ])
+  })
 }

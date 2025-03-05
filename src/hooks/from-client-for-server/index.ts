@@ -1,2 +1,2 @@
-export * from "./paramsForServer";
-export * from "./paramsFromClient";
+export * from './paramsForServer.js'
+export * from './paramsFromClient.js'

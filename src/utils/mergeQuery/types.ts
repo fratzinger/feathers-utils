@@ -1,23 +1,23 @@
-import type { Path } from "../../typesInternal";
+import type { Path } from '../../typesInternal.js'
 
 export type Handle =
-  | "target"
-  | "source"
-  | "combine"
-  | "intersect"
-  | "intersectOrFull";
+  | 'target'
+  | 'source'
+  | 'combine'
+  | 'intersect'
+  | 'intersectOrFull'
 
 export type ActionOnEmptyIntersect = (
   target: unknown,
   source: unknown,
   prependKey: Path,
-) => void;
+) => void
 
 export interface MergeQueryOptions {
-  defaultHandle: Handle;
-  actionOnEmptyIntersect: ActionOnEmptyIntersect;
-  useLogicalConjunction: boolean;
+  defaultHandle: Handle
+  actionOnEmptyIntersect: ActionOnEmptyIntersect
+  useLogicalConjunction: boolean
   handle?: {
-    [key: string]: Handle;
-  };
+    [key: string]: Handle
+  }
 }

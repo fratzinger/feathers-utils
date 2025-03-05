@@ -1,5 +1,5 @@
-import type { HookContext } from "@feathersjs/feathers";
-import { FROM_CLIENT_FOR_SERVER_DEFAULT_KEY } from "./common";
+import type { HookContext } from '@feathersjs/feathers'
+import { FROM_CLIENT_FOR_SERVER_DEFAULT_KEY } from './common.js'
 
 export function defineParamsFromClient(keyToHide: string) {
   return function paramsFromClient(
@@ -8,9 +8,9 @@ export function defineParamsFromClient(keyToHide: string) {
     return (context: HookContext): HookContext => {
       if (
         !context.params?.query?.[keyToHide] ||
-        typeof context.params.query[keyToHide] !== "object"
+        typeof context.params.query[keyToHide] !== 'object'
       ) {
-        return context;
+        return context
       }
 
       const params = {
@@ -21,40 +21,40 @@ export function defineParamsFromClient(keyToHide: string) {
             ...context.params.query[keyToHide],
           },
         },
-      };
+      }
 
-      const client = params.query[keyToHide];
+      const client = params.query[keyToHide]
 
       whitelist.forEach((key) => {
         if (key in client) {
-          params[key] = client[key];
-          delete client[key];
+          params[key] = client[key]
+          delete client[key]
         }
-      });
+      })
 
       if (Object.keys(client).length === 0) {
-        delete params.query[keyToHide];
+        delete params.query[keyToHide]
       }
 
-      context.params = params;
+      context.params = params
 
-      return context;
-    };
-  };
+      return context
+    }
+  }
 }
 
 export const paramsFromClient = defineParamsFromClient(
   FROM_CLIENT_FOR_SERVER_DEFAULT_KEY,
-);
+)
 
 if (import.meta.vitest) {
-  const { it, expect } = import.meta.vitest;
+  const { it, expect } = import.meta.vitest
 
-  it("should move params to query._$client", () => {
+  it('should move params to query._$client', () => {
     expect(
       paramsFromClient(
-        "a",
-        "b",
+        'a',
+        'b',
       )({
         params: {
           query: {
@@ -74,12 +74,12 @@ if (import.meta.vitest) {
           c: 3,
         },
       },
-    });
-  });
+    })
+  })
 
-  it("should move params to query._$client and leave remaining", () => {
+  it('should move params to query._$client and leave remaining', () => {
     expect(
-      paramsFromClient("a")({
+      paramsFromClient('a')({
         params: {
           query: {
             _$client: {
@@ -100,6 +100,6 @@ if (import.meta.vitest) {
           c: 3,
         },
       },
-    });
-  });
+    })
+  })
 }

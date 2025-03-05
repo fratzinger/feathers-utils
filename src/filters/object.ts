@@ -1,6 +1,6 @@
-import type { FilterQueryOptions } from "@feathersjs/adapter-commons";
-import { validateQueryProperty } from "../utils/validateQueryProperty";
-import { isObject } from "../utils/_utils.internal";
+import type { FilterQueryOptions } from '@feathersjs/adapter-commons'
+import { validateQueryProperty } from '../utils/validateQueryProperty.js'
+import { isObject } from '../utils/_utils.internal.js'
 
 const filterQueryObject =
   (key: string) =>
@@ -8,20 +8,20 @@ const filterQueryObject =
     if (obj && !isObject(obj)) {
       throw new Error(
         `Invalid query parameter: '${key}'. It has to be an object`,
-      );
+      )
     }
 
-    return validateQueryProperty(obj, operators);
-  };
+    return validateQueryProperty(obj, operators)
+  }
 
 export const filterObject = <T extends string[]>(...keys: T) => {
   const result: {
-    [key in T[number]]: (value: any, options: FilterQueryOptions) => any;
-  } = {} as any;
+    [key in T[number]]: (value: any, options: FilterQueryOptions) => any
+  } = {} as any
 
   for (const key of keys) {
-    result[key as T[number]] = filterQueryObject(key);
+    result[key as T[number]] = filterQueryObject(key)
   }
 
-  return result;
-};
+  return result
+}

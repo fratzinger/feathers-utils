@@ -1,4 +1,4 @@
-import type { DebouncedStoreOptions } from "./types";
+import type { DebouncedStoreOptions } from './types.js'
 
 export const makeDefaultOptions = (): DebouncedStoreOptions => {
   return {
@@ -6,5 +6,5 @@ export const makeDefaultOptions = (): DebouncedStoreOptions => {
     maxWait: undefined,
     trailing: true,
     wait: 100,
-  };
-};
+  }
+}

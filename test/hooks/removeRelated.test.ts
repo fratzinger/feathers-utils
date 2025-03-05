@@ -1,276 +1,276 @@
-import assert from "assert";
-import { feathers } from "@feathersjs/feathers";
-import { MemoryService } from "@feathersjs/memory";
-import { removeRelated } from "../../src";
+import assert from 'node:assert'
+import { feathers } from '@feathersjs/feathers'
+import { MemoryService } from '@feathersjs/memory'
+import { removeRelated } from '../../src/index.js'
 
 const mockApp = () => {
-  const app = feathers();
+  const app = feathers()
 
-  app.use("users", new MemoryService({ startId: 1, multi: true }));
-  app.use("todos", new MemoryService({ startId: 1, multi: true }));
+  app.use('users', new MemoryService({ startId: 1, multi: true }))
+  app.use('todos', new MemoryService({ startId: 1, multi: true }))
 
-  const usersService = app.service("users");
-  const todosService = app.service("todos");
+  const usersService = app.service('users')
+  const todosService = app.service('todos')
 
   return {
     app,
     todosService,
     usersService,
-  };
-};
+  }
+}
 
-describe("hook - removeRelated", function () {
-  it("throws for undefined options", function () {
+describe('hook - removeRelated', function () {
+  it('throws for undefined options', function () {
     assert.throws(() =>
       // @ts-expect-error - missing service
       createRelated({
-        keyThere: "userId",
-        keyHere: "id",
+        keyThere: 'userId',
+        keyHere: 'id',
       }),
-    );
+    )
 
     assert.throws(() =>
       // @ts-expect-error - missing keyThere
       createRelated({
-        service: "todos",
-        keyHere: "id",
+        service: 'todos',
+        keyHere: 'id',
       }),
-    );
-  });
+    )
+  })
 
-  it("removes single item for single item", async function () {
-    const { app, usersService, todosService } = mockApp();
+  it('removes single item for single item', async function () {
+    const { app, usersService, todosService } = mockApp()
 
     usersService.hooks({
       after: {
         remove: [
           removeRelated({
-            service: "todos",
-            keyThere: "userId",
-            keyHere: "id",
+            service: 'todos',
+            keyThere: 'userId',
+            keyHere: 'id',
             blocking: true,
           }),
         ],
       },
-    });
+    })
 
     const user = await usersService.create({
-      name: "John Doe",
-    });
+      name: 'John Doe',
+    })
 
     const todo = await todosService.create({
-      title: "Buy milk",
+      title: 'Buy milk',
       userId: user.id,
-    });
+    })
 
     const todo2 = await todosService.create({
-      title: "Buy eggs",
+      title: 'Buy eggs',
       userId: 2,
-    });
+    })
 
-    await usersService.remove(user.id);
+    await usersService.remove(user.id)
 
-    const todos = await todosService.find({ query: {} });
+    const todos = await todosService.find({ query: {} })
 
-    assert.deepStrictEqual(todos, [{ id: 2, title: "Buy eggs", userId: 2 }]);
-  });
+    assert.deepStrictEqual(todos, [{ id: 2, title: 'Buy eggs', userId: 2 }])
+  })
 
-  it("removes multiple items for single item", async function () {
-    const { app, usersService, todosService } = mockApp();
+  it('removes multiple items for single item', async function () {
+    const { app, usersService, todosService } = mockApp()
 
     usersService.hooks({
       after: {
         remove: [
           removeRelated({
-            service: "todos",
-            keyThere: "userId",
-            keyHere: "id",
+            service: 'todos',
+            keyThere: 'userId',
+            keyHere: 'id',
             blocking: true,
           }),
         ],
       },
-    });
+    })
 
     const user = await usersService.create({
-      name: "John Doe",
-    });
+      name: 'John Doe',
+    })
 
     const todo = await todosService.create({
-      title: "Buy milk",
+      title: 'Buy milk',
       userId: user.id,
-    });
+    })
 
     const todo2 = await todosService.create({
-      title: "Buy eggs",
+      title: 'Buy eggs',
       userId: user.id,
-    });
+    })
 
     const todo3 = await todosService.create({
-      title: "Buy bread",
+      title: 'Buy bread',
       userId: 3,
-    });
+    })
 
-    await usersService.remove(user.id);
+    await usersService.remove(user.id)
 
-    const todos = await todosService.find({ query: {} });
+    const todos = await todosService.find({ query: {} })
 
-    assert.deepStrictEqual(todos, [{ id: 3, title: "Buy bread", userId: 3 }]);
-  });
+    assert.deepStrictEqual(todos, [{ id: 3, title: 'Buy bread', userId: 3 }])
+  })
 
-  it("removes single item for multiple items", async function () {
-    const { app, usersService, todosService } = mockApp();
+  it('removes single item for multiple items', async function () {
+    const { app, usersService, todosService } = mockApp()
 
     usersService.hooks({
       after: {
         remove: [
           removeRelated({
-            service: "todos",
-            keyThere: "userId",
-            keyHere: "id",
+            service: 'todos',
+            keyThere: 'userId',
+            keyHere: 'id',
             blocking: true,
           }),
         ],
       },
-    });
+    })
 
     await usersService.create([
-      { name: "John Doe" },
-      { name: "Jane Doe" },
-      { name: "Jack Doe" },
-    ]);
+      { name: 'John Doe' },
+      { name: 'Jane Doe' },
+      { name: 'Jack Doe' },
+    ])
 
     const todo = await todosService.create({
-      title: "Buy milk",
+      title: 'Buy milk',
       userId: 1,
-    });
+    })
 
     const todo2 = await todosService.create({
-      title: "Buy eggs",
+      title: 'Buy eggs',
       userId: 2,
-    });
+    })
 
     const todo3 = await todosService.create({
-      title: "Buy bread",
+      title: 'Buy bread',
       userId: 3,
-    });
+    })
 
-    await usersService.remove(1);
+    await usersService.remove(1)
 
-    const users = await usersService.find({ query: {} });
+    const users = await usersService.find({ query: {} })
 
     assert.deepStrictEqual(users, [
-      { id: 2, name: "Jane Doe" },
-      { id: 3, name: "Jack Doe" },
-    ]);
+      { id: 2, name: 'Jane Doe' },
+      { id: 3, name: 'Jack Doe' },
+    ])
 
-    const todos = await todosService.find({ query: {} });
+    const todos = await todosService.find({ query: {} })
 
     assert.deepStrictEqual(todos, [
-      { id: 2, title: "Buy eggs", userId: 2 },
-      { id: 3, title: "Buy bread", userId: 3 },
-    ]);
-  });
+      { id: 2, title: 'Buy eggs', userId: 2 },
+      { id: 3, title: 'Buy bread', userId: 3 },
+    ])
+  })
 
-  it("removes multiple items for multiple items", async function () {
-    const { app, usersService, todosService } = mockApp();
+  it('removes multiple items for multiple items', async function () {
+    const { app, usersService, todosService } = mockApp()
 
     usersService.hooks({
       after: {
         remove: [
           removeRelated({
-            service: "todos",
-            keyThere: "userId",
-            keyHere: "id",
+            service: 'todos',
+            keyThere: 'userId',
+            keyHere: 'id',
             blocking: true,
           }),
         ],
       },
-    });
+    })
 
     await usersService.create([
-      { name: "John Doe" },
-      { name: "Jane Doe" },
-      { name: "Jack Doe" },
-    ]);
+      { name: 'John Doe' },
+      { name: 'Jane Doe' },
+      { name: 'Jack Doe' },
+    ])
 
     const todo = await todosService.create({
-      title: "Buy milk",
+      title: 'Buy milk',
       userId: 1,
-    });
+    })
 
     const todo2 = await todosService.create({
-      title: "Buy eggs",
+      title: 'Buy eggs',
       userId: 2,
-    });
+    })
 
     const todo3 = await todosService.create({
-      title: "Buy bread",
+      title: 'Buy bread',
       userId: 3,
-    });
+    })
 
-    await usersService.remove(null, { query: { id: { $in: [1, 2] } } });
+    await usersService.remove(null, { query: { id: { $in: [1, 2] } } })
 
-    const users = await usersService.find({ query: {} });
+    const users = await usersService.find({ query: {} })
 
-    assert.deepStrictEqual(users, [{ id: 3, name: "Jack Doe" }]);
+    assert.deepStrictEqual(users, [{ id: 3, name: 'Jack Doe' }])
 
-    const todos = await todosService.find({ query: {} });
+    const todos = await todosService.find({ query: {} })
 
-    assert.deepStrictEqual(todos, [{ id: 3, title: "Buy bread", userId: 3 }]);
-  });
+    assert.deepStrictEqual(todos, [{ id: 3, title: 'Buy bread', userId: 3 }])
+  })
 
-  it("does not remove items if not found", async function () {
-    const { app, usersService, todosService } = mockApp();
+  it('does not remove items if not found', async function () {
+    const { app, usersService, todosService } = mockApp()
 
     usersService.hooks({
       after: {
         remove: [
           removeRelated({
-            service: "todos",
-            keyThere: "userId",
-            keyHere: "id",
+            service: 'todos',
+            keyThere: 'userId',
+            keyHere: 'id',
             blocking: true,
           }),
         ],
       },
-    });
+    })
 
     await usersService.create([
-      { name: "John Doe" },
-      { name: "Jane Doe" },
-      { name: "Jack Doe" },
-    ]);
+      { name: 'John Doe' },
+      { name: 'Jane Doe' },
+      { name: 'Jack Doe' },
+    ])
 
     const todo = await todosService.create({
-      title: "Buy milk",
+      title: 'Buy milk',
       userId: 2,
-    });
+    })
 
     const todo2 = await todosService.create({
-      title: "Buy eggs",
+      title: 'Buy eggs',
       userId: 2,
-    });
+    })
 
     const todo3 = await todosService.create({
-      title: "Buy bread",
+      title: 'Buy bread',
       userId: 3,
-    });
+    })
 
-    await usersService.remove(1);
+    await usersService.remove(1)
 
-    const users = await usersService.find({ query: {} });
+    const users = await usersService.find({ query: {} })
 
     assert.deepStrictEqual(users, [
-      { id: 2, name: "Jane Doe" },
-      { id: 3, name: "Jack Doe" },
-    ]);
+      { id: 2, name: 'Jane Doe' },
+      { id: 3, name: 'Jack Doe' },
+    ])
 
-    const todos = await todosService.find({ query: {} });
+    const todos = await todosService.find({ query: {} })
 
     assert.deepStrictEqual(todos, [
-      { id: 1, title: "Buy milk", userId: 2 },
-      { id: 2, title: "Buy eggs", userId: 2 },
-      { id: 3, title: "Buy bread", userId: 3 },
-    ]);
-  });
-});
+      { id: 1, title: 'Buy milk', userId: 2 },
+      { id: 2, title: 'Buy eggs', userId: 2 },
+      { id: 3, title: 'Buy bread', userId: 3 },
+    ])
+  })
+})

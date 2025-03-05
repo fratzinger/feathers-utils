@@ -1,10 +1,9 @@
-// eslint-disable-next-line import/no-unresolved
-import { defineBuildConfig } from "unbuild";
-import pkg from "./package.json";
+import { defineBuildConfig } from 'unbuild'
+import pkg from './package.json'
 
 export default defineBuildConfig({
-  entries: ["./src/index"],
-  outDir: "./dist",
+  entries: ['./src/index'],
+  outDir: './dist',
   declaration: true,
   externals: [
     ...Object.keys(pkg.dependencies),
@@ -14,6 +13,6 @@ export default defineBuildConfig({
     emitCJS: true,
   },
   replace: {
-    "import.meta.vitest": "undefined",
+    'import.meta.vitest': 'undefined',
   },
-});
+})
