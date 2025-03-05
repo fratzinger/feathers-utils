@@ -1,32 +1,7 @@
-import * as src from "../src";
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import type {
-  DebouncedService,
-  DebouncedStore,
-  GetItemsIsArrayFrom,
-  GetItemsIsArrayOptions,
-  GetItemsIsArrayResult,
-  GetService,
-  OnDeleteAction,
-  OnDeleteOptions,
-  InferCreateData,
-  CreateRelatedOptions,
-  MergeQueryOptions,
-  PushSetOptions,
-  ShouldSkipOptions,
-  RemoveRelatedOptions,
-  OptimizeBatchPatchOptions,
-  OptimizeBatchPatchResultItem,
-  Handle,
-  HookForEachOptions,
-  HookRunPerItemOptions,
-  HookSetDataOptions,
-  DebouncedStoreOptions,
-} from "../src";
-/* eslint-enable @typescript-eslint/no-unused-vars */
+import * as src from '../src/index.js'
 
-describe("index.ts", function () {
-  it("exports all members", function () {
+describe('index.ts', function () {
+  it('exports all members', function () {
     const members: Record<keyof typeof src, boolean> = {
       // hooks
       checkMulti: true,
@@ -66,11 +41,10 @@ describe("index.ts", function () {
       shouldSkip: true,
       toJSON: true,
       validateQueryProperty: true,
-    };
+    }
 
     Object.keys(members).forEach((key: string) =>
-      // eslint-disable-next-line import/namespace
-      expect(src[key as any]).toBeDefined(),
-    );
-  });
-});
+      expect((src as any)[key as any]).toBeDefined(),
+    )
+  })
+})

@@ -1,3 +1,3 @@
-export * from "./mergeArrays";
-export * from "./mergeQuery";
-export * from "./types";
+export * from './mergeArrays.js'
+export * from './mergeQuery.js'
+export * from './types.js'

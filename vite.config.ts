@@ -1,22 +1,21 @@
-// eslint-disable-next-line import/no-unresolved
-import { defineConfig } from "vitest/config";
+import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   define: {
-    "import.meta.vitest": "undefined",
+    'import.meta.vitest': 'undefined',
   },
   test: {
     globals: true,
-    includeSource: ["src/**/*.{js,ts}"],
+    includeSource: ['src/**/*.{js,ts}'],
     coverage: {
-      provider: "v8",
-      reporter: ["text", "lcov"],
-      include: ["src/**/*.{js,ts}"],
+      provider: 'v8',
+      reporter: ['text', 'lcov'],
+      include: ['src/**/*.{js,ts}'],
       exclude: [
-        "**/*.test.{js,ts}",
-        "src/types.ts",
-        "src/typesInternal.ts",
-        "src/utils/_utils.internal.ts",
+        '**/*.test.{js,ts}',
+        'src/types.ts',
+        'src/typesInternal.ts',
+        'src/utils/_utils.internal.ts',
       ],
       thresholds: {
         lines: 85,
@@ -29,4 +28,4 @@ export default defineConfig({
       enabled: true,
     },
   },
-});
+})

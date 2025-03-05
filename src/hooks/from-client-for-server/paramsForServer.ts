@@ -1,43 +1,43 @@
-import type { HookContext } from "@feathersjs/feathers";
-import { FROM_CLIENT_FOR_SERVER_DEFAULT_KEY } from "./common";
+import type { HookContext, Params, Query } from '@feathersjs/feathers'
+import { FROM_CLIENT_FOR_SERVER_DEFAULT_KEY } from './common.js'
 
 export function defineParamsForServer(keyToHide: string) {
   return function paramsForServer(...whitelist: string[]) {
     return <H extends HookContext>(context: H) => {
       // clone params on demand
-      let clonedParams;
+      let clonedParams: (Params & { query: Query }) | undefined
 
       Object.keys(context.params).forEach((key) => {
-        if (key === "query") {
-          return;
+        if (key === 'query') {
+          return
         }
 
         if (whitelist.includes(key)) {
-          if (!clonedParams) {
-            clonedParams = {
-              ...context.params,
-              query: {
-                ...context.params.query,
-              },
-            };
+          const currentParams = clonedParams ?? {
+            ...context.params,
+            query: {
+              ...context.params.query,
+            },
           }
 
-          if (!clonedParams.query[keyToHide]) {
-            clonedParams.query[keyToHide] = {};
+          if (!currentParams.query[keyToHide]) {
+            currentParams.query[keyToHide] = {}
           }
 
-          clonedParams.query[keyToHide][key] = clonedParams[key];
-          delete clonedParams[key];
+          currentParams.query[keyToHide][key] = currentParams[key]
+          delete currentParams[key]
+
+          clonedParams = currentParams
         }
-      });
+      })
 
       if (clonedParams) {
-        context.params = clonedParams;
+        context.params = clonedParams
       }
 
-      return context;
-    };
-  };
+      return context
+    }
+  }
 }
 
 /**
@@ -48,16 +48,16 @@ export function defineParamsForServer(keyToHide: string) {
  */
 export const paramsForServer = defineParamsForServer(
   FROM_CLIENT_FOR_SERVER_DEFAULT_KEY,
-);
+)
 
 if (import.meta.vitest) {
-  const { it, expect } = import.meta.vitest;
+  const { it, expect } = import.meta.vitest
 
-  it("should move params to query._$client", () => {
+  it('should move params to query._$client', () => {
     expect(
       paramsForServer(
-        "a",
-        "b",
+        'a',
+        'b',
       )({
         params: {
           a: 1,
@@ -74,12 +74,12 @@ if (import.meta.vitest) {
           },
         },
       },
-    });
-  });
+    })
+  })
 
-  it("should move params to query._$client and leave remaining", () => {
+  it('should move params to query._$client and leave remaining', () => {
     expect(
-      paramsForServer("a")({
+      paramsForServer('a')({
         params: {
           a: 1,
           b: 2,
@@ -95,6 +95,6 @@ if (import.meta.vitest) {
           },
         },
       },
-    });
-  });
+    })
+  })
 }

@@ -1,15 +1,15 @@
-import { Forbidden } from "@feathersjs/errors";
-import _get from "lodash/get.js";
-import _has from "lodash/has.js";
+import { Forbidden } from '@feathersjs/errors'
+import _get from 'lodash/get.js'
+import _has from 'lodash/has.js'
 
-import _set from "lodash/set.js";
-import _uniqWith from "lodash/uniqWith.js";
-import type { Path } from "../../typesInternal";
-import { mergeArrays } from "./mergeArrays";
-import type { Handle, MergeQueryOptions } from "./types";
-import { deepEqual as _isEqual } from "fast-equals";
-import type { Query } from "@feathersjs/feathers";
-import { hasOwnProperty, isEmpty } from "../_utils.internal";
+import _set from 'lodash/set.js'
+import _uniqWith from 'lodash/uniqWith.js'
+import type { Path } from '../../typesInternal.js'
+import { mergeArrays } from './mergeArrays.js'
+import type { Handle, MergeQueryOptions } from './types.js'
+import { deepEqual as _isEqual } from 'fast-equals'
+import type { Query } from '@feathersjs/feathers'
+import { hasOwnProperty, isEmpty } from '../_utils.internal.js'
 
 export function handleArray(
   target: Record<string, unknown>,
@@ -17,24 +17,24 @@ export function handleArray(
   key: Path,
   options: MergeQueryOptions,
 ): void {
-  const targetVal = _get(target, key);
-  const sourceVal = _get(source, key);
+  const targetVal = _get(target, key)
+  const sourceVal = _get(source, key)
   if (!sourceVal && !targetVal) {
-    return;
+    return
   }
   const handle: Handle = _get(
     options,
-    ["handle", ...key],
+    ['handle', ...key],
     options.defaultHandle,
-  );
+  )
   const arr = mergeArrays(
     targetVal,
     sourceVal,
     handle,
     key,
     options.actionOnEmptyIntersect,
-  );
-  _set(target, key, arr);
+  )
+  _set(target, key, arr)
 }
 
 export function handleCircular(
@@ -44,232 +44,232 @@ export function handleCircular(
   options: MergeQueryOptions,
 ): void {
   if (target?.$or) {
-    target.$or = cleanOr(target.$or as Record<string, unknown>[]);
+    target.$or = cleanOr(target.$or as Record<string, unknown>[])
     if (!target.$or) {
-      delete target.$or;
+      delete target.$or
     }
   }
   if (source?.$or) {
-    source.$or = cleanOr(source.$or as Record<string, unknown>[]);
+    source.$or = cleanOr(source.$or as Record<string, unknown>[])
     if (!source.$or) {
-      delete source.$or;
+      delete source.$or
     }
   }
 
   if (target?.$and) {
-    target.$and = cleanAnd(target.$and as Record<string, unknown>[]);
+    target.$and = cleanAnd(target.$and as Record<string, unknown>[])
     if (!target.$and) {
-      delete target.$and;
+      delete target.$and
     }
   }
 
   if (source?.$and) {
-    source.$and = cleanAnd(source.$and as Record<string, unknown>[]);
+    source.$and = cleanAnd(source.$and as Record<string, unknown>[])
     if (!source.$and) {
-      delete source.$and;
+      delete source.$and
     }
   }
 
   if (!_has(source, prependKey)) {
-    return;
+    return
   }
 
   if (!_has(target, prependKey)) {
-    _set(target, prependKey, _get(source, prependKey));
-    return;
+    _set(target, prependKey, _get(source, prependKey))
+    return
   }
 
-  const { defaultHandle, actionOnEmptyIntersect } = options;
+  const { defaultHandle, actionOnEmptyIntersect } = options
 
-  if (defaultHandle === "target") {
-    return;
+  if (defaultHandle === 'target') {
+    return
   }
 
   const getTargetVal = () => {
-    return prependKey.length > 0 ? _get(target, prependKey) : target;
-  };
-
-  const getSourceVal = () => {
-    return prependKey.length > 0 ? _get(source, prependKey) : source;
-  };
-
-  const targetVal = getTargetVal();
-  const sourceVal = getSourceVal();
-
-  if (_isEqual(targetVal, sourceVal)) {
-    return;
+    return prependKey.length > 0 ? _get(target, prependKey) : target
   }
 
-  if (defaultHandle === "source") {
-    _set(target, prependKey, sourceVal);
-    return;
+  const getSourceVal = () => {
+    return prependKey.length > 0 ? _get(source, prependKey) : source
+  }
+
+  const targetVal = getTargetVal()
+  const sourceVal = getSourceVal()
+
+  if (_isEqual(targetVal, sourceVal)) {
+    return
+  }
+
+  if (defaultHandle === 'source') {
+    _set(target, prependKey, sourceVal)
+    return
   }
 
   if (targetVal === null || sourceVal === null) {
-    _set(target, prependKey, sourceVal);
-    return;
+    _set(target, prependKey, sourceVal)
+    return
   }
 
-  const typeOfTargetVal = typeof targetVal;
+  const typeOfTargetVal = typeof targetVal
 
-  if (["boolean"].includes(typeOfTargetVal)) {
-    if (defaultHandle === "intersect") {
-      actionOnEmptyIntersect(target, source, prependKey);
+  if (['boolean'].includes(typeOfTargetVal)) {
+    if (defaultHandle === 'intersect') {
+      actionOnEmptyIntersect(target, source, prependKey)
     }
-    _set(target, prependKey, sourceVal);
-    return;
+    _set(target, prependKey, sourceVal)
+    return
   }
 
-  const typeOfSourceVal = typeof sourceVal;
+  const typeOfSourceVal = typeof sourceVal
 
-  const isTargetSimple = ["string", "number"].includes(typeOfTargetVal);
-  const isSourceSimple = ["string", "number"].includes(typeOfSourceVal);
+  const isTargetSimple = ['string', 'number'].includes(typeOfTargetVal)
+  const isSourceSimple = ['string', 'number'].includes(typeOfSourceVal)
 
   if (isTargetSimple || isSourceSimple) {
     if (isTargetSimple && isSourceSimple) {
-      if (defaultHandle === "combine") {
-        _set(target, prependKey, { $in: [...new Set([targetVal, sourceVal])] });
-        return;
-      } else if (defaultHandle === "intersect") {
-        actionOnEmptyIntersect(target, source, prependKey);
+      if (defaultHandle === 'combine') {
+        _set(target, prependKey, { $in: [...new Set([targetVal, sourceVal])] })
+        return
+      } else if (defaultHandle === 'intersect') {
+        actionOnEmptyIntersect(target, source, prependKey)
       } else {
-        throw new Error("should not reach here");
+        throw new Error('should not reach here')
       }
     } else if (
-      hasOwnProperty(targetVal, "$in") ||
-      hasOwnProperty(sourceVal, "$in")
+      hasOwnProperty(targetVal, '$in') ||
+      hasOwnProperty(sourceVal, '$in')
     ) {
-      const targetHasIn = hasOwnProperty(targetVal, "$in");
+      const targetHasIn = hasOwnProperty(targetVal, '$in')
 
-      const $in = targetHasIn ? targetVal["$in"] : sourceVal["$in"];
-      const otherVal = isTargetSimple ? targetVal : sourceVal;
+      const $in = targetHasIn ? targetVal['$in'] : sourceVal['$in']
+      const otherVal = isTargetSimple ? targetVal : sourceVal
       if ($in.length === 1 && _isEqual($in[0], otherVal)) {
-        _set(target, prependKey, otherVal);
-        return;
-      } else if (defaultHandle === "combine") {
+        _set(target, prependKey, otherVal)
+        return
+      } else if (defaultHandle === 'combine') {
         if (!$in.some((x: unknown) => _isEqual(x, otherVal))) {
-          $in.push(otherVal);
+          $in.push(otherVal)
         }
-        _set(target, `${prependKey}.$in`, $in);
-        return;
-      } else if (defaultHandle === "intersect") {
+        _set(target, `${prependKey}.$in`, $in)
+        return
+      } else if (defaultHandle === 'intersect') {
         if ($in.some((x: unknown) => _isEqual(x, otherVal))) {
-          _set(target, prependKey, otherVal);
+          _set(target, prependKey, otherVal)
         } else {
-          actionOnEmptyIntersect(target, source, prependKey);
+          actionOnEmptyIntersect(target, source, prependKey)
         }
-        return;
+        return
       }
-      return;
+      return
     }
   }
 
-  const isTargetArray = Array.isArray(targetVal);
-  const isSourceArray = Array.isArray(sourceVal);
+  const isTargetArray = Array.isArray(targetVal)
+  const isSourceArray = Array.isArray(sourceVal)
 
   if (isTargetArray && isSourceArray) {
-    const key = prependKey[prependKey.length - 1];
-    if (key === "$or") {
-      if (defaultHandle === "combine") {
+    const key = prependKey[prependKey.length - 1]
+    if (key === '$or') {
+      if (defaultHandle === 'combine') {
         const newVals = sourceVal.filter(
           (x: unknown) => !targetVal.some((y: unknown) => _isEqual(x, y)),
-        );
-        targetVal.push(...newVals);
-      } else if (defaultHandle === "intersect") {
+        )
+        targetVal.push(...newVals)
+      } else if (defaultHandle === 'intersect') {
         // combine into "$and"
-        const targetParent = getParentProp(target, prependKey);
-        const sourceParent = getParentProp(source, prependKey);
-        targetParent.$and = targetParent.$and || [];
+        const targetParent = getParentProp(target, prependKey)
+        const sourceParent = getParentProp(source, prependKey)
+        targetParent.$and = targetParent.$and || []
 
-        targetParent.$and.push({ $or: targetVal }, { $or: sourceVal });
+        targetParent.$and.push({ $or: targetVal }, { $or: sourceVal })
 
-        targetParent.$and = cleanAnd(targetParent.$and);
+        targetParent.$and = cleanAnd(targetParent.$and)
         if (!targetParent.$and) {
-          delete targetParent.$and;
+          delete targetParent.$and
         }
-        delete targetParent.$or;
-        delete sourceParent.$or;
-        handleCircular(target, source, [...prependKey, "$and"], options);
-        return;
+        delete targetParent.$or
+        delete sourceParent.$or
+        handleCircular(target, source, [...prependKey, '$and'], options)
+        return
       }
-      return;
-    } else if (key === "$and") {
-      if (defaultHandle === "combine") {
+      return
+    } else if (key === '$and') {
+      if (defaultHandle === 'combine') {
         // combine into "$or"
-        const targetParent = getParentProp(target, prependKey);
-        const sourceParent = getParentProp(source, prependKey);
+        const targetParent = getParentProp(target, prependKey)
+        const sourceParent = getParentProp(source, prependKey)
 
-        targetParent.$or = targetParent.$or || [];
-        targetParent.$or.push({ $and: targetVal }, { $and: sourceVal });
-        targetParent.$or = cleanOr(targetParent.$or);
+        targetParent.$or = targetParent.$or || []
+        targetParent.$or.push({ $and: targetVal }, { $and: sourceVal })
+        targetParent.$or = cleanOr(targetParent.$or)
         if (!targetParent.$or) {
-          delete targetParent.$or;
+          delete targetParent.$or
         }
-        delete targetParent.$and;
-        delete sourceParent.$and;
-        handleCircular(target, source, [...prependKey, "$or"], options);
-        return;
-      } else if (defaultHandle === "intersect") {
+        delete targetParent.$and
+        delete sourceParent.$and
+        handleCircular(target, source, [...prependKey, '$or'], options)
+        return
+      } else if (defaultHandle === 'intersect') {
         const newVals = sourceVal.filter(
           (x: unknown) => !targetVal.some((y: unknown) => _isEqual(x, y)),
-        );
-        targetVal.push(...newVals);
-        return;
+        )
+        targetVal.push(...newVals)
+        return
       }
-    } else if (key === "$in") {
-      if (defaultHandle === "combine") {
-        let $in: unknown[] = targetVal.concat(sourceVal);
-        $in = [...new Set($in)];
-        _set(target, prependKey, $in);
-        return;
-      } else if (defaultHandle === "intersect") {
+    } else if (key === '$in') {
+      if (defaultHandle === 'combine') {
+        let $in: unknown[] = targetVal.concat(sourceVal)
+        $in = [...new Set($in)]
+        _set(target, prependKey, $in)
+        return
+      } else if (defaultHandle === 'intersect') {
         const $in = targetVal.filter((x: unknown) =>
           sourceVal.some((y: unknown) => _isEqual(x, y)),
-        );
+        )
         if ($in.length === 0) {
-          actionOnEmptyIntersect(target, source, prependKey);
+          actionOnEmptyIntersect(target, source, prependKey)
         } else if ($in.length === 1) {
-          _set(target, prependKey.slice(0, -1), $in[0]);
-          return;
+          _set(target, prependKey.slice(0, -1), $in[0])
+          return
         } else {
-          _set(target, prependKey, $in);
+          _set(target, prependKey, $in)
         }
       }
-      return;
+      return
     }
 
-    _set(target, prependKey, sourceVal);
-    return;
+    _set(target, prependKey, sourceVal)
+    return
   }
 
-  if (typeOfTargetVal !== "object" || typeOfSourceVal !== "object") {
-    _set(target, prependKey, sourceVal);
-    return;
+  if (typeOfTargetVal !== 'object' || typeOfSourceVal !== 'object') {
+    _set(target, prependKey, sourceVal)
+    return
   }
 
   // both are objects
-  const sourceKeys = Object.keys(sourceVal);
+  const sourceKeys = Object.keys(sourceVal)
 
   for (let i = 0, n = sourceKeys.length; i < n; i++) {
-    const key = sourceKeys[i];
-    handleCircular(target, source, [...prependKey, key], options);
+    const key = sourceKeys[i]
+    handleCircular(target, source, [...prependKey, key], options)
   }
 }
 
 export function makeDefaultOptions(
   options?: Partial<MergeQueryOptions>,
 ): MergeQueryOptions {
-  options ??= {} as MergeQueryOptions;
-  options.defaultHandle ??= "combine";
-  options.useLogicalConjunction ??= false;
+  options ??= {} as MergeQueryOptions
+  options.defaultHandle ??= 'combine'
+  options.useLogicalConjunction ??= false
   options.actionOnEmptyIntersect ??= () => {
-    throw new Forbidden("You're not allowed to make this request");
-  };
-  options.handle = options.handle || {};
-  if (options.defaultHandle === "intersect") {
-    options.handle.$select = options.handle.$select || "intersectOrFull";
+    throw new Forbidden("You're not allowed to make this request")
   }
-  return options as MergeQueryOptions;
+  options.handle = options.handle || {}
+  if (options.defaultHandle === 'intersect') {
+    options.handle.$select = options.handle.$select || 'intersectOrFull'
+  }
+  return options as MergeQueryOptions
 }
 
 export function moveProperty(
@@ -279,32 +279,32 @@ export function moveProperty(
 ): void {
   keys.forEach((key) => {
     if (!hasOwnProperty(from, key)) {
-      return;
+      return
     }
-    to[key] = from[key];
-    delete from[key];
-  });
+    to[key] = from[key]
+    delete from[key]
+  })
 }
 
 export function getParentProp(target: Record<string, unknown>, path: Path) {
   if (path.length <= 1) {
-    return target;
+    return target
   }
-  const pathOneUp = path.slice(0, -1);
-  return _get(target, pathOneUp);
+  const pathOneUp = path.slice(0, -1)
+  return _get(target, pathOneUp)
 }
 
 export function cleanOr(
   target: Record<string, unknown>[],
 ): Record<string, unknown>[] | undefined {
   if (!target || !Array.isArray(target) || target.length <= 0) {
-    return target;
+    return target
   }
 
   if (target.some((x) => isEmpty(x))) {
-    return undefined;
+    return undefined
   } else {
-    return arrayWithoutDuplicates(target);
+    return arrayWithoutDuplicates(target)
   }
 }
 
@@ -312,23 +312,23 @@ export function cleanAnd(
   target: Record<string, unknown>[],
 ): Record<string, unknown>[] | undefined {
   if (!target || !Array.isArray(target) || target.length <= 0) {
-    return target;
+    return target
   }
 
   if (target.every((x) => isEmpty(x))) {
-    return undefined;
+    return undefined
   } else {
-    target = target.filter((x) => !isEmpty(x));
-    return arrayWithoutDuplicates(target);
+    target = target.filter((x) => !isEmpty(x))
+    return arrayWithoutDuplicates(target)
   }
 }
 
 export function arrayWithoutDuplicates<T>(target: T[]): T[] {
   if (!target || !Array.isArray(target)) {
-    return target;
+    return target
   }
 
-  return _uniqWith(target, _isEqual);
+  return _uniqWith(target, _isEqual)
 }
 
 /**
@@ -342,142 +342,142 @@ export function isQueryMoreExplicitThanQuery(
   source: Query,
 ): Query | undefined {
   if (!target || !source) {
-    return;
+    return
   }
 
-  const targetKeys = Object.keys(target);
-  const sourceKeys = Object.keys(source);
+  const targetKeys = Object.keys(target)
+  const sourceKeys = Object.keys(source)
 
   // sourceQuery: {}; targetQuery: { something }
   if (!sourceKeys.length) {
-    return target;
+    return target
   }
 
   // sourceQuery: { something }; targetQuery: {}
   if (!targetKeys.length) {
-    return source;
+    return source
   }
 
   if (targetKeys.every((key) => _isEqual(target[key], source[key]))) {
     // every property of target is exactly in source
-    return source;
+    return source
   }
 
   if (sourceKeys.every((key) => _isEqual(target[key], source[key]))) {
     // every property of source is exactly in target
-    return target;
+    return target
   }
 
-  return;
+  return
 }
 
 export function areQueriesOverlapping(target: Query, source: Query): boolean {
   if (!target || !source) {
-    return false;
+    return false
   }
 
-  const targetKeys = Object.keys(target);
-  const sourceKeys = Object.keys(source);
+  const targetKeys = Object.keys(target)
+  const sourceKeys = Object.keys(source)
 
   if (!sourceKeys.length || !targetKeys.length) {
-    return false;
+    return false
   }
 
   if (
     targetKeys.some((x) => sourceKeys.includes(x)) ||
     sourceKeys.some((x) => targetKeys.includes(x))
   ) {
-    return true;
+    return true
   }
 
-  return false;
+  return false
 }
 
 if (import.meta.vitest) {
-  const { describe, it, expect } = import.meta.vitest;
+  const { describe, it, expect } = import.meta.vitest
 
-  describe("areQueriesOverlapping", function () {
-    it("empty", function () {
-      const query = areQueriesOverlapping({}, {});
+  describe('areQueriesOverlapping', function () {
+    it('empty', function () {
+      const query = areQueriesOverlapping({}, {})
 
-      expect(query).toBe(false);
-    });
+      expect(query).toBe(false)
+    })
 
-    it("share same properties", function () {
-      const query = areQueriesOverlapping({ id: 1 }, { id: 1 });
+    it('share same properties', function () {
+      const query = areQueriesOverlapping({ id: 1 }, { id: 1 })
 
-      expect(query).toBe(true);
-    });
+      expect(query).toBe(true)
+    })
 
-    it("share same properties with different values", function () {
-      const query = areQueriesOverlapping({ id: 1 }, { id: 2 });
+    it('share same properties with different values', function () {
+      const query = areQueriesOverlapping({ id: 1 }, { id: 2 })
 
-      expect(query).toBe(true);
-    });
+      expect(query).toBe(true)
+    })
 
-    it("share some properties", function () {
+    it('share some properties', function () {
       const query = areQueriesOverlapping(
         { id: 1, test1: true, test2: true },
         { id: 2, test3: true, test4: true },
-      );
+      )
 
-      expect(query).toBe(true);
-    });
+      expect(query).toBe(true)
+    })
 
-    it("do not share properties", function () {
-      const query = areQueriesOverlapping({ id: 1 }, { test: true });
+    it('do not share properties', function () {
+      const query = areQueriesOverlapping({ id: 1 }, { test: true })
 
-      expect(query).toBe(false);
-    });
-  });
+      expect(query).toBe(false)
+    })
+  })
 
-  describe("isQueryMoreExplicitThanQuery", function () {
-    it("empty", function () {
-      const query = isQueryMoreExplicitThanQuery({}, {});
+  describe('isQueryMoreExplicitThanQuery', function () {
+    it('empty', function () {
+      const query = isQueryMoreExplicitThanQuery({}, {})
 
-      expect(query).toStrictEqual({});
-    });
+      expect(query).toStrictEqual({})
+    })
 
-    it("query1 is empty", function () {
-      const query = isQueryMoreExplicitThanQuery({}, { id: 1 });
+    it('query1 is empty', function () {
+      const query = isQueryMoreExplicitThanQuery({}, { id: 1 })
 
-      expect(query).toStrictEqual({ id: 1 });
-    });
+      expect(query).toStrictEqual({ id: 1 })
+    })
 
-    it("query2 is empty", function () {
-      const query = isQueryMoreExplicitThanQuery({ id: 1 }, {});
+    it('query2 is empty', function () {
+      const query = isQueryMoreExplicitThanQuery({ id: 1 }, {})
 
-      expect(query).toStrictEqual({ id: 1 });
-    });
+      expect(query).toStrictEqual({ id: 1 })
+    })
 
-    it("query1 is superset of query2", function () {
+    it('query1 is superset of query2', function () {
       const query = isQueryMoreExplicitThanQuery(
         { id: 1, test: true },
         { id: 1 },
-      );
+      )
 
-      expect(query).toStrictEqual({ id: 1, test: true });
-    });
+      expect(query).toStrictEqual({ id: 1, test: true })
+    })
 
-    it("query2 is superset of query1", function () {
+    it('query2 is superset of query1', function () {
       const query = isQueryMoreExplicitThanQuery(
         { id: 1 },
         { id: 1, test: true },
-      );
+      )
 
-      expect(query).toStrictEqual({ id: 1, test: true });
-    });
+      expect(query).toStrictEqual({ id: 1, test: true })
+    })
 
-    it("queries do not overlap", function () {
-      const query = isQueryMoreExplicitThanQuery({ id: 1 }, { test: true });
+    it('queries do not overlap', function () {
+      const query = isQueryMoreExplicitThanQuery({ id: 1 }, { test: true })
 
-      expect(query).toBeUndefined();
-    });
+      expect(query).toBeUndefined()
+    })
 
-    it("queries overlap but differ", function () {
-      const query = isQueryMoreExplicitThanQuery({ id: 1 }, { id: 2 });
+    it('queries overlap but differ', function () {
+      const query = isQueryMoreExplicitThanQuery({ id: 1 }, { id: 2 })
 
-      expect(query).toBeUndefined();
-    });
-  });
+      expect(query).toBeUndefined()
+    })
+  })
 }

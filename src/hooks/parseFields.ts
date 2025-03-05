@@ -1,29 +1,29 @@
-import type { HookContext } from "@feathersjs/feathers";
-import { getItemsIsArray } from "../utils/getItemsIsArray";
+import type { HookContext } from '@feathersjs/feathers'
+import { getItemsIsArray } from '../utils/getItemsIsArray.js'
 
 /**
  * Parse fields to date or number
  * skips undefined fields
  */
 export const parseFields =
-  (type: "date" | "number", options: { fields: string[] }) =>
+  (type: 'date' | 'number', options: { fields: string[] }) =>
   (context: HookContext) => {
-    const { items } = getItemsIsArray(context);
+    const { items } = getItemsIsArray(context)
 
     items.forEach((item) => {
       options.fields.forEach((field) => {
         // ignore undefined fields
         if (!(field in item)) {
-          return;
+          return
         }
 
-        if (type === "date") {
-          item[field] = new Date(item[field]);
-        } else if (type === "number") {
-          item[field] = Number(item[field]);
+        if (type === 'date') {
+          item[field] = new Date(item[field])
+        } else if (type === 'number') {
+          item[field] = Number(item[field])
         }
-      });
-    });
+      })
+    })
 
-    return context;
-  };
+    return context
+  }
