@@ -1,5 +1,5 @@
 {
-  "name": "feathers-utils",
+  "name": "@fratzinger/feathers-utils",
   "version": "7.0.1",
   "description": "Some utils for projects using '@feathersjs/feathers'",
   "author": "fratzinger",
