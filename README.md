@@ -1,18 +1,19 @@
 # feathers-utils
 
 [![npm](https://img.shields.io/npm/v/feathers-utils)](https://www.npmjs.com/package/feathers-utils)
+[![NPM Version](https://img.shields.io/npm/v/%40fratzinger%2Ffeathers-utils)](https://www.npmjs.com/package/@fratzinger/feathers-utils)
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/fratzinger/feathers-utils/node.js.yaml?branch=main)](https://github.com/fratzinger/feathers-utils/actions/workflows/node.js.yaml?query=branch%3Amain)
-[![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/fratzinger/feathers-utils)](https://codeclimate.com/github/fratzinger/feathers-utils)
-[![Code Climate coverage](https://img.shields.io/codeclimate/coverage/fratzinger/feathers-utils)](https://codeclimate.com/github/fratzinger/feathers-utils)
-[![npm](https://img.shields.io/npm/dm/feathers-utils)](https://www.npmjs.com/package/feathers-utils)
+[![Maintainability](https://qlty.sh/gh/fratzinger/projects/feathers-utils/maintainability.svg)](https://qlty.sh/gh/fratzinger/projects/feathers-utils)
+[![Code Coverage](https://qlty.sh/gh/fratzinger/projects/feathers-utils/coverage.svg)](https://qlty.sh/gh/fratzinger/projects/feathers-utils)
+[![npm](https://img.shields.io/npm/dm/%40fratzinger%2Ffeathers-utils)](https://www.npmjs.com/package/@fratzinger/feathers-utils)
 [![GitHub license](https://img.shields.io/github/license/fratzinger/feathers-utils)](https://github.com/fratzinger/feathers-utils/blob/main/LICENSE.md)
 
-> NOTE: This is the version for Feathers v5. For Feathers v4 use [feathers-utils v1](https://github.com/fratzinger/feathers-utils/tree/crow)
+> NOTE: This package was previously named `feathers-utils`. The ownership of the package name was transferred to feathers. The new package name is `@fratzinger/feathers-utils`. Starting from version 7.0.1 the package is published under the new name. Please update your dependencies accordingly.
 
 ## Installation
 
 ```shell
-npm i feathers-utils
+npm i @fratzinger/feathers-utils
 ```
 
 ## Usage

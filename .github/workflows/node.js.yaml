@@ -35,11 +35,11 @@ jobs:
         with:
           node-version: "22"
       - run: pnpm i
-      - uses: paambaati/codeclimate-action@v9
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      - run: pnpm run coverage
+      - uses: qltysh/qlty-action/coverage@v2
         with:
-          coverageCommand: pnpm run coverage
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: coverage/lcov.info
 
   build:
     name: build
